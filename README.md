@@ -62,6 +62,11 @@ Firestore itself doesn’t "earn" revenue; it simply stores the state of purchas
 ## Deployment
 
 1. Host the files on a real domain (GitHub Pages, Netlify, any static host).
+   * **Netlify tip:** upload the entire repo or connect a GitHub repo. Netlify
+     serves `index.html` by default, so either rename your game file to
+     `index.html` or include a redirect stub (this repo already contains one).
+     After deployment your site will be available at something like
+     `https://<name>.netlify.app/`.
 2. Point that domain in AdSense/analytics settings and wait for verification.
 3. Monitor your GA4 property and AdSense dashboard for impressions, clicks, and
    revenue.
