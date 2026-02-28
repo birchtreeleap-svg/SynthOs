@@ -2,14 +2,14 @@
 
 This HTML "idle clicker" game is built to run in a static web environment and support
 advertising (Google AdSense) and analytics (Google Analytics 4). The built-in
-`watchAd()` function is currently a test stub that simulates a rewarded video.
+`watchAd()` function currently simulates a rewarded video; replace with a real SDK call for production.
 
 ## Getting live AdSense running
 
 1. **Create an AdSense account** and add your website/domain. Wait for approval.
 2. In the AdSense dashboard, create ad units to obtain **slot IDs**.
 3. Replace placeholders in `synth-os-v4.html`:
-   * `data-ad-client="ca-pub-TEST"` → `ca-pub-YOURPUBID` (your publisher ID)
+   * `data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"` → `ca-pub-YOURPUBID` (your publisher ID)
    * `data-ad-slot="1234567890"` and others → your real slot IDs
    * Remove `data-adtest="on"` attributes once you're ready to serve real ads.
 4. If you serve locally for development, run a simple HTTP server instead of
