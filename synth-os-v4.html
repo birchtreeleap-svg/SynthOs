@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SYNTH_OS v4 — AI Bootstrapper</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Fira+Code:wght@300;400;600&display=swap" rel="stylesheet">
+<!-- AdSense base script (paste from your account). required inside <head> -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1823102759484258"
+     crossorigin="anonymous"></script>
 <style>
 /* Cookie consent banner */
 .cookie-consent{position:fixed;left:12px;right:12px;bottom:12px;background:rgba(1,8,4,.96);color:var(--ph-text);padding:10px 12px;border:1px solid var(--ph-border2);z-index:10002;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:6px}
@@ -1477,7 +1480,15 @@ function loadGA4(measurementId='G-XXXXXXX'){
   function gtag(){dataLayer.push(arguments);} window.gtag = gtag; gtag('js', new Date()); gtag('config', measurementId);
 }
 function loadAdSense(pubId='ca-pub-TEST'){
-  if(document.querySelector('script[data-adsense]')) return;
+  // if the static AdSense snippet (<script async src="...client=ca-pub-...")
+  // is already in the head, we don't need to inject another script –
+  // we only push slots once consent has been granted.
+  if(document.querySelector('script[src*="adsbygoogle.js"]')){
+    // push any existing ins elements
+    const ins = document.querySelectorAll('ins.adsbygoogle');
+    ins.forEach(el=>{ try{ (adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){} });
+    return;
+  }
   const s=document.createElement('script');
   s.async=true;
   s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
@@ -1494,17 +1505,37 @@ function loadAdSense(pubId='ca-pub-TEST'){
 function loadAdsAndAnalytics(){
   // Placeholder IDs: replace with your real IDs before going live
   loadGA4('G-XXXXXXX');
-  loadAdSense('ca-pub-TEST');
+  // AdSense script is already in the head (static snippet); just push slots
+  try{
+    const ins = document.querySelectorAll('ins.adsbygoogle');
+    ins.forEach(el=>{ try{ (adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){} });
+  }catch(e){}
 }
 function initAfterConsent(){ loadAdsAndAnalytics(); A.track('consent','granted'); }
 
 // cookie consent UI
-document.getElementById('consent-accept').addEventListener('click',()=>{ localStorage.setItem('synth_consent','1'); document.getElementById('cookie-consent').remove(); initAfterConsent(); });
-document.getElementById('consent-decline').addEventListener('click',()=>{ localStorage.setItem('synth_consent','0'); document.getElementById('cookie-consent').remove(); A.track('consent','declined'); });
-
-// show banner if not set
-if(!localStorage.getItem('synth_consent')) { document.getElementById('cookie-consent').style.display='flex'; }
-else if(localStorage.getItem('synth_consent')==='1') { initAfterConsent(); }
+function attachConsentHandlers(){
+  const accept=document.getElementById('consent-accept');
+  const decline=document.getElementById('consent-decline');
+  if(accept) accept.addEventListener('click',()=>{
+    localStorage.setItem('synth_consent','1');
+    const bar=document.getElementById('cookie-consent'); if(bar) bar.remove();
+    initAfterConsent();
+  });
+  if(decline) decline.addEventListener('click',()=>{
+    localStorage.setItem('synth_consent','0');
+    const bar=document.getElementById('cookie-consent'); if(bar) bar.remove();
+    A.track('consent','declined');
+  });
+}
+// show banner or apply existing consent
+if(!localStorage.getItem('synth_consent')) {
+  const bar=document.getElementById('cookie-consent'); if(bar) bar.style.display='flex';
+  attachConsentHandlers();
+} else if(localStorage.getItem('synth_consent')==='1') {
+  initAfterConsent();
+  attachConsentHandlers();
+}
 
 /* ═══════════════════════════════════════════════
    GOALS — always show short/med/long
