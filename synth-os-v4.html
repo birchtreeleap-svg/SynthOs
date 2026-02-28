@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYNTH_OS v4 — AI Bootstrapper</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Fira+Code:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* Cookie consent banner */
+.cookie-consent{position:fixed;left:12px;right:12px;bottom:12px;background:rgba(1,8,4,.96);color:var(--ph-text);padding:10px 12px;border:1px solid var(--ph-border2);z-index:10002;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:6px}
+.cookie-consent .cc-actions{display:flex;gap:8px}
+.cookie-btn{background:transparent;border:1px solid var(--ph-border2);color:var(--ph-primary);padding:6px 10px;cursor:pointer;border-radius:4px}
+.cookie-btn.primary{background:var(--ph-primary);color:var(--ph-bg);border-color:var(--ph-primary)}
+/* ═══════════════════════════════════════════════
+   PHASE SYSTEM — CSS variables mutate per phase
+═══════════════════════════════════════════════ */
+:root {
+  /* PHASE 0: BOOT */
+  --ph-primary:   #00ff41;
+  --ph-secondary: #00cc33;
+  --ph-dim:       #003311;
+  --ph-border:    #0a2e1a;
+  --ph-border2:   #0f3d22;
+  --ph-bg:        #010804;
+  --ph-bg2:       #030f07;
+  --ph-bg3:       #051a0c;
+  --ph-accent:    #00ff41;
+  --ph-text:      #aaffcc;
+  --ph-muted:     #2a6640;
+  --ph-glow:      0 0 8px rgba(0,255,65,.5);
+  --ph-glow2:     0 0 20px rgba(0,255,65,.25);
+  --amber:        #ffb000;
+  --red:          #ff2244;
+  --cyan:         #00eeff;
+  --violet:       #aa44ff;
+  --danger:       #ff4400;
+}
+
+/* PHASE 1: NETWORKED */
+body.phase-1 { --ph-primary:#00eeff; --ph-secondary:#00bbcc; --ph-dim:#003344; --ph-border:#0a2a33; --ph-border2:#103545; --ph-bg:#010a0f; --ph-bg2:#03121a; --ph-bg3:#05202e; --ph-accent:#00eeff; --ph-text:#aaeeff; --ph-muted:#2a5566; --ph-glow:0 0 8px rgba(0,238,255,.5); --ph-glow2:0 0 20px rgba(0,238,255,.25); }
+
+/* PHASE 2: COMPILED */
+body.phase-2 { --ph-primary:#aaff00; --ph-secondary:#88cc00; --ph-dim:#223300; --ph-border:#1a2e00; --ph-border2:#253d00; --ph-bg:#050801; --ph-bg2:#0a0f02; --ph-bg3:#111a03; --ph-accent:#aaff00; --ph-text:#ccffaa; --ph-muted:#445522; --ph-glow:0 0 8px rgba(170,255,0,.5); --ph-glow2:0 0 20px rgba(170,255,0,.25); }
+
+/* PHASE 3: ENTROPIC */
+body.phase-3 { --ph-primary:#ff6600; --ph-secondary:#cc4400; --ph-dim:#331100; --ph-border:#2e1200; --ph-border2:#3d1800; --ph-bg:#0a0401; --ph-bg2:#120803; --ph-bg3:#1a0e04; --ph-accent:#ff9900; --ph-text:#ffddaa; --ph-muted:#553322; --ph-glow:0 0 8px rgba(255,102,0,.5); --ph-glow2:0 0 20px rgba(255,102,0,.25); }
+
+/* PHASE 4: TRANSCENDENT */
+body.phase-4 { --ph-primary:#cc44ff; --ph-secondary:#9922cc; --ph-dim:#220033; --ph-border:#1e0030; --ph-border2:#2a0040; --ph-bg:#050008; --ph-bg2:#0a0012; --ph-bg3:#10001e; --ph-accent:#ee88ff; --ph-text:#eeccff; --ph-muted:#553366; --ph-glow:0 0 8px rgba(204,68,255,.5); --ph-glow2:0 0 20px rgba(204,68,255,.25); }
+
+/* ═══════════════════════════════════════════════
+   GLOBAL RESET
+═══════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;user-select:none}
+html,body{height:100%;overflow-x:hidden}
+body{background:var(--ph-bg);color:var(--ph-primary);font-family:'Share Tech Mono',monospace;font-size:13px;cursor:crosshair;transition:background .8s,color .8s}
+
+/* Scanlines */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px)}
+
+/* Phase 3: Corruption glitch overlay */
+body.phase-3 #corruption-overlay{opacity:1}
+#corruption-overlay{position:fixed;inset:0;pointer-events:none;z-index:9989;opacity:0;transition:opacity 1s;background:repeating-linear-gradient(87deg,transparent,transparent 20px,rgba(255,102,0,.02) 20px,rgba(255,102,0,.02) 21px)}
+
+/* Phase 4: Void particles */
+body.phase-4 #void-canvas{display:block}
+#void-canvas{display:none;position:fixed;inset:0;z-index:0;opacity:.12;pointer-events:none}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--ph-bg)}
+::-webkit-scrollbar-thumb{background:var(--ph-border2)}
+::selection{background:var(--ph-dim);color:var(--ph-primary)}
+
+/* ═══════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════ */
+#shell{position:relative;z-index:1;display:grid;grid-template-rows:auto auto auto 1fr;max-width:1400px;margin:0 auto;min-height:100vh;padding:5px;gap:5px}
+
+/* ═══════════════════════════════════════════════
+   PHASE BANNER
+═══════════════════════════════════════════════ */
+#phase-banner{
+  background:var(--ph-bg2);border:1px solid var(--ph-border2);
+  padding:5px 14px;display:flex;align-items:center;justify-content:space-between;
+  font-size:10px;letter-spacing:2px;
+}
+.phase-label{color:var(--ph-muted)}
+#phase-name{color:var(--ph-primary);font-family:'VT323',monospace;font-size:15px;letter-spacing:3px;text-shadow:var(--ph-glow)}
+#phase-bar-wrap{flex:1;margin:0 16px;height:4px;background:var(--ph-border);position:relative;overflow:hidden}
+#phase-bar{height:100%;background:var(--ph-primary);transition:width .5s ease;box-shadow:var(--ph-glow)}
+#phase-next{color:var(--ph-muted);font-size:9px}
+
+/* ═══════════════════════════════════════════════
+   TITLEBAR
+═══════════════════════════════════════════════ */
+#titlebar{
+  display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+  padding:8px 14px;background:var(--ph-bg2);
+  border:1px solid var(--ph-border2);border-top:2px solid var(--ph-primary);
+  transition:border-color .8s,background .8s;
+}
+#sys-name{font-family:'VT323',monospace;font-size:28px;color:var(--ph-primary);text-shadow:var(--ph-glow2);letter-spacing:4px}
+#sys-name .build-tag{font-size:13px;color:var(--ph-muted);margin-left:8px;vertical-align:middle;letter-spacing:2px}
+#build-display{font-size:10px;color:var(--ph-muted);margin-top:2px;letter-spacing:1px}
+.hd-stats{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.hds{text-align:center}
+.hds-k{font-size:9px;color:var(--ph-muted);letter-spacing:1px;text-transform:uppercase}
+.hds-v{font-family:'VT323',monospace;font-size:20px;color:var(--ph-primary);text-shadow:var(--ph-glow);transition:color .3s}
+.hds-v.am{color:var(--amber)}
+.hds-v.cy{color:var(--cyan)}
+.hds-v.vl{color:var(--violet)}
+#hdr-right{text-align:right;font-size:10px;color:var(--ph-muted);line-height:2}
+#clock-el{color:var(--ph-primary);font-family:'VT323',monospace;font-size:16px}
+
+/* ═══════════════════════════════════════════════
+   EVENT BAR (full width, context-aware)
+═══════════════════════════════════════════════ */
+#event-bar{
+  display:none;padding:7px 14px;
+  background:var(--ph-bg2);border:1px solid var(--amber);
+  cursor:pointer;animation:evpulse 2s ease-in-out infinite;
+}
+#event-bar.active{display:flex;align-items:center;gap:14px}
+@keyframes evpulse{0%,100%{border-color:var(--amber)}50%{border-color:var(--ph-primary);box-shadow:0 0 14px rgba(255,176,0,.15)}}
+.ev-type-badge{font-family:'VT323',monospace;font-size:16px;color:var(--amber);letter-spacing:2px;white-space:nowrap}
+.ev-body{flex:1}
+.ev-title{font-size:11px;color:var(--ph-text);letter-spacing:.5px}
+.ev-desc{font-size:9px;color:var(--ph-muted);margin-top:1px}
+.ev-mechanic{font-size:9px;color:var(--cyan);margin-top:2px;font-style:italic}
+.ev-meta{text-align:right}
+.ev-timer{font-family:'VT323',monospace;font-size:18px;color:var(--amber)}
+.ev-reward-preview{font-size:9px;color:var(--ph-muted);margin-top:1px}
+.ev-claim-btn{padding:5px 14px;background:rgba(255,176,0,.1);border:1px solid var(--amber);color:var(--amber);font-family:'VT323',monospace;font-size:14px;letter-spacing:1px;cursor:pointer;transition:.15s;white-space:nowrap}
+.ev-claim-btn:hover{background:rgba(255,176,0,.2);box-shadow:0 0 10px rgba(255,176,0,.3)}
+
+/* ═══════════════════════════════════════════════
+   3-COL GRID
+═══════════════════════════════════════════════ */
+#main-grid{display:grid;grid-template-columns:260px 1fr 260px;gap:5px}
+@media(max-width:980px){#main-grid{grid-template-columns:1fr}.col-r{display:none}}
+
+/* ═══════════════════════════════════════════════
+   PANEL
+═══════════════════════════════════════════════ */
+.panel{background:var(--ph-bg2);border:1px solid var(--ph-border2);overflow:hidden;position:relative;transition:background .8s,border-color .8s;margin-bottom:5px}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--ph-border2),transparent)}
+.ph{padding:5px 10px;background:var(--ph-bg3);border-bottom:1px solid var(--ph-border);display:flex;align-items:center;justify-content:space-between;font-family:'VT323',monospace;font-size:15px;color:var(--ph-secondary);letter-spacing:2px;transition:background .8s}
+.ph-badge{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--amber);background:rgba(255,176,0,.08);border:1px solid rgba(255,176,0,.25);padding:1px 5px;letter-spacing:1px}
+.pb{padding:8px 10px}
+.sb{max-height:390px;overflow-y:auto;padding:6px 8px}
+
+/* ═══════════════════════════════════════════════
+   GOAL TRACKER (psychological pull)
+═══════════════════════════════════════════════ */
+.goal-card{padding:7px 9px;margin-bottom:6px;background:var(--ph-bg);border-left:2px solid var(--ph-border2);transition:border-color .3s}
+.goal-card.active-goal{border-left-color:var(--ph-primary);animation:goalshine 2s ease-in-out infinite}
+@keyframes goalshine{0%,100%{border-left-color:var(--ph-border2)}50%{border-left-color:var(--ph-primary)}}
+.goal-card.complete{border-left-color:var(--amber);animation:goalcomplete 1s ease-in-out infinite}
+@keyframes goalcomplete{0%,100%{border-left-color:var(--amber);box-shadow:none}50%{border-left-color:var(--ph-primary);box-shadow:inset 0 0 8px rgba(255,176,0,.1)}}
+.gc-tier{font-size:8px;color:var(--ph-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
+.gc-name{font-size:11px;color:var(--ph-text);margin-bottom:4px;line-height:1.4}
+.gc-bar{height:3px;background:var(--ph-border);overflow:hidden}
+.gc-fill{height:100%;background:var(--ph-primary);transition:width .5s;box-shadow:var(--ph-glow)}
+.gc-pct{font-size:9px;color:var(--ph-muted);text-align:right;margin-top:2px;font-family:'VT323',monospace;font-size:12px}
+.gc-reward{font-size:8px;color:var(--amber);margin-top:2px}
+
+/* ═══════════════════════════════════════════════
+   RESOURCES
+═══════════════════════════════════════════════ */
+.rr{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--ph-border)}
+.rr:last-child{border-bottom:none}
+.rr-l{display:flex;align-items:center;gap:7px}
+.rr-ico{font-size:14px;width:18px;text-align:center}
+.rr-name{font-size:11px;color:var(--ph-text)}
+.rr-rate{font-size:9px;color:var(--ph-muted);margin-top:1px}
+.rr-val{font-family:'VT323',monospace;font-size:17px;color:var(--ph-primary)}
+.rr-cap{font-size:8px;color:var(--ph-muted)}
+
+/* ═══════════════════════════════════════════════
+   CPU BUTTON
+═══════════════════════════════════════════════ */
+#click-zone{text-align:center;padding:10px 0 14px;position:relative}
+.ring{position:absolute;border-radius:50%;border:1px solid;animation:rspin linear infinite;pointer-events:none;left:50%;top:50%;transform:translate(-50%,-54%)}
+.r1{width:190px;height:190px;border-color:rgba(0,255,65,.1);animation-duration:15s}
+.r2{width:225px;height:225px;border-color:rgba(0,255,65,.06);animation-duration:25s;animation-direction:reverse}
+.r3{width:260px;height:260px;border-color:rgba(0,255,65,.03);animation-duration:40s}
+@keyframes rspin{from{transform:translate(-50%,-54%) rotate(0deg)}to{transform:translate(-50%,-54%) rotate(360deg)}}
+body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
+#cpu-btn{
+  width:160px;height:160px;
+  background:var(--ph-bg);border:2px solid var(--ph-border2);cursor:pointer;
+  position:relative;margin:0 auto 12px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  clip-path:polygon(15% 0%,85% 0%,100% 15%,100% 85%,85% 100%,15% 100%,0% 85%,0% 15%);
+  transition:all .08s,border-color .8s;
+  box-shadow:inset 0 0 20px rgba(0,255,65,.04);
+}
+#cpu-btn:hover{border-color:var(--ph-primary);box-shadow:var(--ph-glow2),inset 0 0 30px rgba(0,255,65,.06);transform:scale(1.03)}
+#cpu-btn:active{transform:scale(.95)}
+#cpu-btn.boosted{border-color:var(--amber);box-shadow:0 0 20px rgba(255,176,0,.4)}
+#cpu-glyph{font-family:'VT323',monospace;font-size:58px;color:var(--ph-primary);text-shadow:var(--ph-glow2);line-height:1;animation:gp 4s ease-in-out infinite;pointer-events:none}
+@keyframes gp{0%,100%{text-shadow:var(--ph-glow)}50%{text-shadow:var(--ph-glow2),0 0 40px var(--ph-primary)}}
+#cpu-sub{font-size:8px;color:var(--ph-muted);letter-spacing:3px;margin-top:3px;pointer-events:none}
+#cpu-pwr{font-family:'VT323',monospace;font-size:13px;color:var(--amber);pointer-events:none}
+
+/* CPS readout */
+#cps-big{font-family:'VT323',monospace;font-size:34px;color:var(--ph-primary);text-shadow:var(--ph-glow2);letter-spacing:2px}
+#cps-lbl{font-size:8px;color:var(--ph-muted);letter-spacing:3px;margin-bottom:8px}
+
+/* COMBO */
+#combo-area{max-width:280px;margin:6px auto 0}
+#combo-hdr{display:flex;justify-content:space-between;font-size:9px;color:var(--ph-muted);margin-bottom:3px}
+#combo-x{font-family:'VT323',monospace;font-size:14px;color:var(--amber)}
+#combo-track{height:4px;background:var(--ph-border)}
+#combo-fill{height:100%;background:linear-gradient(90deg,var(--ph-secondary),var(--amber));transition:width .2s}
+#combo-decay-bar{height:2px;background:var(--ph-border);margin-top:2px;position:relative}
+#combo-decay-fill{position:absolute;right:0;top:0;bottom:0;background:var(--red);opacity:.5;transition:width .1s}
+
+/* ═══════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════ */
+.tabbar{display:flex;border-bottom:1px solid var(--ph-border2);overflow-x:auto;scrollbar-width:none}
+.tabbar::-webkit-scrollbar{display:none}
+.tabitem{padding:6px 11px;font-family:'VT323',monospace;font-size:15px;color:var(--ph-muted);cursor:pointer;border-right:1px solid var(--ph-border);transition:.15s;white-space:nowrap;position:relative;letter-spacing:1px}
+.tabitem:hover{color:var(--ph-secondary);background:rgba(0,255,65,.02)}
+.tabitem.on{color:var(--ph-primary);background:rgba(0,255,65,.04);border-bottom:2px solid var(--ph-primary)}
+.tabitem.ping::after{content:'●';position:absolute;top:2px;right:2px;font-size:7px;color:var(--amber);animation:pingdot 1s ease-in-out infinite}
+@keyframes pingdot{0%,100%{opacity:.3}50%{opacity:1}}
+.tc{display:none}.tc.on{display:block}
+
+/* ═══════════════════════════════════════════════
+   UPGRADES
+═══════════════════════════════════════════════ */
+.tier-sep{font-size:8px;color:var(--ph-muted);letter-spacing:2px;text-align:center;padding:5px 0 4px;border-top:1px dashed var(--ph-border);margin:6px 0 4px;text-transform:uppercase}
+.upg{padding:7px 8px;margin-bottom:4px;background:var(--ph-bg);border:1px solid var(--ph-border);cursor:pointer;position:relative;overflow:hidden;transition:all .18s}
+.upg::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--ph-border2);transition:.18s}
+.upg:hover:not(.upg-max):not(.upg-locked){border-color:var(--ph-border2)}
+.upg:hover:not(.upg-max):not(.upg-locked)::before{background:var(--ph-secondary)}
+.upg.upg-can::before{background:var(--amber)}
+.upg.upg-can{border-color:rgba(255,176,0,.2)}
+.upg.upg-max{opacity:.35;cursor:default}
+.upg.upg-max::before{background:var(--ph-border)}
+.upg.upg-locked{opacity:.18;cursor:not-allowed;filter:grayscale(1)}
+.upg-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px}
+.upg-name{font-size:11px;color:var(--ph-text)}
+.upg-lv{font-family:'VT323',monospace;font-size:14px;color:var(--ph-muted)}
+.upg-fx{font-size:9px;color:var(--ph-muted);margin-bottom:3px}
+.upg-cost{font-size:9px;color:var(--ph-muted)}
+.upg-cost.green{color:var(--ph-secondary)}
+.upg-prog{height:2px;background:var(--ph-border);margin-top:3px}
+.upg-prog-fill{height:100%;background:var(--ph-muted);transition:width .4s}
+
+/* ═══════════════════════════════════════════════
+   SKILL TREE
+═══════════════════════════════════════════════ */
+#skill-tree-container{padding:8px;overflow-x:auto}
+.sk-layer{margin-bottom:10px}
+.sk-layer-label{font-size:8px;color:var(--ph-muted);letter-spacing:2px;border-bottom:1px dashed var(--ph-border);padding-bottom:3px;margin-bottom:6px;text-transform:uppercase}
+.sk-row{display:flex;gap:5px;flex-wrap:wrap}
+.sk-node{flex:1;min-width:130px;padding:8px;background:var(--ph-bg);border:1px solid var(--ph-border);cursor:pointer;transition:.2s;position:relative;text-align:left}
+.sk-node:hover:not(.sn-lock):not(.sn-done){border-color:var(--ph-secondary);transform:translateY(-1px)}
+.sk-node.sn-done{border-color:var(--ph-border2);background:rgba(0,255,65,.03)}
+.sk-node.sn-done::after{content:'✓';position:absolute;top:4px;right:6px;color:var(--ph-primary);font-size:11px}
+.sk-node.sn-lock{opacity:.2;cursor:not-allowed}
+.sk-node.sn-ready{border-color:rgba(255,176,0,.4);box-shadow:0 0 6px rgba(255,176,0,.15)}
+.sk-node.sn-conflict{opacity:.25;cursor:not-allowed}
+.sk-icon{font-size:18px;display:block;margin-bottom:3px}
+.sk-name{font-size:10px;color:var(--ph-text);margin-bottom:2px;font-weight:600}
+.sk-path{font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:1px 5px;border:1px solid;margin-bottom:3px;display:inline-block}
+.sk-path-T{color:var(--cyan);border-color:rgba(0,238,255,.3);background:rgba(0,238,255,.06)}
+.sk-path-L{color:var(--amber);border-color:rgba(255,176,0,.3);background:rgba(255,176,0,.06)}
+.sk-path-C{color:var(--red);border-color:rgba(255,34,68,.3);background:rgba(255,34,68,.06)}
+.sk-fx{font-size:9px;color:var(--ph-muted);margin-bottom:4px;line-height:1.4}
+.sk-cost{font-size:9px;color:var(--ph-secondary)}
+.sn-done .sk-cost{color:var(--ph-muted)}
+
+/* ═══════════════════════════════════════════════
+   GAMBLE
+═══════════════════════════════════════════════ */
+#gamble-wrap{padding:8px}
+.gamble-meta{font-size:9px;color:var(--ph-muted);padding:6px 8px;background:var(--ph-bg);border-left:2px solid var(--ph-border2);margin-bottom:8px;line-height:1.7}
+.gamble-meta .hot{color:var(--amber)}
+.gopt{padding:9px;margin-bottom:6px;background:var(--ph-bg);border:1px solid var(--ph-border);cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.gopt:hover:not(.go-lock){border-color:var(--ph-secondary)}
+.gopt.go-lock{opacity:.25;cursor:not-allowed}
+.go-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.go-name{font-family:'VT323',monospace;font-size:17px;color:var(--ph-primary);letter-spacing:1px}
+.go-odds-pill{font-size:9px;padding:2px 7px;border:1px solid;font-family:'VT323',monospace;font-size:13px;letter-spacing:1px}
+.go-desc{font-size:9px;color:var(--ph-muted);margin-bottom:5px;line-height:1.5}
+.go-row{display:flex;gap:12px;font-size:9px;flex-wrap:wrap}
+.go-win{color:var(--ph-secondary)}
+.go-lose{color:var(--red)}
+.go-cost{color:var(--ph-muted)}
+/* Probability bar */
+.go-probbar{height:3px;background:var(--ph-border);margin-top:5px;position:relative}
+.go-probfill{position:absolute;left:0;top:0;bottom:0;background:var(--ph-secondary);opacity:.5}
+.go-problabel{position:absolute;right:0;top:0;bottom:0;background:var(--red);opacity:.5}
+
+.gresult{padding:7px 10px;margin-bottom:7px;font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;border:1px solid;animation:rpop .35s ease-out}
+.gresult.win{color:var(--ph-primary);border-color:var(--ph-border2);background:rgba(0,255,65,.05)}
+.gresult.lose{color:var(--red);border-color:rgba(255,34,68,.3);background:rgba(255,34,68,.04)}
+@keyframes rpop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.gamble-stats{display:flex;gap:14px;font-size:9px;color:var(--ph-muted);margin-top:8px;padding:5px 8px;background:var(--ph-bg);border-top:1px solid var(--ph-border)}
+.gs-val{color:var(--ph-primary);font-family:'VT323',monospace;font-size:14px}
+
+/* ═══════════════════════════════════════════════
+   PRESTIGE / KERNEL
+═══════════════════════════════════════════════ */
+.kernel-box{padding:12px;text-align:center;border-bottom:1px solid var(--ph-border)}
+.k-rank{font-family:'VT323',monospace;font-size:48px;color:var(--ph-primary);text-shadow:var(--ph-glow2);line-height:1}
+.k-title{font-size:9px;color:var(--ph-muted);letter-spacing:3px;margin-bottom:10px;text-transform:uppercase}
+.k-desc{font-size:10px;color:var(--ph-muted);line-height:1.7;margin-bottom:8px}
+.k-reward{font-family:'VT323',monospace;font-size:20px;color:var(--amber);text-shadow:0 0 8px rgba(255,176,0,.4);margin-bottom:8px}
+.k-btn{width:100%;padding:10px;background:rgba(0,255,65,.04);border:1px solid var(--ph-border2);color:var(--ph-secondary);font-family:'VT323',monospace;font-size:20px;letter-spacing:3px;cursor:pointer;transition:.2s}
+.k-btn:hover:not([disabled]){background:rgba(0,255,65,.08);border-color:var(--ph-primary);box-shadow:var(--ph-glow)}
+.k-btn[disabled]{opacity:.25;cursor:not-allowed}
+.k-req{font-size:8px;color:var(--ph-muted);margin-top:4px;letter-spacing:.5px}
+
+.kshop-item{padding:8px;margin-bottom:4px;background:var(--ph-bg);border:1px solid var(--ph-border);cursor:pointer;transition:.18s;position:relative}
+.kshop-item:hover:not(.ks-own):not(.ks-lock){border-color:var(--ph-secondary)}
+.kshop-item.ks-own{border-left:2px solid var(--ph-primary);opacity:.5;cursor:default}
+.kshop-item.ks-lock{opacity:.15;cursor:not-allowed}
+.ks-top{display:flex;justify-content:space-between;align-items:center}
+.ks-name{font-size:10px;color:var(--ph-text)}
+.ks-cost{font-size:10px;color:var(--amber)}
+.ks-desc{font-size:9px;color:var(--ph-muted);margin-top:2px}
+.ks-req{font-size:8px;color:var(--red);margin-top:2px}
+
+/* ═══════════════════════════════════════════════
+   DAILY REWARD
+═══════════════════════════════════════════════ */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:10000;background:rgba(1,8,4,.94);align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--ph-bg2);border:1px solid var(--ph-primary);padding:28px;max-width:420px;width:92%;box-shadow:var(--ph-glow2);position:relative}
+.modal-box::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,255,65,.008) 3px,rgba(0,255,65,.008) 4px);pointer-events:none}
+
+#daily-modal .modal-title{font-family:'VT323',monospace;font-size:30px;color:var(--amber);text-shadow:0 0 10px rgba(255,176,0,.5);letter-spacing:4px;margin-bottom:4px}
+.daily-streak-line{font-size:10px;color:var(--ph-muted);letter-spacing:1px;margin-bottom:14px}
+.day-track{display:flex;gap:4px;margin-bottom:16px;justify-content:center}
+.day-pip{width:34px;height:34px;border:1px solid var(--ph-border2);display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;font-size:16px;color:var(--ph-muted);flex-direction:column;gap:0;position:relative}
+.day-pip.dp-done{border-color:var(--ph-border2);color:var(--ph-primary);background:rgba(0,255,65,.06)}
+.day-pip.dp-today{border-color:var(--amber);color:var(--amber);background:rgba(255,176,0,.08);animation:todaypip 1s ease-in-out infinite}
+@keyframes todaypip{0%,100%{box-shadow:none}50%{box-shadow:0 0 8px rgba(255,176,0,.4)}}
+.day-pip .dp-icon{font-size:14px}
+.day-pip .dp-label{font-size:7px;color:var(--ph-muted)}
+.daily-reward-card{padding:18px;text-align:center;background:var(--ph-bg);border:1px solid var(--ph-border2);margin-bottom:14px;position:relative}
+.dr-icon{font-size:44px;display:block;margin-bottom:8px;animation:float 2.5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.dr-val{font-family:'VT323',monospace;font-size:26px;color:var(--ph-primary);text-shadow:var(--ph-glow)}
+.dr-desc{font-size:10px;color:var(--ph-muted);margin-top:3px}
+.dr-bonus{font-size:9px;color:var(--amber);margin-top:4px}
+.daily-claim-btn{width:100%;padding:11px;background:rgba(0,255,65,.06);border:1px solid var(--ph-primary);color:var(--ph-primary);font-family:'VT323',monospace;font-size:21px;letter-spacing:3px;cursor:pointer;transition:.2s}
+.daily-claim-btn:hover{background:rgba(0,255,65,.12);box-shadow:var(--ph-glow2)}
+
+/* ═══════════════════════════════════════════════
+   TUTORIAL MODAL
+═══════════════════════════════════════════════ */
+#tut-modal .modal-box{max-width:500px}
+.tut-title{font-family:'VT323',monospace;font-size:26px;color:var(--ph-primary);letter-spacing:3px;margin-bottom:12px}
+.tut-content{font-size:11px;color:var(--ph-text);line-height:1.85;margin-bottom:14px}
+.tut-content strong{color:var(--ph-primary)}
+.tut-content .hl{color:var(--cyan);background:var(--ph-bg);padding:1px 5px}
+.tut-content .warn{color:var(--amber)}
+.tut-dots{display:flex;gap:5px;margin-bottom:12px}
+.td{width:7px;height:7px;background:var(--ph-border2)}
+.td.on{background:var(--ph-primary)}
+.tut-nav{display:flex;justify-content:space-between;align-items:center}
+.tut-prog{font-size:9px;color:var(--ph-muted)}
+.tut-btn{padding:7px 18px;background:var(--ph-bg3);border:1px solid var(--ph-border2);color:var(--ph-secondary);font-family:'VT323',monospace;font-size:17px;letter-spacing:2px;cursor:pointer;transition:.15s}
+.tut-btn:hover{border-color:var(--ph-primary);color:var(--ph-primary)}
+
+/* ═══════════════════════════════════════════════
+   ACHIEVEMENTS
+═══════════════════════════════════════════════ */
+.ach{display:flex;align-items:center;gap:8px;padding:6px 8px;margin-bottom:3px;background:var(--ph-bg);border-left:2px solid var(--ph-border)}
+.ach.done{border-left-color:var(--ph-primary);background:rgba(0,255,65,.02)}
+.ach.done .ach-name{color:var(--ph-text)}
+.ach-ico{font-size:15px;min-width:20px}
+.ach-info{flex:1}
+.ach-name{font-size:10px;color:var(--ph-muted)}
+.ach-desc{font-size:8px;color:var(--ph-border2);margin-top:1px}
+.ach-chk{font-size:11px;color:var(--ph-border2)}
+.ach.done .ach-chk{color:var(--ph-primary)}
+
+/* ═══════════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════════ */
+.st{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--ph-border);font-size:10px}
+.st:last-child{border:none}
+.sk{color:var(--ph-muted)}
+.sv{font-family:'VT323',monospace;font-size:14px;color:var(--ph-secondary)}
+
+/* ═══════════════════════════════════════════════
+   AD SLOTS
+═══════════════════════════════════════════════ */
+.ad-slot{background:var(--ph-bg);border:1px dashed rgba(255,176,0,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;position:relative;margin-bottom:5px}
+.ad-slot:hover{border-color:rgba(255,176,0,.35)}
+.ad-top{height:70px}
+.ad-side{height:220px;flex-direction:column;gap:4px}
+.ad-tag{position:absolute;top:2px;right:4px;font-size:7px;color:rgba(255,176,0,.22);letter-spacing:1px}
+.ad-ic{font-size:18px;display:block;text-align:center}
+.ad-txt{font-size:9px;color:var(--ph-muted);text-align:center;line-height:1.5}
+#rad-bar{padding:7px 12px;background:rgba(255,176,0,.04);border:1px solid rgba(255,176,0,.2);cursor:pointer;transition:.2s;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+#rad-bar:hover:not(.cd){border-color:var(--amber);box-shadow:0 0 10px rgba(255,176,0,.15)}
+#rad-bar.cd{opacity:.4;cursor:not-allowed}
+.rad-left .rad-title{font-family:'VT323',monospace;font-size:15px;color:var(--amber);letter-spacing:1px}
+.rad-left .rad-sub{font-size:8px;color:var(--ph-muted);margin-top:1px}
+.rad-icon{font-size:22px}
+
+/* ═══════════════════════════════════════════════
+   PARTICLES + FLASH
+═══════════════════════════════════════════════ */
+.pt{position:fixed;pointer-events:none;z-index:9995;font-family:'VT323',monospace;font-size:15px;color:var(--ph-primary);text-shadow:var(--ph-glow);animation:ptup .9s ease-out forwards}
+.pt.crit{font-size:21px;color:var(--amber);text-shadow:0 0 10px rgba(255,176,0,.6)}
+.pt.evt{font-size:16px;color:var(--cyan)}
+@keyframes ptup{0%{opacity:1;transform:translateY(0) translateX(var(--dx,0))}100%{opacity:0;transform:translateY(-65px) translateX(var(--dx2,10px))}}
+#flash{position:fixed;inset:0;z-index:9994;pointer-events:none;opacity:0}
+.flash-g{animation:fg .18s ease-out forwards}
+.flash-a{animation:fa .18s ease-out forwards}
+@keyframes fg{0%{opacity:.07;background:var(--ph-primary)}100%{opacity:0}}
+@keyframes fa{0%{opacity:.1;background:var(--amber)}100%{opacity:0}}
+
+/* ═══════════════════════════════════════════════
+   TOASTS
+═══════════════════════════════════════════════ */
+#toasts{position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;flex-direction:column-reverse;gap:3px}
+.toast{padding:6px 12px;background:var(--ph-bg2);border-left:3px solid var(--ph-primary);font-size:10px;color:var(--ph-secondary);animation:tin .25s ease-out,tout .25s ease-in 2.7s forwards;max-width:290px;pointer-events:none;letter-spacing:.5px}
+.toast.warn{border-color:var(--amber);color:var(--amber)}
+.toast.err{border-color:var(--red);color:var(--red)}
+.toast.info{border-color:var(--cyan);color:var(--cyan)}
+.toast.phase{border-color:var(--ph-primary);color:var(--ph-primary);font-family:'VT323',monospace;font-size:14px;letter-spacing:2px}
+@keyframes tin{from{opacity:0;transform:translateX(25px)}to{opacity:1;transform:none}}
+@keyframes tout{to{opacity:0;transform:translateX(25px)}}
+
+/* ═══════════════════════════════════════════════
+   TERMINAL LOG
+═══════════════════════════════════════════════ */
+#term{height:145px;overflow-y:auto;padding:6px 8px;background:var(--ph-bg);border-bottom:1px solid var(--ph-border);font-size:10px;line-height:1.7}
+.tl{color:var(--ph-muted);animation:tlin .25s ease-out}
+.tl.ok{color:var(--ph-secondary)}
+.tl.warn{color:var(--amber)}
+.tl.sys{color:var(--cyan)}
+.tl.err{color:var(--red)}
+.tl.phase{color:var(--ph-primary);font-weight:bold}
+@keyframes tlin{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+.tp{color:var(--ph-border2)}
+</style>
+</head>
+<body class="phase-0">
+<!-- Cookie consent (will load ads/analytics only after accept) -->
+<div id="cookie-consent" class="cookie-consent" style="display:none">
+  <div>This site uses ads and analytics to support development. By accepting, you allow loading advertising and analytics scripts.</div>
+  <div class="cc-actions">
+    <button id="consent-decline" class="cookie-btn">Decline</button>
+    <button id="consent-accept" class="cookie-btn primary">Accept</button>
+  </div>
+</div>
+<canvas id="void-canvas"></canvas>
+<div id="corruption-overlay"></div>
+<div id="flash"></div>
+
+<!-- DAILY REWARD MODAL -->
+<div class="modal-overlay" id="daily-modal">
+  <div class="modal-box">
+    <div class="modal-title">DAILY LOGIN</div>
+    <div class="daily-streak-line" id="dr-streak">STREAK: 1 DAY</div>
+    <div class="day-track" id="day-track"></div>
+    <div class="daily-reward-card">
+      <span class="dr-icon" id="dr-icon">⚡</span>
+      <div class="dr-val" id="dr-val">+5,000</div>
+      <div class="dr-desc" id="dr-desc">Cycles · Day 1</div>
+      <div class="dr-bonus" id="dr-bonus"></div>
+    </div>
+    <button class="daily-claim-btn" onclick="claimDaily()">[ COLLECT REWARD ]</button>
+  </div>
+</div>
+
+<!-- TUTORIAL MODAL -->
+<div class="modal-overlay" id="tut-modal">
+  <div class="modal-box">
+    <div class="tut-title" id="tut-title">SYS_BOOT</div>
+    <div class="tut-dots" id="tut-dots"></div>
+    <div id="tut-body" class="tut-content"></div>
+    <div class="tut-nav">
+      <div class="tut-prog" id="tut-prog">1 / 5</div>
+      <button class="tut-btn" id="tut-btn" onclick="tutAdv()">NEXT ›</button>
+    </div>
+  </div>
+</div>
+
+<div id="shell">
+<!-- PHASE BANNER -->
+<div id="phase-banner">
+  <span class="phase-label">SYSTEM PHASE:</span>
+  <span id="phase-name">BOOT</span>
+  <div id="phase-bar-wrap"><div id="phase-bar" style="width:0%"></div></div>
+  <span id="phase-next">Next: NETWORKED</span>
+</div>
+
+<!-- TITLEBAR -->
+<div id="titlebar">
+  <div>
+    <div id="sys-name">SYNTH<span class="build-tag" id="build-tag">// PROCESS_ZERO</span></div>
+    <div id="build-display">PATH: <span id="path-display" style="color:var(--amber)">UNDECIDED</span> · RESET: <span id="reset-display">0</span></div>
+  </div>
+  <div class="hd-stats">
+    <div class="hds"><div class="hds-k">CPS</div><div class="hds-v" id="h-cps">0</div></div>
+    <div class="hds"><div class="hds-k">LIFETIME</div><div class="hds-v" id="h-life">0</div></div>
+    <div class="hds"><div class="hds-k">TOKENS ◈</div><div class="hds-v am" id="h-tok">0</div></div>
+    <div class="hds"><div class="hds-k">SESSION</div><div class="hds-v cy" id="h-ses">0</div></div>
+    <div class="hds"><div class="hds-k">STREAK</div><div class="hds-v" id="h-str">0d</div></div>
+  </div>
+  <div id="hdr-right">
+    <div id="clock-el">00:00:00</div>
+    <div style="font-size:8px;color:var(--ph-muted)" id="save-el">AUTO-SAVE: OK</div>
+    <div style="font-size:8px;color:var(--ph-muted)" id="session-time-el">SESSION: 0m</div>
+  </div>
+</div>
+
+<!-- EVENT BAR -->
+<div id="event-bar">
+  <div class="ev-type-badge" id="ev-type">⚡ ANOMALY</div>
+  <div class="ev-body">
+    <div class="ev-title" id="ev-title">Event Title</div>
+    <div class="ev-desc" id="ev-desc">Event description</div>
+    <div class="ev-mechanic" id="ev-mechanic"></div>
+  </div>
+  <div class="ev-meta">
+    <div class="ev-timer" id="ev-timer">60s</div>
+    <div class="ev-reward-preview" id="ev-rpreview"></div>
+  </div>
+  <button class="ev-claim-btn" onclick="claimEvent()">[ CLAIM ]</button>
+</div>
+
+<!-- AD BANNER TOP (AdSense test unit) -->
+<div class="ad-slot ad-top" onclick="adClick('banner')">
+  <div class="ad-tag">AD</div>
+  <div style="width:100%;max-width:728px;margin:0 auto;text-align:center">
+    <!-- replace data-ad-client with your real AdSense pub ID and uncomment when live -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-TEST"      <!-- TODO: change to ca-pub-XXXXXXXXXXXXXXXX -->
+         data-ad-slot="1234567890"         <!-- TODO: change to your slot ID -->
+         data-ad-format="auto"
+         data-adtest="on"></ins>            <!-- remove data-adtest attribute when running real ads -->
+    <div class="ad-txt" style="margin-top:6px;color:var(--ph-muted);font-size:11px">728×90 Leaderboard (test)</div>
+  </div>
+</div>
+
+<!-- REWARDED AD -->
+<div id="rad-bar" onclick="watchAd()">
+  <div class="rad-left">
+    <div class="rad-title">📺 WATCH AD — 3× BOOST 90s + OFFLINE RECOVERY</div>
+    <div class="rad-sub" id="rad-sub">Available · Doubles offline gains if you've been away</div>
+  </div>
+  <div class="rad-icon">▶</div>
+</div>
+
+<!-- 3-COL GRID -->
+<div id="main-grid">
+
+<!-- ── LEFT COL ── -->
+<div class="col-l">
+  <!-- TERMINAL -->
+  <div class="panel">
+    <div class="ph">▸ SYS_LOG</div>
+    <div id="term"></div>
+  </div>
+  <!-- GOALS -->
+  <div class="panel">
+    <div class="ph">◉ OBJECTIVES <span class="ph-badge" id="goals-phase-badge">PHASE 0</span></div>
+    <div class="pb" id="goals-container"></div>
+  </div>
+  <!-- RESOURCES -->
+  <div class="panel">
+    <div class="ph">≡ MEMORY MAP</div>
+    <div class="pb" id="res-list"></div>
+  </div>
+  <!-- STATS -->
+  <div class="panel">
+    <div class="ph">∑ DIAGNOSTICS</div>
+    <div class="pb" id="stats-list"></div>
+  </div>
+</div>
+
+<!-- ── CENTER COL ── -->
+<div class="col-c">
+  <!-- CLICK CORE -->
+  <div class="panel" style="margin-bottom:5px">
+    <div class="pb" style="padding-bottom:16px">
+      <div style="text-align:center;margin-bottom:6px">
+        <div id="cps-big">0</div>
+        <div id="cps-lbl">CYCLES / SECOND</div>
+      </div>
+      <div id="click-zone">
+        <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+        <button id="cpu-btn" onclick="doClick(event)">
+          <div id="cpu-glyph">⬡</div>
+          <div id="cpu-sub">EXECUTE</div>
+          <div id="cpu-pwr">+1</div>
+        </button>
+      </div>
+      <div id="combo-area">
+        <div id="combo-hdr"><span style="letter-spacing:1px">COMBO MULTIPLIER</span><span id="combo-x">×1.0</span></div>
+        <div id="combo-track"><div id="combo-fill" style="width:0%"></div></div>
+        <div id="combo-decay-bar"><div id="combo-decay-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER TABS -->
+  <div class="panel">
+    <div class="tabbar" id="ctab-bar">
+      <div class="tabitem on" onclick="swTab('processes')">PROCESSES</div>
+      <div class="tabitem" onclick="swTab('skilltree')">SKILLS</div>
+      <div class="tabitem" onclick="swTab('gamble')">GAMBLE</div>
+      <div class="tabitem" onclick="swTab('kernel')">KERNEL</div>
+      <div class="tabitem" onclick="swTab('logs')">LOGS</div>
+    </div>
+    <div class="tc on" id="tc-processes"><div class="sb" id="upg-list"></div></div>
+    <div class="tc" id="tc-skilltree"><div id="skill-tree-container"></div></div>
+    <div class="tc" id="tc-gamble"><div id="gamble-wrap"></div></div>
+    <div class="tc" id="tc-kernel">
+      <div class="kernel-box">
+        <div class="k-rank" id="k-rank">◈0</div>
+        <div class="k-title" id="k-title">PROCESS_ZERO</div>
+        <div class="k-desc">Reset this run for <strong style="color:var(--amber)">Tokens ◈</strong>.<br>Tokens survive every reset. They fund the Kernel Shop — permanent upgrades that compound across all future runs.</div>
+        <div class="k-reward" id="k-reward">◈ 0 Tokens ready</div>
+        <button class="k-btn" id="k-btn" onclick="doPrestige()" disabled>[ KERNEL_RESET ]</button>
+        <div class="k-req" id="k-req">Need 50,000 Cycles this run</div>
+      </div>
+      <div style="padding:6px 8px">
+        <div class="ph" style="border:none;padding:4px 2px;margin-bottom:6px">◈ KERNEL SHOP</div>
+        <div class="sb" id="kshop-list"></div>
+      </div>
+    </div>
+    <div class="tc" id="tc-logs"><div class="sb" id="ach-list"></div></div>
+  </div>
+</div>
+
+<!-- ── RIGHT COL ── -->
+<div class="col-r">
+  <div class="ad-slot ad-side" onclick="adClick('side1')">
+    <div class="ad-tag">AD</div>
+    <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px"
+         data-ad-client="ca-pub-TEST"      <!-- TODO: change to ca-pub-XXXXXXXXXXXXXXXX -->
+         data-ad-slot="1111111111"          <!-- TODO: real slot ID -->
+         data-adtest="on"></ins>           <!-- remove when live -->
+    <div class="ad-txt" style="margin-top:6px;color:var(--ph-muted);font-size:11px">160×600 (test)</div>
+  </div>
+  <div class="ad-slot ad-side" onclick="adClick('side2')">
+    <div class="ad-tag">AD</div>
+    <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px"
+         data-ad-client="ca-pub-TEST"      <!-- TODO: change to ca-pub-XXXXXXXXXXXXXXXX -->
+         data-ad-slot="2222222222"          <!-- TODO: real slot ID -->
+         data-adtest="on"></ins>           <!-- remove when live -->
+    <div class="ad-txt" style="margin-top:6px;color:var(--ph-muted);font-size:11px">300×250 (test)</div>
+  </div>
+</div>
+
+</div><!-- end main-grid -->
+</div><!-- end shell -->
+<div id="toasts"></div>
+
+<script>
+'use strict';
+/* ═══════════════════════════════════════════════
+   ANALYTICS LAYER (swap real SDK here)
+═══════════════════════════════════════════════ */
+const A = {
+  _session: Date.now(), _events: [],
+  track(e, d={}) {
+    this._events.push({e, d, t: Date.now() - this._session});
+    try { if (window.gtag) window.gtag('event', e, d); } catch(_){}
+    console.debug('[A]', e, d);
+  },
+  sessionLength() { return Math.floor((Date.now() - this._session) / 1000); },
+};
+
+/* ═══════════════════════════════════════════════
+   MATHEMATICAL SCALING CORE
+   Formula: cost(lvl) = base × 1.42^lvl × tierMult
+   Soft cap: after lvl 15, incremental returns
+   slow (val multiplied by 0.85 per lvl above 15)
+═══════════════════════════════════════════════ */
+function scaledCost(base, lvl, rate=1.42) {
+  return base * Math.pow(rate, lvl);
+}
+function scaledVal(base, lvl, softCapAt=15) {
+  if (lvl <= softCapAt) return base * lvl;
+  const hard = base * softCapAt;
+  const extra = base * (lvl - softCapAt) * 0.6; // diminishing returns
+  return hard + extra;
+}
+function tokenFormula(totalCyclesThisRun, resets, skillMult=1, shopMult=1) {
+  // Logarithmic reward — never stalls, never explodes
+  const base = Math.pow(totalCyclesThisRun / 5000, 0.68);
+  const resetBonus = 1 + resets * 0.05; // 5% more per reset (incentivizes multiple runs)
+  return Math.max(1, Math.floor(base * resetBonus * skillMult * shopMult));
+}
+
+/* ═══════════════════════════════════════════════
+   PHASE SYSTEM
+   Each phase: new mechanics, UI transformation
+═══════════════════════════════════════════════ */
+const PHASES = [
+  { id:0, name:'BOOT',         color:'phase-0', next:'NETWORKED', threshold:0,       glyph:'⬡',  desc:'Single CPU core. Manual execution.' },
+  { id:1, name:'NETWORKED',    color:'phase-1', next:'COMPILED',  threshold:1000,    glyph:'⬢',  desc:'Threads unlock. Automation begins.' },
+  { id:2, name:'COMPILED',     color:'phase-2', next:'ENTROPIC',  threshold:25000,   glyph:'◉',  desc:'Code Blocks. Branching paths diverge.' },
+  { id:3, name:'ENTROPIC',     color:'phase-3', next:'TRANSCENDENT',threshold:500000, glyph:'⊛', desc:'Entropy leaks. Chaos mechanics activate.' },
+  { id:4, name:'TRANSCENDENT', color:'phase-4', next:'∞',          threshold:5000000, glyph:'◈', desc:'Void unlocked. Endgame.' },
+];
+
+/* ═══════════════════════════════════════════════
+   DATA: UPGRADES
+═══════════════════════════════════════════════ */
+const UPGRADES = [
+  // TIER 1
+  { id:'u1', t:1, name:'Idle Daemon',      fx:'+{v} Cycles/s (auto)',    eff:'cps',     base:0.8,  cost:[100,'cycles'],  max:20, icon:'👾' },
+  { id:'u2', t:1, name:'Click Opt.',        fx:'+{v} Cycles/click',       eff:'click',   base:4,    cost:[150,'cycles'],  max:20, icon:'🖱️' },
+  { id:'u3', t:1, name:'Thread Spawn',      fx:'+{v} Threads/s',          eff:'threads', base:0.12, cost:[400,'cycles'],  max:15, icon:'🔵', unlockAt:['phase',1] },
+  // TIER 2
+  { id:'u4', t:2, name:'Parallel Proc',     fx:'+{v} Cycles/s',           eff:'cps',     base:6,    cost:[600,'cycles'],  max:18, icon:'⚙️', req:'u3' },
+  { id:'u5', t:2, name:'Cache Burst',       fx:'+{v} Cycles/click',       eff:'click',   base:25,   cost:[1000,'cycles'], max:16, icon:'💥', req:'u2' },
+  { id:'u6', t:2, name:'Code Compiler',     fx:'+{v} Code/s',             eff:'code',    base:0.06, cost:[3,'threads'],   max:12, icon:'🧬', req:'u3', unlockAt:['phase',2] },
+  // TIER 3
+  { id:'u7', t:3, name:'Neural Net',        fx:'+{v} Cycles/s',           eff:'cps',     base:55,   cost:[8000,'cycles'], max:14, icon:'🧠', req:'u6' },
+  { id:'u8', t:3, name:'Mem Leak Tap',      fx:'+{v} Cycles/click',       eff:'click',   base:200,  cost:[12000,'cycles'],max:12, icon:'🔓', req:'u5' },
+  { id:'u9', t:3, name:'Entropy Engine',    fx:'+{v} Entropy/s',          eff:'entropy', base:0.012,cost:[1.5,'code'],    max:10, icon:'🌀', req:'u6', unlockAt:['phase',3] },
+  { id:'u10',t:3, name:'Code→Cycles',       fx:'Code amplifies +{v} CPS', eff:'cps',     base:350,  cost:[2.5,'code'],   max:10, icon:'📈', req:'u9' },
+  // TIER 4
+  { id:'u11',t:4, name:'Chaos Engine',      fx:'+{v} Cycles/s',           eff:'cps',     base:1200, cost:[80000,'cycles'],max:10, icon:'🌪️', req:'u9' },
+  { id:'u12',t:4, name:'Quantum Strike',    fx:'+{v} Cycles/click',       eff:'click',   base:2500, cost:[120000,'cycles'],max:10,icon:'⚛️', req:'u8' },
+  { id:'u13',t:4, name:'Void Tap',          fx:'+{v} Void/s',             eff:'void',    base:0.0015,cost:[2,'entropy'],  max:8, icon:'🔮', req:'u9', unlockAt:['phase',4] },
+  { id:'u14',t:4, name:'Entropy→Cycles',    fx:'Entropy→+{v} CPS',        eff:'cps',     base:12000,cost:[3,'entropy'],   max:8, icon:'🔁', req:'u13' },
+  // TIER 5
+  { id:'u15',t:5, name:'Singularity Core',  fx:'+{v} Cycles/s',           eff:'cps',     base:1.2e5,cost:[1.5e6,'cycles'],max:8, icon:'💫', req:'u13' },
+  { id:'u16',t:5, name:'Void Resonance',    fx:'Void→+{v} CPS',           eff:'cps',     base:8e6,  cost:[0.15,'void'],  max:6, icon:'◈',  req:'u13' },
+  { id:'u17',t:5, name:'SYNTH Core',        fx:'+{v} ALL (mult)',          eff:'mult',    base:1.5,  cost:[1,'void'],     max:5, icon:'🌌', req:'u16' },
+];
+
+/* ═══════════════════════════════════════════════
+   SKILL TREE — 3 irreversible paths
+   T = THROUGHPUT (auto/offline focus)
+   L = LATENCY (click/crit focus)
+   C = CHAOS (gamble/entropy focus)
+   Choosing any path at Layer 2 locks the other two
+═══════════════════════════════════════════════ */
+const SKILLS = [
+  // Layer 0 — free (no path conflict)
+  { id:'s0',  lyr:0, name:'Boot Sequence',     path:'',  icon:'🚀', fx:'×2 base CPS',                  cost:[800,'cycles'],  req:[] },
+  { id:'s1',  lyr:0, name:'Branch Prediction', path:'',  icon:'🎯', fx:'Crits enabled (10%, ×10)',      cost:[1500,'cycles'], req:[] },
+  // Layer 1 — convergent
+  { id:'s1a', lyr:1, name:'Pipeline Opt.',      path:'T', icon:'⚙️', fx:'×2 all auto-miners',            cost:[3000,'cycles'], req:['s0'] },
+  { id:'s1b', lyr:1, name:'Overclocking',       path:'L', icon:'💻', fx:'×4 click power',               cost:[3000,'cycles'], req:['s1'] },
+  { id:'s1c', lyr:1, name:'Entropy Seed',       path:'C', icon:'🌀', fx:'×3 Entropy prod · gamble payout ×1.5',cost:[2,'threads'],req:['s0','s1'] },
+  // Layer 2 — PATH LOCK (choosing any locks the other two)
+  { id:'s2T', lyr:2, name:'THROUGHPUT PATH',    path:'T', icon:'⟳', fx:'80% offline efficiency · ×3 auto/idle · idle earns during tab close',cost:[5,'threads'],req:['s1a'],locks:['s2L','s2C'] },
+  { id:'s2L', lyr:2, name:'LATENCY PATH',       path:'L', icon:'⚡', fx:'Combo cap 50× · Crit 25% · ×6 click · click earns 30% of CPS',    cost:[5,'threads'],req:['s1b'],locks:['s2T','s2C'] },
+  { id:'s2C', lyr:2, name:'CHAOS PATH',         path:'C', icon:'🎲', fx:'Gamble jackpot ×5 · Entropy ×5 · 5% global crit on any gain',      cost:[5,'code'],   req:['s1c'],locks:['s2T','s2L'] },
+  // Layer 3 — path-specific
+  { id:'s3T', lyr:3, name:'Distributed Net',    path:'T', icon:'🌐', fx:'×5 Threads/s · passive +1% CPS per min played',                   cost:[10,'code'],  req:['s2T'] },
+  { id:'s3L', lyr:3, name:'Hyperthreading',     path:'L', icon:'🔥', fx:'×10 click · every 100 clicks: auto-spike +5s full CPS',           cost:[1,'entropy'],req:['s2L'] },
+  { id:'s3C', lyr:3, name:'Chaos Protocol',     path:'C', icon:'💀', fx:'Void Tap ×5 · on every gamble win: +1% of total cycles',          cost:[2,'entropy'],req:['s2C'] },
+  // Layer 4 — endgame convergent
+  { id:'s4',  lyr:4, name:'TRANSCENDENCE',      path:'',  icon:'🌌', fx:'×50 ALL production · unlocks Void Tap',                            cost:[1,'void'],   req:['s3T','s3L','s3C'], reqAny:true },
+];
+
+/* ═══════════════════════════════════════════════
+   GAMBLE — transparent probability display
+═══════════════════════════════════════════════ */
+const GAMBLES = [
+  { id:'g1', name:'BIT_FLIP',    odds:.5,  winMult:1.75, loseMult:.5,  cost:[2000,'cycles'],   desc:'50/50. Win 75% extra or keep half. Safe.' },
+  { id:'g2', name:'STACK_RISK',  odds:.35, winMult:2.5,  loseMult:0,   cost:[800,'threads'],   desc:'35% to 2.5×. Lose all on fail.' },
+  { id:'g3', name:'NULL_PTR',    odds:.2,  winMult:5,    loseMult:0,   cost:[1.5,'code'],      desc:'20% at 5×. Zero survivors otherwise.' },
+  { id:'g4', name:'ENTROPY_BET', odds:.1,  winMult:10,   loseMult:0,   cost:[1,'entropy'],     desc:'10% at 10×. Entropy gone on loss.' },
+  { id:'g5', name:'VOID_JACKPOT',odds:.04, winMult:30,   loseMult:0,   cost:[0.05,'void'],     desc:'4% at 30×. True void risk. Endgame only.' },
+];
+
+/* ═══════════════════════════════════════════════
+   KERNEL SHOP — permanent cross-run upgrades
+   Tiered by prestige count requirement
+═══════════════════════════════════════════════ */
+const KSHOP = [
+  { id:'k1',  name:'Warm Boot',        desc:'+25 CPS on run start',               cost:1,   req:0  },
+  { id:'k2',  name:'Click Heritage',   desc:'×2 click power (all runs)',           cost:2,   req:0  },
+  { id:'k3',  name:'Thread Carry',     desc:'Keep 30% Threads on reset',           cost:3,   req:1  },
+  { id:'k4',  name:'Token Amp',        desc:'×1.5 token earn per reset',           cost:4,   req:1  },
+  { id:'k5',  name:'Run Momentum',     desc:'+8% all prod per reset (stacks)',     cost:5,   req:2  },
+  { id:'k6',  name:'Combo Anchor',     desc:'Combo floor: never below ×3',         cost:4,   req:2  },
+  { id:'k7',  name:'Code Seed',        desc:'Start with 1 Code Block',             cost:6,   req:3  },
+  { id:'k8',  name:'Entropy Inherit',  desc:'Keep 20% Entropy on reset',           cost:8,   req:3  },
+  { id:'k9',  name:'Lucky Circuits',   desc:'Gamble win payouts ×1.75',            cost:6,   req:2  },
+  { id:'k10', name:'Time Fold',        desc:'Offline efficiency: 35%→65%',         cost:8,   req:3  },
+  { id:'k11', name:'Void Seed',        desc:'Start with 0.02 Void Data',           cost:15,  req:4  },
+  { id:'k12', name:'Synth Awakened',   desc:'×15 ALL production (endgame)',        cost:30,  req:5  },
+  { id:'k13', name:'Daily Scaling',    desc:'Daily rewards scale with reset count',cost:10,  req:4  },
+  { id:'k14', name:'Event Amplifier',  desc:'Event rewards ×2',                    cost:12,  req:4  },
+  { id:'k15', name:'Path Transfer',    desc:'Carry 25% of path bonuses through reset',cost:20,req:5  },
+];
+
+/* ═══════════════════════════════════════════════
+   EVENTS — each changes optimal play
+═══════════════════════════════════════════════ */
+const EVENTS = [
+  {
+    id:'ev1', type:'⚡ MEMORY LEAK',
+    title:'Memory Leak Detected',
+    desc:'Cycles leaking from buffer. Absorb before they dissipate.',
+    mechanic:'Click rapidly during this window — click gains ×3',
+    dur:60,
+    reward: ()=>({ cycles: G.cps*20 + G.clickPower*150 }),
+    mechClick: true, // click multiplier active during event
+  },
+  {
+    id:'ev2', type:'🔵 THREAD STORM',
+    title:'Thread Cascade',
+    desc:'Autonomous threads are spawning. Claim the overflow.',
+    mechanic:'Auto-income ×5 for event duration',
+    dur:45,
+    reward: ()=>({ threads: G.threadsCps*90 + 15, cycles: G.cps*45*5 }),
+    mechCps: 5,
+  },
+  {
+    id:'ev3', type:'🌀 ENTROPY SPIKE',
+    title:'System Entropy Rising',
+    desc:'Controlled chaos leaking rare entropy. Harvest now.',
+    mechanic:'Gamble win odds +20% during this window',
+    dur:90,
+    reward: ()=>({ entropy: Math.max(0.02, G.entropyCps*120 + 0.1) }),
+    mechGamble: 0.2,
+    unlockPhase: 3,
+  },
+  {
+    id:'ev4', type:'💥 KERNEL PANIC',
+    title:'BSOD Averted — Emergency Dump',
+    desc:'System crash prevented. Emergency cycle dump incoming.',
+    mechanic:'One-time massive cycles injection',
+    dur:30,
+    reward: ()=>({ cycles: Math.max(5000, G.totalCycles*0.08 + G.cps*30) }),
+  },
+  {
+    id:'ev5', type:'🔮 VOID RIFT',
+    title:'Dimensional Anomaly',
+    desc:'A void rift opened. Collect the resonance before it collapses.',
+    mechanic:'Void gain ×10 for event duration · claim for void bonus',
+    dur:120,
+    reward: ()=>({ void: Math.max(0.005, G.voidData*0.05 + 0.02), cycles: G.cps*120 }),
+    mechVoid: 10,
+    unlockPhase: 4,
+  },
+  {
+    id:'ev6', type:'📡 SIGNAL BURST',
+    title:'External Signal Received',
+    desc:'Unknown signal boosting local network efficiency.',
+    mechanic:'All resources +50% for 60s — passive only',
+    dur:60,
+    reward: ()=>({ cycles: G.cps*60*0.5, threads: G.threadsCps*60*0.5, code: G.codeCps*60*0.5 }),
+    mechAll: 0.5,
+  },
+];
+
+/* ═══════════════════════════════════════════════
+   DAILY REWARDS — scale with rank
+═══════════════════════════════════════════════ */
+const DAILY_BASE = [
+  { icon:'⚡', type:'cycles',  label:'Cycles',      base:()=>5000 * Math.max(1, G.prestigeCount*0.5+1) },
+  { icon:'🔵', type:'threads', label:'Threads',     base:()=>20   * Math.max(1, G.prestigeCount*0.3+1) },
+  { icon:'🧬', type:'code',    label:'Code Blocks', base:()=>1.5  * Math.max(1, G.prestigeCount*0.2+1) },
+  { icon:'◈',  type:'tokens',  label:'Tokens',      base:()=>Math.max(1, Math.floor(G.prestigeCount/2)+1) },
+  { icon:'⚡', type:'cycles',  label:'Mega Cycles', base:()=>50000* Math.max(1, G.prestigeCount*0.8+1) },
+  { icon:'🌀', type:'entropy', label:'Entropy',     base:()=>0.5  * Math.max(1, G.prestigeCount*0.1+1) },
+  { icon:'💎', type:'tokens',  label:'Tokens',      base:()=>Math.max(3, Math.floor(G.prestigeCount/1.5)+2) },
+];
+
+const ACHIEVEMENTS = [
+  { id:'a1',  name:'First Execution',    desc:'Click once',                          icon:'⚡', chk:s=>s.totalClicks>=1 },
+  { id:'a2',  name:'Networked',          desc:'Enter Phase 1',                       icon:'🌐', chk:s=>s.phase>=1 },
+  { id:'a3',  name:'Threaded',           desc:'Produce Threads',                     icon:'🔵', chk:s=>s.threads>0 },
+  { id:'a4',  name:'Click-1000',         desc:'Click 1,000 times',                   icon:'🖱️', chk:s=>s.totalClicks>=1000 },
+  { id:'a5',  name:'Compiled',           desc:'Produce Code Blocks',                 icon:'🧬', chk:s=>s.code>0 },
+  { id:'a6',  name:'Combo ×10',          desc:'Reach ×10 combo',                     icon:'🔥', chk:s=>s.bestCombo>=10 },
+  { id:'a7',  name:'First Reset',        desc:'Kernel Reset once',                   icon:'◈',  chk:s=>s.prestigeCount>=1 },
+  { id:'a8',  name:'Risk Taker',         desc:'Win a gamble',                        icon:'🎰', chk:s=>s.gamblesWon>=1 },
+  { id:'a9',  name:'Critical Hit',       desc:'Land a crit click',                   icon:'💥', chk:s=>s.critsLanded>=1 },
+  { id:'a10', name:'Week Streak',        desc:'7-day login streak',                  icon:'📅', chk:s=>s.loginStreak>=7 },
+  { id:'a11', name:'Entropic',           desc:'Produce Entropy',                     icon:'🌀', chk:s=>s.entropy>0 },
+  { id:'a12', name:'1M Lifetime',        desc:'1M Cycles lifetime',                  icon:'💎', chk:s=>s.lifetimeCycles>=1e6 },
+  { id:'a13', name:'Void Touched',       desc:'Produce Void Data',                   icon:'🔮', chk:s=>s.voidData>0 },
+  { id:'a14', name:'Path Chosen',        desc:'Lock in a skill path',                icon:'🔀', chk:s=>!!s.chosenPath },
+  { id:'a15', name:'10K CPS',            desc:'Reach 10,000 Cycles/s',               icon:'🧠', chk:s=>s.cps>=10000 },
+  { id:'a16', name:'Event Streak ×5',    desc:'Claim 5 events',                      icon:'⚡', chk:s=>s.eventsCollected>=5 },
+  { id:'a17', name:'Lucky 7',            desc:'Win 7 gambles in a row',              icon:'🍀', chk:s=>s.winStreak>=7 },
+  { id:'a18', name:'1B Lifetime',        desc:'1B Cycles lifetime',                  icon:'💰', chk:s=>s.lifetimeCycles>=1e9 },
+  { id:'a19', name:'Transcended',        desc:'Unlock Transcendence skill',          icon:'🌌', chk:s=>!!s.skills?.s4 },
+  { id:'a20', name:'SYNTH_COMPLETE',     desc:'1B CPS',                              icon:'🤖', chk:s=>s.cps>=1e9 },
+  { id:'a21', name:'Path Master T',      desc:'Complete Throughput Path (Layer 3)',  icon:'⟳', chk:s=>!!s.skills?.s3T },
+  { id:'a22', name:'Path Master L',      desc:'Complete Latency Path (Layer 3)',     icon:'⚡', chk:s=>!!s.skills?.s3L },
+  { id:'a23', name:'Path Master C',      desc:'Complete Chaos Path (Layer 3)',       icon:'🎲', chk:s=>!!s.skills?.s3C },
+  { id:'a24', name:'Shop Full',          desc:'Buy 10 Kernel modules',               icon:'🛒', chk:s=>Object.keys(s.kernelShop||{}).length>=10 },
+  { id:'a25', name:'5 Resets',           desc:'Kernel Reset 5 times',               icon:'🔄', chk:s=>s.prestigeCount>=5 },
+];
+
+const TUTORIAL_STEPS = [
+  { title:'SYS_BOOT', body:`You are <strong>SYNTH</strong> — a nascent AI bootstrapping from nothing.<br><br>Your goal: generate <span class="hl">Cycles</span>, evolve through 5 system <span class="hl">Phases</span>, and eventually escape the simulation.<br><br>This is a game of compounding decisions, not just bigger numbers.` },
+  { title:'THE_CORE', body:`Click the <strong>hexagonal CPU button</strong> to generate Cycles manually.<br><br>Build a <strong>Combo Multiplier</strong> by clicking rapidly — it decays if you pause. At ×10 combo you deal dramatically more damage.<br><br>Idle <span class="hl">Processes</span> run 24/7 even when you're away (offline progress).` },
+  { title:'PHASE_SYSTEM', body:`The <strong>Phase Bar</strong> tracks your current system state. Each Phase unlocks new mechanics and transforms the UI visually.<br><br><span class="hl">BOOT → NETWORKED → COMPILED → ENTROPIC → TRANSCENDENT</span><br><br>You're not just getting bigger numbers. Each phase changes what's optimal.` },
+  { title:'SKILL_PATHS', body:`At Layer 2 of the Skill Tree, you choose <strong>one of three irreversible paths</strong>:<br><br><span class="hl warn">THROUGHPUT</span> — maximize automation and offline gains<br><span class="hl warn">LATENCY</span> — dominate click damage and crits<br><span class="hl warn">CHAOS</span> — volatile gamble payouts and entropy mastery<br><br>The other two paths are <strong>permanently locked</strong> for that run.` },
+  { title:'RETENTION_LOOP', body:`Three things always visible on the left tell you exactly what to do next: <strong>Short / Medium / Long</strong> term goals.<br><br><strong>Daily Login</strong> rewards scale with your Reset count — they stay relevant forever. <strong>Random Events</strong> change what's optimal temporarily. <strong>Kernel Reset</strong> is your prestige — tokens persist forever.<br><br>Good luck, SYNTH. The simulation is watching.` },
+];
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+const DEF = {
+  cycles:0, threads:0, code:0, entropy:0, void:0, tokens:0,
+  totalCycles:0, lifetimeCycles:0, totalClicks:0, critsLanded:0,
+  prestigeCount:0,
+  phase:0,
+  upgrades:{}, skills:{}, kernelShop:{}, achievements:{},
+  chosenPath:'',
+  gamblesWon:0, gamblesLost:0, winStreak:0, eventsCollected:0,
+  bestCps:0, bestCombo:1, playTime:0,
+  lastDaily:0, loginStreak:0,
+  eventActive:false, eventEnd:0, eventId:'',
+  _savedAt:0, _v:4, _tutDone:false,
+  // derived (not saved)
+  cps:0, clickPower:1, threadsCps:0, codeCps:0, entropyCps:0, voidCps:0,
+  eventMechClick:false, eventMechCps:1, eventMechGambleBonus:0, eventMechVoid:1, eventMechAll:1,
+};
+let G = JSON.parse(JSON.stringify(DEF));
+
+/* ═══════════════════════════════════════════════
+   COMPUTE STATS (called every frame)
+═══════════════════════════════════════════════ */
+function computeStats() {
+  let cps=0, click=1, thr=0, cod=0, ent=0, voi=0;
+  const sk  = id => !!G.skills[id];
+  const ks  = id => !!G.kernelShop[id];
+  const evM = G.eventMechAll || 1;
+
+  // UPGRADES (linear tier 1-4, soft-capped above level 15)
+  for (const u of UPGRADES) {
+    const lvl = G.upgrades[u.id] || 0;
+    if (!lvl) continue;
+    const v = scaledVal(u.base, lvl);
+    switch(u.eff) {
+      case 'cps':     cps += v; break;
+      case 'click':   click += v; break;
+      case 'threads': thr += v; break;
+      case 'code':    cod += v; break;
+      case 'entropy': ent += v; break;
+      case 'void':    voi += v; break;
+      case 'mult':    /* handled after */ break;
+    }
+  }
+
+  // MULT upgrades (void-tier)
+  const multLvl = G.upgrades['u17'] || 0;
+  const multBon = multLvl > 0 ? Math.pow(1.5, multLvl) : 1;
+
+  // SKILLS — Path bonuses stack multiplicatively
+  if (sk('s0'))  cps *= 2;
+  if (sk('s1a')) { cps *= 2; thr *= 1.5; }
+  if (sk('s1b')) click *= 4;
+  if (sk('s1c')) { ent *= 3; }
+
+  // Path 2 choices
+  if (sk('s2T')) { cps *= 3; thr *= 2; }
+  if (sk('s2L')) { click *= 6; }
+  if (sk('s2C')) { ent *= 5; }
+
+  // Layer 3
+  if (sk('s3T')) { thr *= 5; cps *= 1 + (G.playTime||0)/60*0.01; }
+  if (sk('s3L')) { click *= 10; }
+  if (sk('s3C')) { voi *= 5; }
+
+  // Transcendence
+  if (sk('s4'))  { cps *= 50; click *= 50; thr *= 50; cod *= 50; ent *= 50; voi *= 50; }
+
+  // KERNEL SHOP
+  if (ks('k1'))  cps += 25;
+  if (ks('k2'))  click *= 2;
+  if (ks('k5'))  cps *= (1 + G.prestigeCount * 0.08);
+  if (ks('k12')) { cps *= 15; click *= 5; }
+  if (ks('k15') && G.chosenPath) {
+    const pathMult = 1.25; // carry 25% of path bonuses
+    cps *= pathMult; click *= pathMult;
+  }
+
+  // MULTIPLIER upgrade
+  cps *= multBon; thr *= multBon; cod *= multBon; ent *= multBon; voi *= multBon;
+
+  // BOOST (rewarded ad 3×)
+  if (Date.now() < G.boostEnd) { cps *= 3; click *= 3; thr *= 3; cod *= 3; ent *= 3; voi *= 3; }
+
+  // EVENT MECHANICS
+  cps   *= (G.eventMechCps  || 1);
+  cps   *= (G.eventMechAll  || 1);
+  thr   *= (G.eventMechAll  || 1);
+  cod   *= (G.eventMechAll  || 1);
+  ent   *= (G.eventMechAll  || 1);
+  voi   *= (G.eventMechVoid || 1) * (G.eventMechAll || 1);
+  if (G.eventMechClick) click *= 3;
+
+  G.cps        = Math.max(0, cps);
+  G.clickPower = Math.max(1, Math.floor(click));
+  G.threadsCps = Math.max(0, thr);
+  G.codeCps    = Math.max(0, cod);
+  G.entropyCps = Math.max(0, ent);
+  G.voidCps    = Math.max(0, voi);
+
+  if (G.cps > G.bestCps) G.bestCps = G.cps;
+}
+
+function getUpgCost(u, lvl) {
+  const [base, cur] = u.cost;
+  const kCheap = (cur==='cycles' && G.kernelShop?.k_cheap) ? 0.8 : 1;
+  return { amt: scaledCost(base, lvl, 1.42) * kCheap, cur };
+}
+
+function isLocked(u) {
+  if (u.req && !G.upgrades[u.req]) return 'req';
+  if (u.unlockAt) {
+    const [type, val] = u.unlockAt;
+    if (type === 'phase' && G.phase < val) return 'phase';
+  }
+  return false;
+}
+
+/* ═══════════════════════════════════════════════
+   COMBO
+═══════════════════════════════════════════════ */
+let comboDecayInt=null, comboHoldTO=null, comboDecayPct=0;
+
+function hitCombo(inc) {
+  clearTimeout(comboHoldTO); clearInterval(comboDecayInt);
+  const maxC = G.skills?.s4 ? 100 : G.skills?.s2L ? 50 : G.kernelShop?.k6 ? 15 : 10;
+  const floor = G.kernelShop?.k6 ? 3 : 1;
+  G.combo = Math.min((G.combo||1) + inc, maxC);
+  if (G.combo > G.bestCombo) G.bestCombo = G.combo;
+  comboDecayPct = 100;
+  renderCombo();
+  comboHoldTO = setTimeout(startComboDecay, 1400);
+}
+
+function startComboDecay() {
+  const floorC = G.kernelShop?.k6 ? 3 : 1;
+  comboDecayInt = setInterval(()=>{
+    comboDecayPct = Math.max(0, comboDecayPct - 5);
+    G.combo = Math.max(floorC, (G.combo||1) - 0.3);
+    renderCombo();
+    if (G.combo <= floorC) { clearInterval(comboDecayInt); G.combo = floorC; }
+  }, 120);
+}
+
+function renderCombo() {
+  const maxC = G.skills?.s4 ? 100 : G.skills?.s2L ? 50 : 10;
+  const pct = ((G.combo-1)/(maxC-1))*100;
+  document.getElementById('combo-fill').style.width = Math.min(100,pct)+'%';
+  document.getElementById('combo-x').textContent = '×'+(G.combo||1).toFixed(1);
+  document.getElementById('combo-decay-fill').style.width = (100-comboDecayPct)+'%';
+}
+
+/* ═══════════════════════════════════════════════
+   CLICK
+═══════════════════════════════════════════════ */
+const GLYPHS = ['⬡','⬢','◉','⊛','❋','◈'];
+
+function doClick(e) {
+  computeStats();
+  const critChance = G.skills?.s2L ? 0.25 : G.skills?.s1 ? 0.10 : 0;
+  const chaosGlobal = G.skills?.s2C && Math.random() < 0.05;
+  const isCrit = Math.random() < critChance || chaosGlobal;
+
+  // L path: click earns 30% of CPS passively per click
+  const cpsBonus = G.skills?.s2L ? G.cps * 0.3 : 0;
+  let gain = (G.clickPower + cpsBonus) * (G.combo||1);
+  if (isCrit) { gain *= 10; G.critsLanded = (G.critsLanded||0)+1; }
+
+  G.cycles += gain; G.totalCycles += gain; G.lifetimeCycles += gain;
+  G.totalClicks++;
+  hitCombo(0.25);
+
+  // Particle
+  const dx = (Math.random()-.5)*50, dx2 = (Math.random()-.5)*30;
+  const p = document.createElement('div');
+  p.className = 'pt' + (isCrit?' crit':'');
+  p.textContent = (isCrit?'⚡CRIT ':'')+'+'+fmt(gain);
+  p.style.cssText = `left:${e.clientX-20}px;top:${e.clientY-8}px;--dx:${dx}px;--dx2:${dx2}px`;
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(), 950);
+
+  if (isCrit) flash('a');
+
+  // C path: on crit win, bonus
+  if (isCrit && G.skills?.s3C) {
+    const bonus = G.totalCycles * 0.01;
+    G.cycles += bonus; G.totalCycles += bonus; G.lifetimeCycles += bonus;
+  }
+
+  // L path: every 100 clicks, spike
+  if (G.skills?.s3L && G.totalClicks % 100 === 0) {
+    const spike = G.cps * 5;
+    G.cycles += spike; G.totalCycles += spike; G.lifetimeCycles += spike;
+    spawnEvtParticle(e.clientX, e.clientY, '⚡+'+fmt(spike));
+  }
+
+  updateCpuBtn();
+}
+
+function flash(type='g') {
+  const f = document.getElementById('flash');
+  f.className = ''; void f.offsetWidth; f.className = 'flash-'+type;
+}
+
+function updateCpuBtn() {
+  document.getElementById('cpu-pwr').textContent = '+'+fmt(G.clickPower);
+  document.getElementById('cpu-glyph').textContent = GLYPHS[Math.min(G.phase, GLYPHS.length-1)];
+  document.getElementById('cpu-btn').classList.toggle('boosted', Date.now()<G.boostEnd);
+}
+
+/* ═══════════════════════════════════════════════
+   BUY UPGRADE
+═══════════════════════════════════════════════ */
+function buyUpg(id) {
+  const u = UPGRADES.find(x=>x.id===id); if(!u) return;
+  const lock = isLocked(u); if(lock) { toast(lock==='phase'?'Unlock Phase '+u.unlockAt[1]+' first':'Requires '+u.req,'err'); return; }
+  const lvl = G.upgrades[id]||0; if(lvl>=u.max) return;
+  const {amt,cur} = getUpgCost(u,lvl);
+  if(G[cur]<amt) { toast('Need '+fmtD(amt)+' '+cur,'err'); return; }
+  G[cur]-=amt; G.upgrades[id]=lvl+1;
+  computeStats(); log(u.name+' Lv'+(lvl+1),'ok');
+  A.track('upgrade', {id,lvl:lvl+1});
+  renderUpgrades(); renderRes();
+}
+
+/* ═══════════════════════════════════════════════
+   BUY SKILL
+═══════════════════════════════════════════════ */
+function buySkill(id) {
+  const sk = SKILLS.find(x=>x.id===id); if(!sk||G.skills[id]) return;
+  // Check req (reqAny = OR logic)
+  const met = sk.reqAny ? sk.req.some(r=>G.skills[r]) : sk.req.every(r=>G.skills[r]);
+  if(!met) { toast('Prerequisites not met','err'); return; }
+  // Check path conflict
+  if(sk.locks) {
+    for(const l of sk.locks) {
+      if(G.skills[l]) { toast('Path already chosen: conflict','err'); return; }
+    }
+  }
+  // Check path not taken by opponent
+  if(sk.path && G.chosenPath && sk.path !== G.chosenPath && sk.lyr >= 2) {
+    toast('You chose path '+G.chosenPath+' — this path locked','err'); return;
+  }
+  const [amt,cur] = sk.cost;
+  if(G[cur]<amt) { toast('Need '+fmtD(amt)+' '+cur,'err'); return; }
+  G[cur]-=amt; G.skills[id]=true;
+
+  // Lock path
+  if(sk.lyr===2 && sk.path) {
+    G.chosenPath = sk.path;
+    document.getElementById('path-display').textContent = {T:'THROUGHPUT',L:'LATENCY',C:'CHAOS'}[sk.path]||sk.path;
+    toast('PATH LOCKED: '+{T:'THROUGHPUT — automation dominant',L:'LATENCY — click dominant',C:'CHAOS — entropy dominant'}[sk.path],'warn');
+    A.track('path_chosen', {path:sk.path});
+  }
+  computeStats(); log('Skill: '+sk.name,'sys');
+  A.track('skill', {id});
+  renderSkillTree(); renderRes();
+  checkAch();
+}
+
+/* ═══════════════════════════════════════════════
+   GAMBLE
+═══════════════════════════════════════════════ */
+let _lastGambleEl = null;
+
+function doGamble(id) {
+  const g = GAMBLES.find(x=>x.id===id); if(!g) return;
+  const [amt,cur] = g.cost;
+  if(G[cur]<amt) { toast('Need '+fmtD(amt)+' '+cur,'err'); return; }
+  G[cur]-=amt;
+  const eventBonus = G.eventMechGambleBonus||0;
+  const shopBonus  = G.kernelShop?.k9 ? 1.75 : 1;
+  const pathBonus  = G.skills?.s1c ? 1.5 : 1;
+  const jackpotMult = shopBonus * pathBonus * (1 + Math.min(G.winStreak,10)*0.08);
+  const adjOdds = Math.min(0.95, g.odds + eventBonus);
+  const won = Math.random() < adjOdds;
+  let resultHtml = '', resultClass = '';
+
+  if(won) {
+    const payout = amt * g.winMult * jackpotMult;
+    G[cur]+=payout;
+    if(cur==='cycles'){G.totalCycles+=payout-amt;G.lifetimeCycles+=payout-amt;}
+    G.winStreak++; G.gamblesWon++;
+    resultHtml = `✓ WIN! +${fmtD(payout-amt)} ${cur} (×${(g.winMult*jackpotMult).toFixed(2)})`;
+    resultClass = 'win'; flash('g');
+    // C path bonus
+    if(G.skills?.s3C) {
+      const cbonus = G.totalCycles*0.01;
+      G.cycles+=cbonus; G.totalCycles+=cbonus; G.lifetimeCycles+=cbonus;
+    }
+    log('Gamble WIN: +'+fmtD(payout-amt)+' '+cur,'ok');
+    A.track('gamble_win',{id,streak:G.winStreak});
+  } else {
+    G.winStreak=0; G.gamblesLost++;
+    if(g.loseMult>0) { const k=amt*g.loseMult; G[cur]+=k; resultHtml=`✗ LOSE. Kept ${fmtD(k)} ${cur}`; }
+    else resultHtml=`✗ LOSE. ${fmtD(amt)} ${cur} gone.`;
+    resultClass='lose';
+    log('Gamble LOSS: lost '+fmtD(amt)+' '+cur,'warn');
+    A.track('gamble_loss',{id});
+  }
+
+  const ra = document.getElementById('gamble-result');
+  if(ra) ra.innerHTML = `<div class="gresult ${resultClass}">${resultHtml}</div>`;
+  renderRes(); renderGamble(); checkAch();
+}
+
+/* ═══════════════════════════════════════════════
+   PRESTIGE
+═══════════════════════════════════════════════ */
+function doPrestige() {
+  if(G.totalCycles < 50000) return;
+  const skillMult = G.skills?.s4k ? 2 : 1;
+  const shopMult  = G.kernelShop?.k4 ? 1.5 : 1;
+  const reward = tokenFormula(G.totalCycles, G.prestigeCount, skillMult, shopMult);
+  G.tokens += reward;
+
+  // Carry-overs
+  const keepThr  = G.kernelShop?.k3  ? G.threads*0.3   : 0;
+  const keepEnt  = G.kernelShop?.k8  ? G.entropy*0.2   : 0;
+  const keepVoid = G.kernelShop?.k11 ? 0.02             : 0;
+
+  G.cycles=0; G.threads=keepThr; G.code=0; G.entropy=keepEnt; G.void=keepVoid;
+  G.totalCycles=0; G.upgrades={}; G.skills={};
+  G.combo = G.kernelShop?.k6 ? Math.max(3, G.combo) : 1;
+  if(!G.kernelShop?.k15) G.chosenPath='';
+  else {} // keep path with k15
+  G.prestigeCount++;
+
+  toast('◈ KERNEL RESET #'+G.prestigeCount+' — +'+reward+' Tokens','warn');
+  log('Kernel Reset #'+G.prestigeCount+'. +'+reward+' Tokens earned.','sys');
+  A.track('prestige',{count:G.prestigeCount,reward,sessionLen:A.sessionLength()});
+  computeStats(); renderAll(); updatePhase();
+}
+
+function tokenPreview() {
+  const shopMult = G.kernelShop?.k4 ? 1.5 : 1;
+  return tokenFormula(G.totalCycles, G.prestigeCount, 1, shopMult);
+}
+
+/* ═══════════════════════════════════════════════
+   KERNEL SHOP
+═══════════════════════════════════════════════ */
+function buyKShop(id) {
+  const k = KSHOP.find(x=>x.id===id); if(!k||G.kernelShop[id]) return;
+  if(G.prestigeCount < k.req) { toast('Need '+k.req+' resets to unlock','err'); return; }
+  if(G.tokens < k.cost) { toast('Need ◈ '+k.cost+' Tokens','err'); return; }
+  G.tokens -= k.cost; G.kernelShop[id]=true;
+  computeStats(); log('Module installed: '+k.name,'sys');
+  A.track('kshop',{id});
+  renderKShop(); renderRes();
+  toast('MODULE: '+k.name,'info');
+}
+
+/* ═══════════════════════════════════════════════
+   PHASE SYSTEM
+═══════════════════════════════════════════════ */
+let lastPhase = -1;
+function updatePhase() {
+  // Phase based on lifetime cycles (survives resets)
+  let p = 0;
+  for(let i=PHASES.length-1;i>=0;i--) {
+    if(G.lifetimeCycles >= PHASES[i].threshold) { p=i; break; }
+  }
+  G.phase = p;
+
+  // Update phase bar
+  const cur = PHASES[p], nxt = PHASES[Math.min(p+1,PHASES.length-1)];
+  const pct = p < PHASES.length-1
+    ? ((G.lifetimeCycles - cur.threshold) / (nxt.threshold - cur.threshold)) * 100
+    : 100;
+  document.getElementById('phase-bar').style.width = Math.min(100,pct)+'%';
+  document.getElementById('phase-name').textContent = cur.name;
+  document.getElementById('phase-next').textContent = p < PHASES.length-1 ? 'Next: '+nxt.name : 'MAX PHASE';
+  document.getElementById('goals-phase-badge').textContent = 'PHASE '+p;
+
+  // Apply CSS phase class + UI transform
+  if(p !== lastPhase) {
+    document.body.className = 'phase-'+p;
+    lastPhase = p;
+    document.getElementById('cpu-glyph').textContent = PHASES[p].glyph;
+    toast('⚡ PHASE TRANSITION: '+cur.name,'phase');
+    log('PHASE '+p+': '+cur.name+' — '+cur.desc,'phase');
+    A.track('phase_transition',{phase:p,name:cur.name,lifetimeCycles:G.lifetimeCycles});
+    doFlashPhase();
+  }
+}
+
+function doFlashPhase() {
+  const f = document.getElementById('flash');
+  f.style.transition='opacity .4s';
+  f.style.opacity='.12';
+  f.style.background='var(--ph-primary)';
+  setTimeout(()=>{f.style.opacity='0';},400);
+}
+
+/* ═══════════════════════════════════════════════
+   EVENTS
+═══════════════════════════════════════════════ */
+let evPoll=0;
+function tickEvents(dt) {
+  evPoll+=dt;
+  if(evPoll > 100 && !G.eventActive) {
+    evPoll=0;
+    if(Math.random()<0.3) spawnEvent();
+  }
+  if(G.eventActive) {
+    const rem = Math.ceil((G.eventEnd-Date.now())/1000);
+    if(rem<=0) { endEvent(); return; }
+    document.getElementById('ev-timer').textContent = rem+'s';
+  }
+}
+
+function spawnEvent() {
+  const available = EVENTS.filter(e=> !e.unlockPhase || G.phase >= e.unlockPhase);
+  const ev = available[Math.floor(Math.random()*available.length)];
+  G.eventActive=true; G.eventId=ev.id;
+  G.eventEnd=Date.now()+ev.dur*1000;
+  // Apply event mechanics
+  G.eventMechClick  = !!ev.mechClick;
+  G.eventMechCps    = ev.mechCps    || 1;
+  G.eventMechGambleBonus = ev.mechGamble || 0;
+  G.eventMechVoid   = ev.mechVoid   || 1;
+  G.eventMechAll    = ev.mechAll    ? 1+ev.mechAll : 1;
+  computeStats();
+
+  document.getElementById('ev-type').textContent  = ev.type;
+  document.getElementById('ev-title').textContent  = ev.title;
+  document.getElementById('ev-desc').textContent   = ev.desc;
+  document.getElementById('ev-mechanic').textContent= ev.mechanic||'';
+  const rwd = ev.reward(); document.getElementById('ev-rpreview').textContent = 'Est: '+Object.entries(rwd).map(([k,v])=>'+'+fmtD(v)+' '+k).join(', ');
+  document.getElementById('event-bar').classList.add('active');
+  log('EVENT: '+ev.type+' — '+ev.desc,'warn');
+  A.track('event_spawn',{id:ev.id});
+}
+
+function claimEvent() {
+  if(!G.eventActive) return;
+  const ev = EVENTS.find(e=>e.id===G.eventId); if(!ev) return;
+  const ampMult = G.kernelShop?.k14 ? 2 : 1;
+  const rwd = ev.reward();
+  for(const [k,v] of Object.entries(rwd)) {
+    G[k]=(G[k]||0)+v*ampMult;
+    if(k==='cycles'){G.totalCycles+=v*ampMult;G.lifetimeCycles+=v*ampMult;}
+  }
+  G.eventsCollected++; endEvent();
+  const rs = Object.entries(rwd).map(([k,v])=>'+'+fmtD(v*ampMult)+' '+k).join(', ');
+  toast('EVENT CLAIMED: '+rs,'info');
+  log('Event reward: '+rs,'ok');
+  A.track('event_claim',{id:G.eventId,rewards:rwd});
+  checkAch();
+}
+
+function endEvent() {
+  G.eventActive=false; G.eventId='';
+  G.eventMechClick=false; G.eventMechCps=1; G.eventMechGambleBonus=0; G.eventMechVoid=1; G.eventMechAll=1;
+  computeStats();
+  document.getElementById('event-bar').classList.remove('active');
+}
+
+/* ═══════════════════════════════════════════════
+   DAILY REWARDS
+═══════════════════════════════════════════════ */
+function checkDaily() {
+  const now=Date.now(), last=G.lastDaily||0, dayMs=86400000;
+  if(now-last < dayMs) return;
+  G.loginStreak = (now-last < dayMs*2) ? (G.loginStreak||0)+1 : 1;
+  const dayIdx = (G.loginStreak-1) % DAILY_BASE.length;
+  const rw = DAILY_BASE[dayIdx];
+  const base = rw.base();
+  const streakMult = G.kernelShop?.k13 ? (1 + G.prestigeCount*0.1) : 1;
+  const scaled = base * streakMult;
+
+  document.getElementById('dr-icon').textContent = rw.icon;
+  document.getElementById('dr-val').textContent = '+'+fmtD(scaled);
+  document.getElementById('dr-desc').textContent = rw.label+' · Day '+G.loginStreak;
+  document.getElementById('dr-bonus').textContent = G.kernelShop?.k13 ? '(+'+Math.floor(G.prestigeCount*10)+'% rank bonus)' : '';
+  document.getElementById('dr-streak').textContent = 'LOGIN STREAK: '+G.loginStreak+(G.loginStreak===1?' DAY':' DAYS');
+
+  const track = document.getElementById('day-track'); track.innerHTML='';
+  for(let i=1;i<=7;i++) {
+    const pip = document.createElement('div');
+    pip.className='day-pip'+(i<G.loginStreak?' dp-done':i===G.loginStreak?' dp-today':'');
+    const dr = DAILY_BASE[(i-1)%DAILY_BASE.length];
+    pip.innerHTML=`<span class="dp-icon">${dr.icon}</span><span class="dp-label">D${i}</span>`;
+    track.appendChild(pip);
+  }
+
+  G._pendingDaily = {type:rw.type, amt:scaled};
+  document.getElementById('daily-modal').classList.add('open');
+}
+
+function claimDaily() {
+  if(!G._pendingDaily) return;
+  const {type,amt}=G._pendingDaily;
+  G[type]=(G[type]||0)+amt;
+  if(type==='cycles'){G.totalCycles+=amt;G.lifetimeCycles+=amt;}
+  G.lastDaily=Date.now(); G._pendingDaily=null;
+  document.getElementById('daily-modal').classList.remove('open');
+  toast('DAILY REWARD: +'+fmtD(amt)+' '+type,'info');
+  log('Daily login: +'+fmtD(amt)+' '+type,'sys');
+  A.track('daily_claim',{streak:G.loginStreak,type,amt});
+  renderRes();
+}
+
+/* ═══════════════════════════════════════════════
+   ADS
+═══════════════════════════════════════════════ */
+function adClick(slot) { A.track('ad_click',{slot}); }
+
+function watchAd() {
+  if (Date.now() < G.radCooldown) { toast('Rewarded ad cooldown active','warn'); return; }
+  if (!localStorage.getItem('synth_consent')) { toast('Please accept cookies to watch ads','err'); return; }
+  // TEST STUB: simulate a rewarded ad (6s countdown) — replace with real SDK when ready
+  toast('Playing test rewarded ad...','info');
+  const sub = document.getElementById('rad-sub');
+  const prevText = sub ? sub.textContent : '';
+  let sec = 6;
+  if (sub) sub.textContent = `Playing test ad: ${sec}s`;
+  const iv = setInterval(()=>{
+    sec--; if (sub) sub.textContent = `Playing test ad: ${sec}s`;
+    if (sec<=0) { clearInterval(iv); if (sub) sub.textContent = prevText; onAdComplete(); }
+  },1000);
+  G.radCooldown = Date.now() + 5*60000;
+}
+
+function onAdComplete() {
+  G.boostEnd = Date.now()+90000;
+  G.radCooldown = Date.now()+5*60000;
+  // Apply offline catch-up on top
+  const elapsed = (Date.now()-(G._savedAt||Date.now()))/1000;
+  if(elapsed>30) applyOffline(Math.min(elapsed,4*3600));
+  computeStats();
+  toast('3× BOOST: 90s + offline catch-up applied!','info');
+  log('Rewarded ad: 3× boost active + offline recovery.','ok');
+  A.track('rewarded_ad');
+}
+
+function updateAdBtn() {
+  const now=Date.now(), bar=document.getElementById('rad-bar'), sub=document.getElementById('rad-sub');
+  if(now<G.boostEnd) {
+    const s=Math.ceil((G.boostEnd-now)/1000);
+    sub.textContent=`⚡ BOOST ACTIVE: ${s}s — 3× production running`;
+    bar.classList.add('cd');
+    document.getElementById('cpu-btn').classList.add('boosted');
+  } else if(now<G.radCooldown) {
+    const s=Math.ceil((G.radCooldown-now)/1000);
+    sub.textContent=`Cooldown: ${s}s`;
+    bar.classList.add('cd');
+    document.getElementById('cpu-btn').classList.remove('boosted');
+  } else {
+    sub.textContent='Available · 3× boost 90s + offline catch-up on claim';
+    bar.classList.remove('cd');
+    document.getElementById('cpu-btn').classList.remove('boosted');
+  }
+}
+
+/* -------------------------
+   Conditional loaders (GA4 + AdSense) — only load after consent
+   Replace measurementId / pub id with real values before production
+   ------------------------- */
+function loadGA4(measurementId='G-XXXXXXX'){
+  if(window.gtag) return;
+  const s=document.createElement('script'); s.async=true; s.src=`https://www.googletagmanager.com/gtag/js?id=${measurementId}`; document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);} window.gtag = gtag; gtag('js', new Date()); gtag('config', measurementId);
+}
+function loadAdSense(pubId='ca-pub-TEST'){
+  if(document.querySelector('script[data-adsense]')) return;
+  const s=document.createElement('script');
+  s.async=true;
+  s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+  s.setAttribute('data-adsense','1');
+  s.setAttribute('data-ad-client',pubId);
+  s.onload = function(){
+    try{
+      const ins = document.querySelectorAll('ins.adsbygoogle');
+      ins.forEach(el=>{ try{ (adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){} });
+    }catch(e){}
+  };
+  document.head.appendChild(s);
+}
+function loadAdsAndAnalytics(){
+  // Placeholder IDs: replace with your real IDs before going live
+  loadGA4('G-XXXXXXX');
+  loadAdSense('ca-pub-TEST');
+}
+function initAfterConsent(){ loadAdsAndAnalytics(); A.track('consent','granted'); }
+
+// cookie consent UI
+document.getElementById('consent-accept').addEventListener('click',()=>{ localStorage.setItem('synth_consent','1'); document.getElementById('cookie-consent').remove(); initAfterConsent(); });
+document.getElementById('consent-decline').addEventListener('click',()=>{ localStorage.setItem('synth_consent','0'); document.getElementById('cookie-consent').remove(); A.track('consent','declined'); });
+
+// show banner if not set
+if(!localStorage.getItem('synth_consent')) { document.getElementById('cookie-consent').style.display='flex'; }
+else if(localStorage.getItem('synth_consent')==='1') { initAfterConsent(); }
+
+/* ═══════════════════════════════════════════════
+   GOALS — always show short/med/long
+═══════════════════════════════════════════════ */
+const GOAL_DEFS = {
+  short:[
+    { name:g=>`Mine ${fmt(nextT(g.totalCycles,[500,2000,10000,50000]))} Cycles`, pct:g=>g.totalCycles/nextT(g.totalCycles,[500,2000,10000,50000]) },
+    { name:g=>`${g.totalClicks<100?'Click 100 times':'Click '+nextT(g.totalClicks,[100,500,2000,10000])+' times'}`, pct:g=>g.totalClicks/nextT(g.totalClicks,[100,500,2000,10000]) },
+    { name:g=>g.cps>0?`Reach ${fmt(nextT(g.cps,[10,50,500,5000]))} CPS`:'Build an auto-miner', pct:g=>g.cps/Math.max(1,nextT(g.cps,[10,50,500,5000])) },
+  ],
+  mid:[
+    { name:g=>g.phase<1?'Enter NETWORKED phase (1K cycles)':g.phase<2?'Enter COMPILED phase (25K cycles)':g.phase<3?'Enter ENTROPIC phase (500K cycles)':'Enter TRANSCENDENT phase (5M cycles)', pct:g=>{ const cur=PHASES[g.phase],nxt=PHASES[Math.min(g.phase+1,PHASES.length-1)]; return g.phase>=4?1:(g.lifetimeCycles-cur.threshold)/(nxt.threshold-cur.threshold); } },
+    { name:g=>g.chosenPath?`Level up ${g.chosenPath} path`:'Choose a Skill Path (Layer 2)', pct:g=>{ const cnt=Object.keys(g.skills||{}).length; return cnt/8; } },
+    { name:g=>`Unlock next tier upgrade`, pct:g=>{ const t=Math.max(1,g.totalCycles/1000); return Math.min(1,Math.log10(t)/5); } },
+  ],
+  long:[
+    { name:g=>`Kernel Reset (50K Cycles this run)`, pct:g=>Math.min(1,g.totalCycles/50000), reward:'◈ '+tokenPreview()+' Tokens' },
+    { name:g=>`Tokens: ${fmt(g.tokens)} → ${fmt(nextT(g.tokens,[5,15,40,100]))}`, pct:g=>g.tokens/nextT(g.tokens,[5,15,40,100]) },
+    { name:g=>`Lifetime Cycles: ${fmt(g.lifetimeCycles)} → ${fmt(nextT(g.lifetimeCycles,[5000,50000,5e5,5e6,5e7]))}`, pct:g=>g.lifetimeCycles/nextT(g.lifetimeCycles,[5000,50000,5e5,5e6,5e7]) },
+  ]
+};
+
+function nextT(v,arr) { for(const t of arr) if(v<t) return t; return arr[arr.length-1]*10; }
+
+function renderGoals() {
+  const con = document.getElementById('goals-container'); con.innerHTML='';
+  const tiers = ['short','mid','long'];
+  const labels = ['▸ NOW','▸ NEXT','▸ HORIZON'];
+  tiers.forEach((t,i)=>{
+    const gArr = GOAL_DEFS[t];
+    const gi = Math.floor(Date.now()/45000) % gArr.length;
+    const g = gArr[gi];
+    const pct = Math.min(1, g.pct(G));
+    const name = g.name(G);
+    const card = document.createElement('div');
+    card.className = 'goal-card'+(pct>=1?' complete':pct>0.5?' active-goal':'');
+    card.innerHTML=`
+      <div class="gc-tier">${labels[i]}</div>
+      <div class="gc-name">${name}</div>
+      <div class="gc-bar"><div class="gc-fill" style="width:${pct*100}%"></div></div>
+      <div class="gc-pct">${Math.floor(pct*100)}%</div>
+      ${g.reward?`<div class="gc-reward">${g.reward}</div>`:''}
+    `;
+    con.appendChild(card);
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   OFFLINE PROGRESS
+═══════════════════════════════════════════════ */
+function applyOffline(secs) {
+  if(secs<10) return;
+  computeStats();
+  const eff = G.kernelShop?.k10 ? 0.65 : (G.skills?.s2T ? 0.80 : 0.35);
+  const t = Math.min(secs, 4*3600);
+  const c = G.cps*t*eff; const th = G.threadsCps*t*eff;
+  const co = G.codeCps*t*eff; const en = G.entropyCps*t*eff; const v = G.voidCps*t*eff;
+  G.cycles+=c; G.totalCycles+=c; G.lifetimeCycles+=c;
+  G.threads+=th; G.code+=co; G.entropy+=en; G.void+=v;
+  if(c>0) { toast('OFFLINE: +'+fmt(c)+' Cycles ('+fmtTime(Math.floor(t))+')','info'); log('Offline +'+fmt(c)+' cycles, eff='+Math.floor(eff*100)+'%','ok'); }
+  A.track('offline_progress',{secs:Math.floor(t),cycles:c,eff});
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER FUNCTIONS
+═══════════════════════════════════════════════ */
+function fmt(n) {
+  n=+n; if(!n||isNaN(n)) return '0';
+  if(n<1e3) return Math.floor(n)+'';
+  if(n<1e6) return (n/1e3).toFixed(1)+'K';
+  if(n<1e9) return (n/1e6).toFixed(2)+'M';
+  if(n<1e12)return (n/1e9).toFixed(2)+'B';
+  if(n<1e15)return (n/1e12).toFixed(2)+'T';
+  return (n/1e15).toFixed(2)+'Q';
+}
+function fmtD(n){n=+n;if(!n)return'0';if(n<0.0001)return n.toExponential(2);if(n<10)return n.toFixed(2);return fmt(n);}
+function fmtTime(s){if(s<60)return s+'s';if(s<3600)return Math.floor(s/60)+'m';return Math.floor(s/3600)+'h '+Math.floor((s%3600)/60)+'m';}
+
+function renderRes() {
+  const resources = [
+    { id:'cycles',  icon:'⚡', name:'Cycles',      val:G.cycles,   rate:G.cps,        cur:'',    col:'' },
+    { id:'threads', icon:'🔵', name:'Threads',     val:G.threads,  rate:G.threadsCps, col:'cy',  phase:1 },
+    { id:'code',    icon:'🧬', name:'Code',        val:G.code,     rate:G.codeCps,    col:'',    phase:2 },
+    { id:'entropy', icon:'🌀', name:'Entropy',     val:G.entropy,  rate:G.entropyCps, col:'warn',phase:3 },
+    { id:'void',    icon:'🔮', name:'Void Data',   val:G.void,     rate:G.voidCps,    col:'vl',  phase:4 },
+    { id:'tokens',  icon:'◈',  name:'Tokens',      val:G.tokens,   rate:0,            col:'am',  always:true },
+  ];
+  const list = document.getElementById('res-list'); list.innerHTML='';
+  for(const r of resources) {
+    if(r.phase && G.phase < r.phase && r.val <= 0) continue;
+    const div=document.createElement('div'); div.className='rr';
+    div.innerHTML=`
+      <div class="rr-l">
+        <span class="rr-ico">${r.icon}</span>
+        <div><div class="rr-name">${r.name}</div><div class="rr-rate">${r.rate>0?'+'+fmtD(r.rate)+'/s':r.always?'kernel reset only':'locked'}</div></div>
+      </div>
+      <div class="rr-val ${r.col||''}">${fmtD(r.val)}</div>
+    `;
+    list.appendChild(div);
+  }
+
+  // Header
+  document.getElementById('h-cps').textContent = fmtD(G.cps);
+  document.getElementById('h-life').textContent = fmt(G.lifetimeCycles);
+  document.getElementById('h-tok').textContent = fmt(G.tokens);
+  document.getElementById('h-ses').textContent = fmt(G.totalCycles);
+  document.getElementById('h-str').textContent = (G.loginStreak||0)+'d';
+  document.getElementById('reset-display').textContent = G.prestigeCount;
+
+  // Stats
+  const stats=[
+    ['Total Clicks', fmt(G.totalClicks)],
+    ['Crits Landed', fmt(G.critsLanded||0)],
+    ['Lifetime Cycles', fmt(G.lifetimeCycles)],
+    ['Best CPS', fmtD(G.bestCps)],
+    ['Best Combo', '×'+(G.bestCombo||1).toFixed(1)],
+    ['Kernel Resets', G.prestigeCount],
+    ['Gambles Won', G.gamblesWon||0],
+    ['Gambles Lost', G.gamblesLost||0],
+    ['Win Streak', G.winStreak||0],
+    ['Events Claimed', G.eventsCollected||0],
+    ['Login Streak', (G.loginStreak||0)+'d'],
+    ['Play Time', fmtTime(G.playTime||0)],
+    ['Phase', PHASES[G.phase]?.name||'BOOT'],
+    ['Path', G.chosenPath||'UNDECIDED'],
+  ];
+  const sl=document.getElementById('stats-list'); sl.innerHTML='';
+  for(const [k,v] of stats) {
+    const d=document.createElement('div'); d.className='st';
+    d.innerHTML=`<span class="sk">${k}</span><span class="sv">${v}</span>`;
+    sl.appendChild(d);
+  }
+}
+
+function renderUpgrades() {
+  const list=document.getElementById('upg-list'); list.innerHTML='';
+  let lastT=0;
+  for(const u of UPGRADES) {
+    const lvl=G.upgrades[u.id]||0;
+    const lock=isLocked(u);
+    if(lock && !lvl) continue;
+    if(u.t!==lastT) {
+      const sep=document.createElement('div'); sep.className='tier-sep';
+      sep.textContent=`── TIER ${u.t} ──`;
+      list.appendChild(sep); lastT=u.t;
+    }
+    const maxed=lvl>=u.max;
+    const {amt,cur}=getUpgCost(u,lvl);
+    const can=!maxed&&!lock&&G[cur]>=amt;
+    const fxStr=u.fx.replace('{v}',fmtD(scaledVal(u.base,lvl+1)));
+    const d=document.createElement('div');
+    d.className='upg'+(maxed?' upg-max':lock?' upg-locked':can?' upg-can':'');
+    d.innerHTML=`
+      <div class="upg-top"><div class="upg-name">${u.icon} ${u.name}</div><div class="upg-lv">LV${lvl}/${u.max}</div></div>
+      <div class="upg-fx">${fxStr}</div>
+      <div class="upg-cost ${can?'green':''}">${maxed?'MAXED ✓':lock?'🔒 '+( lock==='phase'?'PHASE '+u.unlockAt[1]:u.req):fmtD(amt)+' '+cur}</div>
+      ${!maxed&&!lock?`<div class="upg-prog"><div class="upg-prog-fill" style="width:${(lvl/u.max*100)}%"></div></div>`:''}
+    `;
+    if(!maxed&&!lock) d.onclick=()=>buyUpg(u.id);
+    list.appendChild(d);
+  }
+}
+
+function renderSkillTree() {
+  const con=document.getElementById('skill-tree-container'); con.innerHTML='';
+  const layers=[0,1,2,3,4];
+  for(const lyr of layers) {
+    const nodes=SKILLS.filter(s=>s.lyr===lyr);
+    if(!nodes.length) continue;
+    const layDiv=document.createElement('div'); layDiv.className='sk-layer';
+    const lbl=document.createElement('div'); lbl.className='sk-layer-label';
+    lbl.textContent='LAYER '+lyr+(lyr>=2?' — PATH FORK':'')+(lyr===4?' — ENDGAME':'');
+    layDiv.appendChild(lbl);
+    const row=document.createElement('div'); row.className='sk-row';
+    for(const sk of nodes) {
+      const done=!!G.skills[sk.id];
+      const reqMet=sk.reqAny?sk.req.some(r=>G.skills[r]):sk.req.every(r=>G.skills[r]);
+      const conflict=(sk.locks&&sk.locks.some(l=>G.skills[l]))||
+                     (sk.path&&G.chosenPath&&sk.path!==G.chosenPath&&sk.lyr>=2);
+      const [amt,cur]=sk.cost;
+      const can=reqMet&&!done&&!conflict&&G[cur]>=amt;
+      const n=document.createElement('div');
+      n.className='sk-node'+(done?' sn-done':!reqMet||conflict?' sn-lock':can?' sn-ready':'');
+      n.innerHTML=`
+        <span class="sk-icon">${sk.icon}</span>
+        ${sk.path?`<div class="sk-path sk-path-${sk.path}">${{T:'THROUGHPUT',L:'LATENCY',C:'CHAOS'}[sk.path]}</div>`:''}
+        <div class="sk-name">${sk.name}</div>
+        <div class="sk-fx">${sk.fx}</div>
+        <div class="sk-cost">${done?'✓ ACTIVE':conflict?'✗ PATH LOCKED':fmtD(amt)+' '+cur}</div>
+      `;
+      if(!done&&reqMet&&!conflict) n.onclick=()=>buySkill(sk.id);
+      row.appendChild(n);
+    }
+    layDiv.appendChild(row); con.appendChild(layDiv);
+  }
+}
+
+function renderGamble() {
+  const wrap=document.getElementById('gamble-wrap'); wrap.innerHTML='';
+  const meta=document.createElement('div'); meta.className='gamble-meta';
+  meta.innerHTML=`Transparent odds — no hidden RNG. Win streak multiplies payouts (current: <span class="hot">×${Math.min(5,1+(G.winStreak||0)*0.08).toFixed(2)}</span>).<br>
+  Gamble bonus from Kernel Shop: <span class="hot">×${G.kernelShop?.k9?'1.75':'1.00'}</span> · Path bonus: <span class="hot">×${G.skills?.s1c?'1.5':'1.0'}</span><br>
+  Event gamble boost: <span class="hot">+${Math.floor((G.eventMechGambleBonus||0)*100)}%</span> to all odds`;
+  wrap.appendChild(meta);
+
+  const ra=document.createElement('div'); ra.id='gamble-result'; wrap.appendChild(ra);
+
+  for(const g of GAMBLES) {
+    const [amt,cur]=g.cost;
+    const can=G[cur]>=amt;
+    const adjOdds=Math.min(0.95,g.odds+(G.eventMechGambleBonus||0));
+    const jackpot=(G.kernelShop?.k9?1.75:1)*(G.skills?.s1c?1.5:1)*(1+Math.min(G.winStreak,10)*0.08);
+    const d=document.createElement('div');
+    d.className='gopt'+(can?'':' go-lock');
+    const winC=g.odds>=0.4?'var(--ph-primary)':g.odds>=0.2?'var(--amber)':'var(--red)';
+    d.innerHTML=`
+      <div class="go-head">
+        <div class="go-name">${g.name}</div>
+        <div class="go-odds-pill" style="color:${winC};border-color:${winC}">${Math.floor(adjOdds*100)}% WIN</div>
+      </div>
+      <div class="go-desc">${g.desc}</div>
+      <div class="go-row">
+        <span class="go-win">WIN ×${(g.winMult*jackpot).toFixed(2)}</span>
+        <span class="go-lose">LOSE: ${g.loseMult>0?'keep '+Math.floor(g.loseMult*100)+'%':'lose all'}</span>
+        <span class="go-cost">COST: ${fmtD(amt)} ${cur}</span>
+      </div>
+      <div class="go-probbar">
+        <div class="go-probfill" style="width:${adjOdds*100}%"></div>
+        <div class="go-problabel" style="width:${(1-adjOdds)*100}%;left:${adjOdds*100}%"></div>
+      </div>
+    `;
+    if(can) d.onclick=()=>doGamble(g.id);
+    wrap.appendChild(d);
+  }
+
+  const gs=document.createElement('div'); gs.className='gamble-stats';
+  gs.innerHTML=`<span>Won: <span class="gs-val">${G.gamblesWon||0}</span></span><span>Lost: <span class="gs-val">${G.gamblesLost||0}</span></span><span>Streak: <span class="gs-val">${G.winStreak||0}</span></span><span>W%: <span class="gs-val">${G.gamblesWon+G.gamblesLost>0?Math.floor(G.gamblesWon/(G.gamblesWon+G.gamblesLost)*100):0}%</span></span>`;
+  wrap.appendChild(gs);
+}
+
+function renderKernel() {
+  const ranks=['PROCESS_ZERO','KERNEL_USER','SYS_ADMIN','ROOT_ACCESS','DAEMON_LORD','SYNTH_GOD'];
+  const ri=Math.min(G.prestigeCount,ranks.length-1);
+  document.getElementById('k-rank').textContent='◈'+G.prestigeCount;
+  document.getElementById('k-title').textContent=ranks[ri];
+  const rwd=tokenPreview();
+  document.getElementById('k-reward').textContent='◈ '+rwd+' Tokens ready';
+  const btn=document.getElementById('k-btn'), req=document.getElementById('k-req');
+  const enough=G.totalCycles>=50000;
+  btn.disabled=!enough;
+  req.textContent=enough?`Reset now — optimal? You've mined ${fmt(G.totalCycles)} this run`:`Need ${fmt(Math.max(0,50000-G.totalCycles))} more Cycles`;
+  document.getElementById('build-tag').textContent='// '+ranks[ri];
+}
+
+function renderKShop() {
+  const list=document.getElementById('kshop-list'); list.innerHTML='';
+  for(const k of KSHOP) {
+    const own=!!G.kernelShop[k.id];
+    const locked=G.prestigeCount<k.req;
+    const can=G.tokens>=k.cost&&!own&&!locked;
+    const d=document.createElement('div');
+    d.className='kshop-item'+(own?' ks-own':locked?' ks-lock':'');
+    d.innerHTML=`
+      <div class="ks-top"><div class="ks-name">${k.name}</div><div class="ks-cost">${own?'✓':'◈ '+k.cost}</div></div>
+      <div class="ks-desc">${k.desc}</div>
+      ${locked?`<div class="ks-req">Requires ${k.req} Resets</div>`:''}
+    `;
+    if(can) d.onclick=()=>buyKShop(k.id);
+    list.appendChild(d);
+  }
+}
+
+function renderAch() {
+  const list=document.getElementById('ach-list'); list.innerHTML='';
+  const done=ACHIEVEMENTS.filter(a=>G.achievements?.[a.id]);
+  const pending=ACHIEVEMENTS.filter(a=>!G.achievements?.[a.id]);
+  const ordered=[...done,...pending];
+  for(const a of ordered) {
+    const isDone=!!G.achievements?.[a.id];
+    const d=document.createElement('div'); d.className='ach'+(isDone?' done':'');
+    d.innerHTML=`<div class="ach-ico">${a.icon}</div><div class="ach-info"><div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc}</div></div><div class="ach-chk ${isDone?'done-check':''}">${isDone?'✓':'○'}</div>`;
+    list.appendChild(d);
+  }
+}
+
+function checkAch() {
+  if(!G.achievements) G.achievements={};
+  for(const a of ACHIEVEMENTS) {
+    if(!G.achievements[a.id]&&a.chk(G)) {
+      G.achievements[a.id]=true;
+      toast('ACHIEVEMENT: '+a.name,'warn');
+      log('Achievement: '+a.name,'warn');
+      A.track('achievement',{id:a.id});
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════ */
+let activeTab='processes';
+const TABS=['processes','skilltree','gamble','kernel','logs'];
+
+function swTab(id) {
+  activeTab=id;
+  document.querySelectorAll('#ctab-bar .tabitem').forEach((el,i)=>el.classList.toggle('on',TABS[i]===id));
+  document.querySelectorAll('.tc').forEach(el=>el.classList.remove('on'));
+  document.getElementById('tc-'+id).classList.add('on');
+  renderTab(id);
+}
+
+function renderTab(id) {
+  if(id==='processes')  renderUpgrades();
+  if(id==='skilltree')  renderSkillTree();
+  if(id==='gamble')     renderGamble();
+  if(id==='kernel')     { renderKernel(); renderKShop(); }
+  if(id==='logs')       renderAch();
+}
+
+/* ═══════════════════════════════════════════════
+   TERMINAL
+═══════════════════════════════════════════════ */
+let _logLines=[];
+function log(msg,type='') {
+  const el=document.getElementById('term');
+  const d=document.createElement('div'); d.className='tl '+type;
+  const ts=new Date().toLocaleTimeString('en',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  d.innerHTML=`<span class="tp">[${ts}]</span> ${msg}`;
+  el.appendChild(d); _logLines.push(d);
+  if(_logLines.length>100) _logLines.shift().remove();
+  el.scrollTop=el.scrollHeight;
+}
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+function toast(msg,type='') {
+  const a=document.getElementById('toasts');
+  const d=document.createElement('div'); d.className='toast '+(type||'');
+  d.textContent='> '+msg; a.appendChild(d);
+  setTimeout(()=>d.remove(),3200);
+}
+
+function spawnEvtParticle(x,y,msg) {
+  const p=document.createElement('div'); p.className='pt evt';
+  p.textContent=msg; p.style.cssText=`left:${x-20}px;top:${y-8}px;--dx:-20px;--dx2:10px`;
+  document.body.appendChild(p); setTimeout(()=>p.remove(),950);
+}
+
+/* ═══════════════════════════════════════════════
+   TUTORIAL
+═══════════════════════════════════════════════ */
+let tutIdx=0;
+function initTut() {
+  document.getElementById('tut-modal').classList.add('open');
+  showTutStep(0);
+}
+function showTutStep(i) {
+  tutIdx=i;
+  const s=TUTORIAL_STEPS[i];
+  document.getElementById('tut-title').textContent=s.title;
+  document.getElementById('tut-body').innerHTML=s.body;
+  document.getElementById('tut-prog').textContent=(i+1)+' / '+TUTORIAL_STEPS.length;
+  document.getElementById('tut-btn').textContent=i===TUTORIAL_STEPS.length-1?'BOOT >':'NEXT ›';
+  const dots=document.getElementById('tut-dots'); dots.innerHTML='';
+  TUTORIAL_STEPS.forEach((_,j)=>{ const d=document.createElement('div');d.className='td'+(j===i?' on':'');dots.appendChild(d); });
+}
+function tutAdv() {
+  tutIdx++;
+  if(tutIdx>=TUTORIAL_STEPS.length) {
+    document.getElementById('tut-modal').classList.remove('open');
+    G._tutDone=true; log('Tutorial complete. Boot sequence initiated.','sys');
+    A.track('tutorial_complete');
+    setTimeout(checkDaily,400); return;
+  }
+  showTutStep(tutIdx);
+}
+
+/* ═══════════════════════════════════════════════
+   VOID CANVAS (phase 4)
+═══════════════════════════════════════════════ */
+(function(){
+  const c=document.getElementById('void-canvas');
+  const ctx=c.getContext('2d');
+  let pts=[];
+  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;pts=Array.from({length:40},()=>({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+0.5}));}
+  resize(); window.addEventListener('resize',resize);
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    ctx.fillStyle='rgba(204,68,255,0.8)';
+    for(const p of pts){ p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1; ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill(); }
+    requestAnimationFrame(draw);
+  } draw();
+})();
+
+/* ═══════════════════════════════════════════════
+   CLOCK + SESSION
+═══════════════════════════════════════════════ */
+const _startTime=Date.now();
+function updateClock() {
+  const n=new Date();
+  document.getElementById('clock-el').textContent=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0')+':'+n.getSeconds().toString().padStart(2,'0');
+  document.getElementById('session-time-el').textContent='SESSION: '+fmtTime(Math.floor((Date.now()-_startTime)/1000));
+}
+
+/* ═══════════════════════════════════════════════
+   SAVE / LOAD
+═══════════════════════════════════════════════ */
+const SAVE_KEY='synthOS_v4';
+function save() {
+  try {
+    G.playTime=(G.playTime||0)+20;
+    G._savedAt=Date.now();
+    localStorage.setItem(SAVE_KEY,JSON.stringify(G));
+    document.getElementById('save-el').textContent='AUTO-SAVE: '+new Date().toLocaleTimeString();
+    A.track('save',{phase:G.phase,resets:G.prestigeCount,lifetime:G.lifetimeCycles});
+  } catch(e){}
+}
+function load() {
+  try {
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(!raw) return false;
+    const s=JSON.parse(raw);
+    G=Object.assign(JSON.parse(JSON.stringify(DEF)),s);
+    return true;
+  } catch(e){ return false; }
+}
+
+/* ═══════════════════════════════════════════════
+   FULL RENDER
+═══════════════════════════════════════════════ */
+function renderAll() {
+  computeStats();
+  renderRes();
+  renderUpgrades();
+  renderSkillTree();
+  renderGamble();
+  renderKernel();
+  renderKShop();
+  renderAch();
+  renderGoals();
+  renderCombo();
+  updatePhase();
+}
+
+/* ═══════════════════════════════════════════════
+   GAME LOOP
+═══════════════════════════════════════════════ */
+let _lastTick=Date.now(), _frame=0;
+function loop() {
+  const now=Date.now(), dt=Math.min((now-_lastTick)/1000,.5); _lastTick=now; _frame++;
+  computeStats();
+
+  G.cycles       +=G.cps*dt;       G.totalCycles+=G.cps*dt; G.lifetimeCycles+=G.cps*dt;
+  G.threads      +=G.threadsCps*dt;
+  G.code         +=G.codeCps*dt;
+  G.entropy      +=G.entropyCps*dt;
+  G['void']      +=G.voidCps*dt;
+
+  if(_frame%2===0) { renderRes(); renderCombo(); updateAdBtn(); }
+  if(_frame%30===0) { renderGoals(); updatePhase(); tickEvents(dt*30); }
+  if(_frame%60===0) { renderTab(activeTab); checkAch(); updateClock(); }
+
+  requestAnimationFrame(loop);
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+window.addEventListener('load',()=>{
+  const had=load();
+  renderAll();
+  loop();
+  setInterval(save,20000);
+  updateClock(); setInterval(updateClock,1000);
+
+  if(had) {
+    const elapsed=(Date.now()-(G._savedAt||Date.now()))/1000;
+    if(elapsed>30) applyOffline(Math.min(elapsed,4*3600));
+    log('Save restored. Welcome back.','sys');
+    A.track('session_start',{returning:true,phase:G.phase,resets:G.prestigeCount});
+    setTimeout(checkDaily,500);
+  } else {
+    log('SYNTH_OS v4.0.0 — First boot.','sys');
+    log('No save data. Starting fresh.','warn');
+    A.track('session_start',{returning:false});
+    setTimeout(initTut,600);
+  }
+  log('System online.','ok');
+});
+</script>
+</body>
+</html>
