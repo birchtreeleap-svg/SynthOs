@@ -3,24 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SYNTH_OS v4 — an idle incremental clicker game where you evolve an AI through phases, collect resources, and transcend the simulation.">
-<link rel="canonical" href="https://synthos.netlify.app/">
-<title>SYNTH_OS v4 — AI Bootstrapper</title>
+<title>SYNTH_OS v5 — AI Bootstrapper</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Fira+Code:wght@300;400;600&display=swap" rel="stylesheet">
-<!-- AdSense base script (paste from your account). required inside <head> -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1823102759484258"
-     crossorigin="anonymous"></script>
 <style>
-/* Cookie consent banner */
-.cookie-consent{position:fixed;left:12px;right:12px;bottom:12px;background:rgba(1,8,4,.96);color:var(--ph-text);padding:10px 12px;border:1px solid var(--ph-border2);z-index:10002;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:6px}
-.cookie-consent .cc-actions{display:flex;gap:8px}
-.cookie-btn{background:transparent;border:1px solid var(--ph-border2);color:var(--ph-primary);padding:6px 10px;cursor:pointer;border-radius:4px}
-.cookie-btn.primary{background:var(--ph-primary);color:var(--ph-bg);border-color:var(--ph-primary)}
 /* ═══════════════════════════════════════════════
-   PHASE SYSTEM — CSS variables mutate per phase
+   PHASE SYSTEM
 ═══════════════════════════════════════════════ */
 :root {
-  /* PHASE 0: BOOT */
   --ph-primary:   #00ff41;
   --ph-secondary: #00cc33;
   --ph-dim:       #003311;
@@ -40,41 +29,27 @@
   --violet:       #aa44ff;
   --danger:       #ff4400;
 }
-
-/* PHASE 1: NETWORKED */
-body.phase-1 { --ph-primary:#00eeff; --ph-secondary:#00bbcc; --ph-dim:#003344; --ph-border:#0a2a33; --ph-border2:#103545; --ph-bg:#010a0f; --ph-bg2:#03121a; --ph-bg3:#05202e; --ph-accent:#00eeff; --ph-text:#aaeeff; --ph-muted:#2a5566; --ph-glow:0 0 8px rgba(0,238,255,.5); --ph-glow2:0 0 20px rgba(0,238,255,.25); }
-
-/* PHASE 2: COMPILED */
-body.phase-2 { --ph-primary:#aaff00; --ph-secondary:#88cc00; --ph-dim:#223300; --ph-border:#1a2e00; --ph-border2:#253d00; --ph-bg:#050801; --ph-bg2:#0a0f02; --ph-bg3:#111a03; --ph-accent:#aaff00; --ph-text:#ccffaa; --ph-muted:#445522; --ph-glow:0 0 8px rgba(170,255,0,.5); --ph-glow2:0 0 20px rgba(170,255,0,.25); }
-
-/* PHASE 3: ENTROPIC */
-body.phase-3 { --ph-primary:#ff6600; --ph-secondary:#cc4400; --ph-dim:#331100; --ph-border:#2e1200; --ph-border2:#3d1800; --ph-bg:#0a0401; --ph-bg2:#120803; --ph-bg3:#1a0e04; --ph-accent:#ff9900; --ph-text:#ffddaa; --ph-muted:#553322; --ph-glow:0 0 8px rgba(255,102,0,.5); --ph-glow2:0 0 20px rgba(255,102,0,.25); }
-
-/* PHASE 4: TRANSCENDENT */
-body.phase-4 { --ph-primary:#cc44ff; --ph-secondary:#9922cc; --ph-dim:#220033; --ph-border:#1e0030; --ph-border2:#2a0040; --ph-bg:#050008; --ph-bg2:#0a0012; --ph-bg3:#10001e; --ph-accent:#ee88ff; --ph-text:#eeccff; --ph-muted:#553366; --ph-glow:0 0 8px rgba(204,68,255,.5); --ph-glow2:0 0 20px rgba(204,68,255,.25); }
+body.phase-1{--ph-primary:#00eeff;--ph-secondary:#00bbcc;--ph-dim:#003344;--ph-border:#0a2a33;--ph-border2:#103545;--ph-bg:#010a0f;--ph-bg2:#03121a;--ph-bg3:#05202e;--ph-accent:#00eeff;--ph-text:#aaeeff;--ph-muted:#2a5566;--ph-glow:0 0 8px rgba(0,238,255,.5);--ph-glow2:0 0 20px rgba(0,238,255,.25)}
+body.phase-2{--ph-primary:#aaff00;--ph-secondary:#88cc00;--ph-dim:#223300;--ph-border:#1a2e00;--ph-border2:#253d00;--ph-bg:#050801;--ph-bg2:#0a0f02;--ph-bg3:#111a03;--ph-accent:#aaff00;--ph-text:#ccffaa;--ph-muted:#445522;--ph-glow:0 0 8px rgba(170,255,0,.5);--ph-glow2:0 0 20px rgba(170,255,0,.25)}
+body.phase-3{--ph-primary:#ff6600;--ph-secondary:#cc4400;--ph-dim:#331100;--ph-border:#2e1200;--ph-border2:#3d1800;--ph-bg:#0a0401;--ph-bg2:#120803;--ph-bg3:#1a0e04;--ph-accent:#ff9900;--ph-text:#ffddaa;--ph-muted:#553322;--ph-glow:0 0 8px rgba(255,102,0,.5);--ph-glow2:0 0 20px rgba(255,102,0,.25)}
+body.phase-4{--ph-primary:#cc44ff;--ph-secondary:#9922cc;--ph-dim:#220033;--ph-border:#1e0030;--ph-border2:#2a0040;--ph-bg:#050008;--ph-bg2:#0a0012;--ph-bg3:#10001e;--ph-accent:#ee88ff;--ph-text:#eeccff;--ph-muted:#553366;--ph-glow:0 0 8px rgba(204,68,255,.5);--ph-glow2:0 0 20px rgba(204,68,255,.25)}
+body.phase-5{--ph-primary:#ff2244;--ph-secondary:#cc0022;--ph-dim:#330011;--ph-border:#2e0010;--ph-border2:#3d0018;--ph-bg:#0a0001;--ph-bg2:#120003;--ph-bg3:#1a0005;--ph-accent:#ff5566;--ph-text:#ffccdd;--ph-muted:#552233;--ph-glow:0 0 8px rgba(255,34,68,.5);--ph-glow2:0 0 20px rgba(255,34,68,.25)}
+body.phase-6{--ph-primary:#ffffff;--ph-secondary:#ddddff;--ph-dim:#111133;--ph-border:#222244;--ph-border2:#333366;--ph-bg:#020208;--ph-bg2:#050510;--ph-bg3:#08081a;--ph-accent:#aaaaff;--ph-text:#eeeeff;--ph-muted:#445566;--ph-glow:0 0 8px rgba(255,255,255,.5);--ph-glow2:0 0 30px rgba(200,200,255,.35)}
 
 /* ═══════════════════════════════════════════════
-   GLOBAL RESET
+   GLOBAL
 ═══════════════════════════════════════════════ */
 *{margin:0;padding:0;box-sizing:border-box;user-select:none}
 html,body{height:100%;overflow-x:hidden}
 body{background:var(--ph-bg);color:var(--ph-primary);font-family:'Share Tech Mono',monospace;font-size:13px;cursor:crosshair;transition:background .8s,color .8s}
-
-/* Scanlines */
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px)}
-
-/* Phase 3: Corruption glitch overlay */
 body.phase-3 #corruption-overlay{opacity:1}
 #corruption-overlay{position:fixed;inset:0;pointer-events:none;z-index:9989;opacity:0;transition:opacity 1s;background:repeating-linear-gradient(87deg,transparent,transparent 20px,rgba(255,102,0,.02) 20px,rgba(255,102,0,.02) 21px)}
-
-/* Phase 4: Void particles */
-body.phase-4 #void-canvas{display:block}
-#void-canvas{display:none;position:fixed;inset:0;z-index:0;opacity:.12;pointer-events:none}
-
+body.phase-4 #void-canvas,body.phase-5 #void-canvas,body.phase-6 #void-canvas{display:block}
+#void-canvas{display:none;position:fixed;inset:0;z-index:0;opacity:.1;pointer-events:none}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:var(--ph-bg)}
 ::-webkit-scrollbar-thumb{background:var(--ph-border2)}
-::selection{background:var(--ph-dim);color:var(--ph-primary)}
 
 /* ═══════════════════════════════════════════════
    LAYOUT
@@ -84,11 +59,7 @@ body.phase-4 #void-canvas{display:block}
 /* ═══════════════════════════════════════════════
    PHASE BANNER
 ═══════════════════════════════════════════════ */
-#phase-banner{
-  background:var(--ph-bg2);border:1px solid var(--ph-border2);
-  padding:5px 14px;display:flex;align-items:center;justify-content:space-between;
-  font-size:10px;letter-spacing:2px;
-}
+#phase-banner{background:var(--ph-bg2);border:1px solid var(--ph-border2);padding:5px 14px;display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:2px}
 .phase-label{color:var(--ph-muted)}
 #phase-name{color:var(--ph-primary);font-family:'VT323',monospace;font-size:15px;letter-spacing:3px;text-shadow:var(--ph-glow)}
 #phase-bar-wrap{flex:1;margin:0 16px;height:4px;background:var(--ph-border);position:relative;overflow:hidden}
@@ -98,12 +69,7 @@ body.phase-4 #void-canvas{display:block}
 /* ═══════════════════════════════════════════════
    TITLEBAR
 ═══════════════════════════════════════════════ */
-#titlebar{
-  display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
-  padding:8px 14px;background:var(--ph-bg2);
-  border:1px solid var(--ph-border2);border-top:2px solid var(--ph-primary);
-  transition:border-color .8s,background .8s;
-}
+#titlebar{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:8px 14px;background:var(--ph-bg2);border:1px solid var(--ph-border2);border-top:2px solid var(--ph-primary);transition:border-color .8s,background .8s}
 #sys-name{font-family:'VT323',monospace;font-size:28px;color:var(--ph-primary);text-shadow:var(--ph-glow2);letter-spacing:4px}
 #sys-name .build-tag{font-size:13px;color:var(--ph-muted);margin-left:8px;vertical-align:middle;letter-spacing:2px}
 #build-display{font-size:10px;color:var(--ph-muted);margin-top:2px;letter-spacing:1px}
@@ -118,13 +84,9 @@ body.phase-4 #void-canvas{display:block}
 #clock-el{color:var(--ph-primary);font-family:'VT323',monospace;font-size:16px}
 
 /* ═══════════════════════════════════════════════
-   EVENT BAR (full width, context-aware)
+   EVENT BAR
 ═══════════════════════════════════════════════ */
-#event-bar{
-  display:none;padding:7px 14px;
-  background:var(--ph-bg2);border:1px solid var(--amber);
-  cursor:pointer;animation:evpulse 2s ease-in-out infinite;
-}
+#event-bar{display:none;padding:7px 14px;background:var(--ph-bg2);border:1px solid var(--amber);cursor:pointer;animation:evpulse 2s ease-in-out infinite}
 #event-bar.active{display:flex;align-items:center;gap:14px}
 @keyframes evpulse{0%,100%{border-color:var(--amber)}50%{border-color:var(--ph-primary);box-shadow:0 0 14px rgba(255,176,0,.15)}}
 .ev-type-badge{font-family:'VT323',monospace;font-size:16px;color:var(--amber);letter-spacing:2px;white-space:nowrap}
@@ -155,7 +117,7 @@ body.phase-4 #void-canvas{display:block}
 .sb{max-height:390px;overflow-y:auto;padding:6px 8px}
 
 /* ═══════════════════════════════════════════════
-   GOAL TRACKER (psychological pull)
+   GOAL TRACKER
 ═══════════════════════════════════════════════ */
 .goal-card{padding:7px 9px;margin-bottom:6px;background:var(--ph-bg);border-left:2px solid var(--ph-border2);transition:border-color .3s}
 .goal-card.active-goal{border-left-color:var(--ph-primary);animation:goalshine 2s ease-in-out infinite}
@@ -190,16 +152,7 @@ body.phase-4 #void-canvas{display:block}
 .r2{width:225px;height:225px;border-color:rgba(0,255,65,.06);animation-duration:25s;animation-direction:reverse}
 .r3{width:260px;height:260px;border-color:rgba(0,255,65,.03);animation-duration:40s}
 @keyframes rspin{from{transform:translate(-50%,-54%) rotate(0deg)}to{transform:translate(-50%,-54%) rotate(360deg)}}
-body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
-#cpu-btn{
-  width:160px;height:160px;
-  background:var(--ph-bg);border:2px solid var(--ph-border2);cursor:pointer;
-  position:relative;margin:0 auto 12px;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  clip-path:polygon(15% 0%,85% 0%,100% 15%,100% 85%,85% 100%,15% 100%,0% 85%,0% 15%);
-  transition:all .08s,border-color .8s;
-  box-shadow:inset 0 0 20px rgba(0,255,65,.04);
-}
+#cpu-btn{width:160px;height:160px;background:var(--ph-bg);border:2px solid var(--ph-border2);cursor:pointer;position:relative;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;flex-direction:column;clip-path:polygon(15% 0%,85% 0%,100% 15%,100% 85%,85% 100%,15% 100%,0% 85%,0% 15%);transition:all .08s,border-color .8s;box-shadow:inset 0 0 20px rgba(0,255,65,.04)}
 #cpu-btn:hover{border-color:var(--ph-primary);box-shadow:var(--ph-glow2),inset 0 0 30px rgba(0,255,65,.06);transform:scale(1.03)}
 #cpu-btn:active{transform:scale(.95)}
 #cpu-btn.boosted{border-color:var(--amber);box-shadow:0 0 20px rgba(255,176,0,.4)}
@@ -207,8 +160,6 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 @keyframes gp{0%,100%{text-shadow:var(--ph-glow)}50%{text-shadow:var(--ph-glow2),0 0 40px var(--ph-primary)}}
 #cpu-sub{font-size:8px;color:var(--ph-muted);letter-spacing:3px;margin-top:3px;pointer-events:none}
 #cpu-pwr{font-family:'VT323',monospace;font-size:13px;color:var(--amber);pointer-events:none}
-
-/* CPS readout */
 #cps-big{font-family:'VT323',monospace;font-size:34px;color:var(--ph-primary);text-shadow:var(--ph-glow2);letter-spacing:2px}
 #cps-lbl{font-size:8px;color:var(--ph-muted);letter-spacing:3px;margin-bottom:8px}
 
@@ -220,6 +171,12 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 #combo-fill{height:100%;background:linear-gradient(90deg,var(--ph-secondary),var(--amber));transition:width .2s}
 #combo-decay-bar{height:2px;background:var(--ph-border);margin-top:2px;position:relative}
 #combo-decay-fill{position:absolute;right:0;top:0;bottom:0;background:var(--red);opacity:.5;transition:width .1s}
+
+/* BUY ALL BTN */
+#buy-all-btn{display:block;width:calc(100% - 16px);margin:4px 8px 6px;padding:7px;background:rgba(0,255,65,.04);border:1px solid var(--ph-border2);color:var(--ph-muted);font-family:'VT323',monospace;font-size:15px;letter-spacing:2px;cursor:pointer;transition:.2s;text-align:center}
+#buy-all-btn:hover{border-color:var(--ph-primary);color:var(--ph-primary);background:rgba(0,255,65,.08)}
+#buy-all-btn.has-available{border-color:var(--amber);color:var(--amber);animation:buyallpulse 2s ease-in-out infinite}
+@keyframes buyallpulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 12px rgba(255,176,0,.3)}}
 
 /* ═══════════════════════════════════════════════
    TABS
@@ -241,8 +198,9 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 .upg::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--ph-border2);transition:.18s}
 .upg:hover:not(.upg-max):not(.upg-locked){border-color:var(--ph-border2)}
 .upg:hover:not(.upg-max):not(.upg-locked)::before{background:var(--ph-secondary)}
+.upg.upg-can{border-color:var(--amber);box-shadow:0 0 8px rgba(255,176,0,.2),inset 0 0 8px rgba(255,176,0,.04);animation:upgpulse 1.8s ease-in-out infinite}
+@keyframes upgpulse{0%,100%{border-color:var(--amber)}50%{border-color:var(--ph-primary);box-shadow:0 0 14px rgba(255,176,0,.35),inset 0 0 10px rgba(255,176,0,.07)}}
 .upg.upg-can::before{background:var(--amber)}
-.upg.upg-can{border-color:rgba(255,176,0,.2)}
 .upg.upg-max{opacity:.35;cursor:default}
 .upg.upg-max::before{background:var(--ph-border)}
 .upg.upg-locked{opacity:.18;cursor:not-allowed;filter:grayscale(1)}
@@ -280,65 +238,52 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 .sn-done .sk-cost{color:var(--ph-muted)}
 
 /* ═══════════════════════════════════════════════
-   GAMBLE
+   PRESTIGE TIERS
 ═══════════════════════════════════════════════ */
-#gamble-wrap{padding:8px}
-.gamble-meta{font-size:9px;color:var(--ph-muted);padding:6px 8px;background:var(--ph-bg);border-left:2px solid var(--ph-border2);margin-bottom:8px;line-height:1.7}
-.gamble-meta .hot{color:var(--amber)}
-.gopt{padding:9px;margin-bottom:6px;background:var(--ph-bg);border:1px solid var(--ph-border);cursor:pointer;transition:.2s;position:relative;overflow:hidden}
-.gopt:hover:not(.go-lock){border-color:var(--ph-secondary)}
-.gopt.go-lock{opacity:.25;cursor:not-allowed}
-.go-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
-.go-name{font-family:'VT323',monospace;font-size:17px;color:var(--ph-primary);letter-spacing:1px}
-.go-odds-pill{font-size:9px;padding:2px 7px;border:1px solid;font-family:'VT323',monospace;font-size:13px;letter-spacing:1px}
-.go-desc{font-size:9px;color:var(--ph-muted);margin-bottom:5px;line-height:1.5}
-.go-row{display:flex;gap:12px;font-size:9px;flex-wrap:wrap}
-.go-win{color:var(--ph-secondary)}
-.go-lose{color:var(--red)}
-.go-cost{color:var(--ph-muted)}
-/* Probability bar */
-.go-probbar{height:3px;background:var(--ph-border);margin-top:5px;position:relative}
-.go-probfill{position:absolute;left:0;top:0;bottom:0;background:var(--ph-secondary);opacity:.5}
-.go-problabel{position:absolute;right:0;top:0;bottom:0;background:var(--red);opacity:.5}
-
-.gresult{padding:7px 10px;margin-bottom:7px;font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;border:1px solid;animation:rpop .35s ease-out}
-.gresult.win{color:var(--ph-primary);border-color:var(--ph-border2);background:rgba(0,255,65,.05)}
-.gresult.lose{color:var(--red);border-color:rgba(255,34,68,.3);background:rgba(255,34,68,.04)}
-@keyframes rpop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
-.gamble-stats{display:flex;gap:14px;font-size:9px;color:var(--ph-muted);margin-top:8px;padding:5px 8px;background:var(--ph-bg);border-top:1px solid var(--ph-border)}
-.gs-val{color:var(--ph-primary);font-family:'VT323',monospace;font-size:14px}
+.prestige-section{padding:10px;border-bottom:1px solid var(--ph-border);margin-bottom:8px}
+.prestige-tier-header{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;margin-bottom:6px}
+.pt-kernel{color:var(--amber)}
+.pt-arch{color:var(--cyan)}
+.pt-void{color:var(--violet)}
+.prestige-info{font-size:10px;color:var(--ph-muted);line-height:1.7;margin-bottom:8px}
+.prestige-reward{font-family:'VT323',monospace;font-size:17px;margin-bottom:6px}
+.prestige-btn{width:100%;padding:9px;background:rgba(0,255,65,.04);border:1px solid var(--ph-border2);font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;cursor:pointer;transition:.2s}
+.prestige-btn:hover:not([disabled]){background:rgba(0,255,65,.08);box-shadow:var(--ph-glow)}
+.prestige-btn[disabled]{opacity:.25;cursor:not-allowed;color:var(--ph-muted)!important;border-color:var(--ph-border)!important}
+.prestige-btn.k-btn{color:var(--amber);border-color:rgba(255,176,0,.3)}
+.prestige-btn.k-btn:hover:not([disabled]){border-color:var(--amber);box-shadow:0 0 14px rgba(255,176,0,.3)}
+.prestige-btn.a-btn{color:var(--cyan);border-color:rgba(0,238,255,.3)}
+.prestige-btn.a-btn:hover:not([disabled]){border-color:var(--cyan);box-shadow:0 0 14px rgba(0,238,255,.3)}
+.prestige-btn.v-btn{color:var(--violet);border-color:rgba(170,68,255,.3)}
+.prestige-btn.v-btn:hover:not([disabled]){border-color:var(--violet);box-shadow:0 0 14px rgba(170,68,255,.3)}
+.prestige-req{font-size:8px;color:var(--ph-muted);margin-top:4px;letter-spacing:.5px}
 
 /* ═══════════════════════════════════════════════
-   PRESTIGE / KERNEL
+   KERNEL SHOP
 ═══════════════════════════════════════════════ */
-.kernel-box{padding:12px;text-align:center;border-bottom:1px solid var(--ph-border)}
-.k-rank{font-family:'VT323',monospace;font-size:48px;color:var(--ph-primary);text-shadow:var(--ph-glow2);line-height:1}
-.k-title{font-size:9px;color:var(--ph-muted);letter-spacing:3px;margin-bottom:10px;text-transform:uppercase}
-.k-desc{font-size:10px;color:var(--ph-muted);line-height:1.7;margin-bottom:8px}
-.k-reward{font-family:'VT323',monospace;font-size:20px;color:var(--amber);text-shadow:0 0 8px rgba(255,176,0,.4);margin-bottom:8px}
-.k-btn{width:100%;padding:10px;background:rgba(0,255,65,.04);border:1px solid var(--ph-border2);color:var(--ph-secondary);font-family:'VT323',monospace;font-size:20px;letter-spacing:3px;cursor:pointer;transition:.2s}
-.k-btn:hover:not([disabled]){background:rgba(0,255,65,.08);border-color:var(--ph-primary);box-shadow:var(--ph-glow)}
-.k-btn[disabled]{opacity:.25;cursor:not-allowed}
-.k-req{font-size:8px;color:var(--ph-muted);margin-top:4px;letter-spacing:.5px}
-
+.kshop-section-header{font-size:9px;color:var(--ph-muted);letter-spacing:2px;border-top:1px dashed var(--ph-border);padding:6px 2px 4px;margin-top:8px;text-transform:uppercase}
 .kshop-item{padding:8px;margin-bottom:4px;background:var(--ph-bg);border:1px solid var(--ph-border);cursor:pointer;transition:.18s;position:relative}
 .kshop-item:hover:not(.ks-own):not(.ks-lock){border-color:var(--ph-secondary)}
 .kshop-item.ks-own{border-left:2px solid var(--ph-primary);opacity:.5;cursor:default}
 .kshop-item.ks-lock{opacity:.15;cursor:not-allowed}
+.kshop-item.ks-can{border-color:rgba(255,176,0,.3);background:rgba(255,176,0,.03)}
 .ks-top{display:flex;justify-content:space-between;align-items:center}
 .ks-name{font-size:10px;color:var(--ph-text)}
 .ks-cost{font-size:10px;color:var(--amber)}
 .ks-desc{font-size:9px;color:var(--ph-muted);margin-top:2px}
 .ks-req{font-size:8px;color:var(--red);margin-top:2px}
+.ks-tier-label{font-size:8px;padding:1px 5px;border:1px solid;margin-left:4px}
+.ks-t-k{color:var(--amber);border-color:rgba(255,176,0,.3)}
+.ks-t-a{color:var(--cyan);border-color:rgba(0,238,255,.3)}
+.ks-t-v{color:var(--violet);border-color:rgba(170,68,255,.3)}
 
 /* ═══════════════════════════════════════════════
-   DAILY REWARD
+   MODAL
 ═══════════════════════════════════════════════ */
 .modal-overlay{display:none;position:fixed;inset:0;z-index:10000;background:rgba(1,8,4,.94);align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal-box{background:var(--ph-bg2);border:1px solid var(--ph-primary);padding:28px;max-width:420px;width:92%;box-shadow:var(--ph-glow2);position:relative}
 .modal-box::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,255,65,.008) 3px,rgba(0,255,65,.008) 4px);pointer-events:none}
-
 #daily-modal .modal-title{font-family:'VT323',monospace;font-size:30px;color:var(--amber);text-shadow:0 0 10px rgba(255,176,0,.5);letter-spacing:4px;margin-bottom:4px}
 .daily-streak-line{font-size:10px;color:var(--ph-muted);letter-spacing:1px;margin-bottom:14px}
 .day-track{display:flex;gap:4px;margin-bottom:16px;justify-content:center}
@@ -357,9 +302,7 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 .daily-claim-btn{width:100%;padding:11px;background:rgba(0,255,65,.06);border:1px solid var(--ph-primary);color:var(--ph-primary);font-family:'VT323',monospace;font-size:21px;letter-spacing:3px;cursor:pointer;transition:.2s}
 .daily-claim-btn:hover{background:rgba(0,255,65,.12);box-shadow:var(--ph-glow2)}
 
-/* ═══════════════════════════════════════════════
-   TUTORIAL MODAL
-═══════════════════════════════════════════════ */
+/* TUTORIAL */
 #tut-modal .modal-box{max-width:500px}
 .tut-title{font-family:'VT323',monospace;font-size:26px;color:var(--ph-primary);letter-spacing:3px;margin-bottom:12px}
 .tut-content{font-size:11px;color:var(--ph-text);line-height:1.85;margin-bottom:14px}
@@ -374,9 +317,7 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 .tut-btn{padding:7px 18px;background:var(--ph-bg3);border:1px solid var(--ph-border2);color:var(--ph-secondary);font-family:'VT323',monospace;font-size:17px;letter-spacing:2px;cursor:pointer;transition:.15s}
 .tut-btn:hover{border-color:var(--ph-primary);color:var(--ph-primary)}
 
-/* ═══════════════════════════════════════════════
-   ACHIEVEMENTS
-═══════════════════════════════════════════════ */
+/* ACHIEVEMENTS */
 .ach{display:flex;align-items:center;gap:8px;padding:6px 8px;margin-bottom:3px;background:var(--ph-bg);border-left:2px solid var(--ph-border)}
 .ach.done{border-left-color:var(--ph-primary);background:rgba(0,255,65,.02)}
 .ach.done .ach-name{color:var(--ph-text)}
@@ -387,41 +328,13 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 .ach-chk{font-size:11px;color:var(--ph-border2)}
 .ach.done .ach-chk{color:var(--ph-primary)}
 
-/* ═══════════════════════════════════════════════
-   STATS
-═══════════════════════════════════════════════ */
+/* STATS */
 .st{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--ph-border);font-size:10px}
 .st:last-child{border:none}
 .sk{color:var(--ph-muted)}
 .sv{font-family:'VT323',monospace;font-size:14px;color:var(--ph-secondary)}
 
-/* ═══════════════════════════════════════════════
-   AD SLOTS
-═══════════════════════════════════════════════ */
-.ad-slot{background:var(--ph-bg);border:1px dashed rgba(255,176,0,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;position:relative;margin-bottom:5px;overflow:hidden}
-.ad-slot:hover{border-color:rgba(255,176,0,.35)}
-.ad-slot ins.adsbygoogle{max-width:100%;height:auto;display:block;}
-.ad-top{height:70px;max-height:90px}
-.ad-side{height:220px;max-height:300px;flex-direction:column;gap:4px}
-/* small screens hide side ads and shrink top */
-@media(max-width:980px){
-  .ad-side{display:none}
-  .ad-top{height:auto;max-height:60px}
-}
-
-.ad-tag{position:absolute;top:2px;right:4px;font-size:7px;color:rgba(255,176,0,.22);letter-spacing:1px}
-.ad-ic{font-size:18px;display:block;text-align:center}
-.ad-txt{font-size:9px;color:var(--ph-muted);text-align:center;line-height:1.5}
-#rad-bar{padding:7px 12px;background:rgba(255,176,0,.04);border:1px solid rgba(255,176,0,.2);cursor:pointer;transition:.2s;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-#rad-bar:hover:not(.cd){border-color:var(--amber);box-shadow:0 0 10px rgba(255,176,0,.15)}
-#rad-bar.cd{opacity:.4;cursor:not-allowed}
-.rad-left .rad-title{font-family:'VT323',monospace;font-size:15px;color:var(--amber);letter-spacing:1px}
-.rad-left .rad-sub{font-size:8px;color:var(--ph-muted);margin-top:1px}
-.rad-icon{font-size:22px}
-
-/* ═══════════════════════════════════════════════
-   PARTICLES + FLASH
-═══════════════════════════════════════════════ */
+/* PARTICLES + FLASH */
 .pt{position:fixed;pointer-events:none;z-index:9995;font-family:'VT323',monospace;font-size:15px;color:var(--ph-primary);text-shadow:var(--ph-glow);animation:ptup .9s ease-out forwards}
 .pt.crit{font-size:21px;color:var(--amber);text-shadow:0 0 10px rgba(255,176,0,.6)}
 .pt.evt{font-size:16px;color:var(--cyan)}
@@ -432,9 +345,7 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 @keyframes fg{0%{opacity:.07;background:var(--ph-primary)}100%{opacity:0}}
 @keyframes fa{0%{opacity:.1;background:var(--amber)}100%{opacity:0}}
 
-/* ═══════════════════════════════════════════════
-   TOASTS
-═══════════════════════════════════════════════ */
+/* TOASTS */
 #toasts{position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;flex-direction:column-reverse;gap:3px}
 .toast{padding:6px 12px;background:var(--ph-bg2);border-left:3px solid var(--ph-primary);font-size:10px;color:var(--ph-secondary);animation:tin .25s ease-out,tout .25s ease-in 2.7s forwards;max-width:290px;pointer-events:none;letter-spacing:.5px}
 .toast.warn{border-color:var(--amber);color:var(--amber)}
@@ -444,9 +355,7 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 @keyframes tin{from{opacity:0;transform:translateX(25px)}to{opacity:1;transform:none}}
 @keyframes tout{to{opacity:0;transform:translateX(25px)}}
 
-/* ═══════════════════════════════════════════════
-   TERMINAL LOG
-═══════════════════════════════════════════════ */
+/* TERMINAL LOG */
 #term{height:145px;overflow-y:auto;padding:6px 8px;background:var(--ph-bg);border-bottom:1px solid var(--ph-border);font-size:10px;line-height:1.7}
 .tl{color:var(--ph-muted);animation:tlin .25s ease-out}
 .tl.ok{color:var(--ph-secondary)}
@@ -456,17 +365,17 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 .tl.phase{color:var(--ph-primary);font-weight:bold}
 @keyframes tlin{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
 .tp{color:var(--ph-border2)}
+
+/* REWARDED AD BAR */
+#rad-bar{padding:7px 12px;background:rgba(255,176,0,.04);border:1px solid rgba(255,176,0,.2);cursor:pointer;transition:.2s;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+#rad-bar:hover:not(.cd){border-color:var(--amber);box-shadow:0 0 10px rgba(255,176,0,.15)}
+#rad-bar.cd{opacity:.4;cursor:not-allowed}
+.rad-left .rad-title{font-family:'VT323',monospace;font-size:15px;color:var(--amber);letter-spacing:1px}
+.rad-left .rad-sub{font-size:8px;color:var(--ph-muted);margin-top:1px}
+.rad-icon{font-size:22px}
 </style>
 </head>
 <body class="phase-0">
-<!-- Cookie consent (will load ads/analytics only after accept) -->
-<div id="cookie-consent" class="cookie-consent" style="display:none">
-  <div>This site uses ads and analytics to support development. By accepting, you allow loading advertising and analytics scripts.</div>
-  <div class="cc-actions">
-    <button id="consent-decline" class="cookie-btn">Decline</button>
-    <button id="consent-accept" class="cookie-btn primary">Accept</button>
-  </div>
-</div>
 <canvas id="void-canvas"></canvas>
 <div id="corruption-overlay"></div>
 <div id="flash"></div>
@@ -501,7 +410,6 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
 </div>
 
 <div id="shell">
-<!-- PHASE BANNER -->
 <div id="phase-banner">
   <span class="phase-label">SYSTEM PHASE:</span>
   <span id="phase-name">BOOT</span>
@@ -509,27 +417,26 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
   <span id="phase-next">Next: NETWORKED</span>
 </div>
 
-<!-- TITLEBAR -->
 <div id="titlebar">
   <div>
     <div id="sys-name">SYNTH<span class="build-tag" id="build-tag">// PROCESS_ZERO</span></div>
-    <div id="build-display">PATH: <span id="path-display" style="color:var(--amber)">UNDECIDED</span> · RESET: <span id="reset-display">0</span></div>
+    <div id="build-display">PATH: <span id="path-display" style="color:var(--amber)">UNDECIDED</span> · K:<span id="k-reset-display">0</span> A:<span id="a-reset-display">0</span> V:<span id="v-reset-display">0</span></div>
   </div>
   <div class="hd-stats">
     <div class="hds"><div class="hds-k">CPS</div><div class="hds-v" id="h-cps">0</div></div>
     <div class="hds"><div class="hds-k">LIFETIME</div><div class="hds-v" id="h-life">0</div></div>
-    <div class="hds"><div class="hds-k">TOKENS ◈</div><div class="hds-v am" id="h-tok">0</div></div>
-    <div class="hds"><div class="hds-k">SESSION</div><div class="hds-v cy" id="h-ses">0</div></div>
+    <div class="hds"><div class="hds-k">KTOKENS ◈</div><div class="hds-v am" id="h-tok">0</div></div>
+    <div class="hds"><div class="hds-k">ATOKENS ◉</div><div class="hds-v cy" id="h-atok">0</div></div>
+    <div class="hds"><div class="hds-k">VTOKENS ◆</div><div class="hds-v vl" id="h-vtok">0</div></div>
     <div class="hds"><div class="hds-k">STREAK</div><div class="hds-v" id="h-str">0d</div></div>
   </div>
   <div id="hdr-right">
     <div id="clock-el">00:00:00</div>
-    <div style="font-size:8px;color:var(--ph-muted)" id="save-el">AUTO-SAVE: OK</div>
+    <div style="font-size:8px;color:var(--ph-muted)" id="save-el">AUTO-SAVE: —</div>
     <div style="font-size:8px;color:var(--ph-muted)" id="session-time-el">SESSION: 0m</div>
   </div>
 </div>
 
-<!-- EVENT BAR -->
 <div id="event-bar">
   <div class="ev-type-badge" id="ev-type">⚡ ANOMALY</div>
   <div class="ev-body">
@@ -544,22 +451,6 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
   <button class="ev-claim-btn" onclick="claimEvent()">[ CLAIM ]</button>
 </div>
 
-<!-- AD BANNER TOP -->
-<div class="ad-slot ad-top" onclick="adClick('banner')">
-  <div class="ad-tag">AD</div>
-  <div style="width:100%;max-width:728px;margin:0 auto;text-align:center">
-    <!-- replace data-ad-client with your real AdSense pub ID and uncomment when live -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"      <!-- REPLACE with your publisher ID -->
-         data-ad-slot="YOUR_SLOT_ID"         <!-- REPLACE with your ad unit slot ID -->
-         data-ad-format="auto"
-         data-adtest="on"></ins>            <!-- remove data-adtest attribute when running real ads -->
-    <div class="ad-txt" style="margin-top:6px;color:var(--ph-muted);font-size:11px">728×90 Leaderboard</div>
-  </div>
-</div>
-
-<!-- REWARDED AD -->
 <div id="rad-bar" onclick="watchAd()">
   <div class="rad-left">
     <div class="rad-title">📺 WATCH AD — 3× BOOST 90s + OFFLINE RECOVERY</div>
@@ -568,36 +459,30 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
   <div class="rad-icon">▶</div>
 </div>
 
-<!-- 3-COL GRID -->
 <div id="main-grid">
 
-<!-- ── LEFT COL ── -->
+<!-- LEFT COL -->
 <div class="col-l">
-  <!-- TERMINAL -->
   <div class="panel">
     <div class="ph">▸ SYS_LOG</div>
     <div id="term"></div>
   </div>
-  <!-- GOALS -->
   <div class="panel">
     <div class="ph">◉ OBJECTIVES <span class="ph-badge" id="goals-phase-badge">PHASE 0</span></div>
     <div class="pb" id="goals-container"></div>
   </div>
-  <!-- RESOURCES -->
   <div class="panel">
     <div class="ph">≡ MEMORY MAP</div>
     <div class="pb" id="res-list"></div>
   </div>
-  <!-- STATS -->
   <div class="panel">
     <div class="ph">∑ DIAGNOSTICS</div>
     <div class="pb" id="stats-list"></div>
   </div>
 </div>
 
-<!-- ── CENTER COL ── -->
+<!-- CENTER COL -->
 <div class="col-c">
-  <!-- CLICK CORE -->
   <div class="panel" style="margin-bottom:5px">
     <div class="pb" style="padding-bottom:16px">
       <div style="text-align:center;margin-bottom:6px">
@@ -620,272 +505,219 @@ body.phase-1 .r1,.r2,.r3{border-color:rgba(0,238,255,.1)}
     </div>
   </div>
 
-  <!-- CENTER TABS -->
   <div class="panel">
     <div class="tabbar" id="ctab-bar">
       <div class="tabitem on" onclick="swTab('processes')">PROCESSES</div>
       <div class="tabitem" onclick="swTab('skilltree')">SKILLS</div>
-      <div class="tabitem" onclick="swTab('gamble')">GAMBLE</div>
-      <div class="tabitem" onclick="swTab('kernel')">KERNEL</div>
+      <div class="tabitem" onclick="swTab('prestige')">PRESTIGE</div>
       <div class="tabitem" onclick="swTab('logs')">LOGS</div>
     </div>
-    <div class="tc on" id="tc-processes"><div class="sb" id="upg-list"></div></div>
+    <div class="tc on" id="tc-processes">
+      <button id="buy-all-btn" onclick="buyAll()">[ BUY ALL AFFORDABLE ]</button>
+      <div class="sb" id="upg-list"></div>
+    </div>
     <div class="tc" id="tc-skilltree"><div id="skill-tree-container"></div></div>
-    <div class="tc" id="tc-gamble"><div id="gamble-wrap"></div></div>
-    <div class="tc" id="tc-kernel">
-      <div class="kernel-box">
-        <div class="k-rank" id="k-rank">◈0</div>
-        <div class="k-title" id="k-title">PROCESS_ZERO</div>
-        <div class="k-desc">Reset this run for <strong style="color:var(--amber)">Tokens ◈</strong>.<br>Tokens survive every reset. They fund the Kernel Shop — permanent upgrades that compound across all future runs.</div>
-        <div class="k-reward" id="k-reward">◈ 0 Tokens ready</div>
-        <button class="k-btn" id="k-btn" onclick="doPrestige()" disabled>[ KERNEL_RESET ]</button>
-        <div class="k-req" id="k-req">Need 50,000 Cycles this run</div>
-      </div>
-      <div style="padding:6px 8px">
-        <div class="ph" style="border:none;padding:4px 2px;margin-bottom:6px">◈ KERNEL SHOP</div>
-        <div class="sb" id="kshop-list"></div>
-      </div>
+    <div class="tc" id="tc-prestige">
+      <div class="sb" id="prestige-content"></div>
     </div>
     <div class="tc" id="tc-logs"><div class="sb" id="ach-list"></div></div>
   </div>
 </div>
 
-<!-- ── RIGHT COL ── -->
+<!-- RIGHT COL -->
 <div class="col-r">
-  <div class="ad-slot ad-side" onclick="adClick('side1')">
-    <div class="ad-tag">AD</div>
-    <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"      <!-- REPLACE with your publisher ID -->
-         data-ad-slot="YOUR_SIDE1_SLOT"          <!-- REPLACE with your ad unit slot ID -->
-         data-adtest="on"></ins>           <!-- remove when live -->
-    <div class="ad-txt" style="margin-top:6px;color:var(--ph-muted);font-size:11px">160×600</div>
-  </div>
-  <div class="ad-slot ad-side" onclick="adClick('side2')">
-    <div class="ad-tag">AD</div>
-    <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"      <!-- REPLACE with your publisher ID -->
-         data-ad-slot="YOUR_SIDE2_SLOT"          <!-- REPLACE with your ad unit slot ID -->
-         data-adtest="on"></ins>           <!-- remove when live -->
-    <div class="ad-txt" style="margin-top:6px;color:var(--ph-muted);font-size:11px">300×250</div>
+  <div class="panel">
+    <div class="ph">◉ KERNEL SHOP</div>
+    <div class="sb" id="kshop-list" style="max-height:600px"></div>
   </div>
 </div>
 
-</div><!-- end main-grid -->
-</div><!-- end shell -->
+</div>
+</div>
 <div id="toasts"></div>
 
 <script>
 'use strict';
-/* ═══════════════════════════════════════════════
-   ANALYTICS LAYER (swap real SDK here)
-═══════════════════════════════════════════════ */
-const A = {
-  _session: Date.now(), _events: [],
-  track(e, d={}) {
-    this._events.push({e, d, t: Date.now() - this._session});
-    try { if (window.gtag) window.gtag('event', e, d); } catch(_){}
-    // remove or comment out the following line in production if you don't want debug logs
-    if (typeof console !== 'undefined' && console.debug) console.debug('[A]', e, d);
-  },
-  sessionLength() { return Math.floor((Date.now() - this._session) / 1000); },
-};
 
 /* ═══════════════════════════════════════════════
-   MATHEMATICAL SCALING CORE
-   Formula: cost(lvl) = base × 1.42^lvl × tierMult
-   Soft cap: after lvl 15, incremental returns
-   slow (val multiplied by 0.85 per lvl above 15)
+   SCALING CORE
 ═══════════════════════════════════════════════ */
 function scaledCost(base, lvl, rate=1.42) {
   return base * Math.pow(rate, lvl);
 }
 function scaledVal(base, lvl, softCapAt=15) {
-  if (lvl <= softCapAt) return base * lvl;
-  const hard = base * softCapAt;
-  const extra = base * (lvl - softCapAt) * 0.6; // diminishing returns
-  return hard + extra;
+  if(lvl<=softCapAt) return base*lvl;
+  const hard=base*softCapAt;
+  const extra=base*(lvl-softCapAt)*0.55;
+  return hard+extra;
 }
-function tokenFormula(totalCyclesThisRun, resets, skillMult=1, shopMult=1) {
-  // Logarithmic reward — never stalls, never explodes
-  const base = Math.pow(totalCyclesThisRun / 5000, 0.68);
-  const resetBonus = 1 + resets * 0.05; // 5% more per reset (incentivizes multiple runs)
-  return Math.max(1, Math.floor(base * resetBonus * skillMult * shopMult));
+
+// BALANCED token formula — much less generous
+// First prestige at 50K cycles should yield ~5-15 tokens, not 300K
+function kTokenFormula(totalCyclesThisRun, kResets, shopMult=1) {
+  if(totalCyclesThisRun < 50000) return 0;
+  const base = Math.pow((totalCyclesThisRun - 40000) / 10000, 0.55);
+  const resetBonus = 1 + kResets * 0.04;
+  return Math.max(1, Math.floor(base * resetBonus * shopMult));
+}
+function aTokenFormula(totalCyclesThisRun, aResets, shopMult=1) {
+  if(totalCyclesThisRun < 5e7) return 0;
+  const base = Math.pow((totalCyclesThisRun - 4e7) / 1e7, 0.5);
+  const resetBonus = 1 + aResets * 0.04;
+  return Math.max(1, Math.floor(base * resetBonus * shopMult));
+}
+function vTokenFormula(totalCyclesThisRun, vResets, shopMult=1) {
+  if(totalCyclesThisRun < 1e10) return 0;
+  const base = Math.pow((totalCyclesThisRun - 9e9) / 1e9, 0.45);
+  const resetBonus = 1 + vResets * 0.04;
+  return Math.max(1, Math.floor(base * resetBonus * shopMult));
 }
 
 /* ═══════════════════════════════════════════════
-   PHASE SYSTEM
-   Each phase: new mechanics, UI transformation
+   PHASES — 7 phases now, much more content
 ═══════════════════════════════════════════════ */
 const PHASES = [
-  { id:0, name:'BOOT',         color:'phase-0', next:'NETWORKED', threshold:0,       glyph:'⬡',  desc:'Single CPU core. Manual execution.' },
-  { id:1, name:'NETWORKED',    color:'phase-1', next:'COMPILED',  threshold:1000,    glyph:'⬢',  desc:'Threads unlock. Automation begins.' },
-  { id:2, name:'COMPILED',     color:'phase-2', next:'ENTROPIC',  threshold:25000,   glyph:'◉',  desc:'Code Blocks. Branching paths diverge.' },
-  { id:3, name:'ENTROPIC',     color:'phase-3', next:'TRANSCENDENT',threshold:500000, glyph:'⊛', desc:'Entropy leaks. Chaos mechanics activate.' },
-  { id:4, name:'TRANSCENDENT', color:'phase-4', next:'∞',          threshold:5000000, glyph:'◈', desc:'Void unlocked. Endgame.' },
+  { id:0, name:'BOOT',          next:'NETWORKED',    threshold:0,       glyph:'⬡',  desc:'Single CPU core. Manual execution.' },
+  { id:1, name:'NETWORKED',     next:'COMPILED',     threshold:1000,    glyph:'⬢',  desc:'Threads unlock. Automation begins.' },
+  { id:2, name:'COMPILED',      next:'ENTROPIC',     threshold:25000,   glyph:'◉',  desc:'Code Blocks. Branching paths diverge.' },
+  { id:3, name:'ENTROPIC',      next:'TRANSCENDENT', threshold:500000,  glyph:'⊛',  desc:'Entropy leaks. Chaos mechanics activate.' },
+  { id:4, name:'TRANSCENDENT',  next:'SINGULARITY',  threshold:5e6,     glyph:'◈',  desc:'Void unlocked. First prestige loop.' },
+  { id:5, name:'SINGULARITY',   next:'RECURSION',    threshold:5e9,     glyph:'✦',  desc:'Architect layer. Deep automation.' },
+  { id:6, name:'RECURSION',     next:'∞ OMEGA',      threshold:5e12,    glyph:'∞',  desc:'Void Ascension. True endgame.' },
 ];
 
 /* ═══════════════════════════════════════════════
-   DATA: UPGRADES
+   UPGRADES — expanded tiers 1-8
 ═══════════════════════════════════════════════ */
 const UPGRADES = [
-  // TIER 1
-  { id:'u1', t:1, name:'Idle Daemon',      fx:'+{v} Cycles/s (auto)',    eff:'cps',     base:0.8,  cost:[100,'cycles'],  max:20, icon:'👾' },
-  { id:'u2', t:1, name:'Click Opt.',        fx:'+{v} Cycles/click',       eff:'click',   base:4,    cost:[150,'cycles'],  max:20, icon:'🖱️' },
-  { id:'u3', t:1, name:'Thread Spawn',      fx:'+{v} Threads/s',          eff:'threads', base:0.12, cost:[400,'cycles'],  max:15, icon:'🔵', unlockAt:['phase',1] },
-  // TIER 2
-  { id:'u4', t:2, name:'Parallel Proc',     fx:'+{v} Cycles/s',           eff:'cps',     base:6,    cost:[600,'cycles'],  max:18, icon:'⚙️', req:'u3' },
-  { id:'u5', t:2, name:'Cache Burst',       fx:'+{v} Cycles/click',       eff:'click',   base:25,   cost:[1000,'cycles'], max:16, icon:'💥', req:'u2' },
-  { id:'u6', t:2, name:'Code Compiler',     fx:'+{v} Code/s',             eff:'code',    base:0.06, cost:[3,'threads'],   max:12, icon:'🧬', req:'u3', unlockAt:['phase',2] },
-  // TIER 3
-  { id:'u7', t:3, name:'Neural Net',        fx:'+{v} Cycles/s',           eff:'cps',     base:55,   cost:[8000,'cycles'], max:14, icon:'🧠', req:'u6' },
-  { id:'u8', t:3, name:'Mem Leak Tap',      fx:'+{v} Cycles/click',       eff:'click',   base:200,  cost:[12000,'cycles'],max:12, icon:'🔓', req:'u5' },
-  { id:'u9', t:3, name:'Entropy Engine',    fx:'+{v} Entropy/s',          eff:'entropy', base:0.012,cost:[1.5,'code'],    max:10, icon:'🌀', req:'u6', unlockAt:['phase',3] },
-  { id:'u10',t:3, name:'Code→Cycles',       fx:'Code amplifies +{v} CPS', eff:'cps',     base:350,  cost:[2.5,'code'],   max:10, icon:'📈', req:'u9' },
-  // TIER 4
-  { id:'u11',t:4, name:'Chaos Engine',      fx:'+{v} Cycles/s',           eff:'cps',     base:1200, cost:[80000,'cycles'],max:10, icon:'🌪️', req:'u9' },
-  { id:'u12',t:4, name:'Quantum Strike',    fx:'+{v} Cycles/click',       eff:'click',   base:2500, cost:[120000,'cycles'],max:10,icon:'⚛️', req:'u8' },
-  { id:'u13',t:4, name:'Void Tap',          fx:'+{v} Void/s',             eff:'void',    base:0.0015,cost:[2,'entropy'],  max:8, icon:'🔮', req:'u9', unlockAt:['phase',4] },
-  { id:'u14',t:4, name:'Entropy→Cycles',    fx:'Entropy→+{v} CPS',        eff:'cps',     base:12000,cost:[3,'entropy'],   max:8, icon:'🔁', req:'u13' },
-  // TIER 5
-  { id:'u15',t:5, name:'Singularity Core',  fx:'+{v} Cycles/s',           eff:'cps',     base:1.2e5,cost:[1.5e6,'cycles'],max:8, icon:'💫', req:'u13' },
-  { id:'u16',t:5, name:'Void Resonance',    fx:'Void→+{v} CPS',           eff:'cps',     base:8e6,  cost:[0.15,'void'],  max:6, icon:'◈',  req:'u13' },
-  { id:'u17',t:5, name:'SYNTH Core',        fx:'+{v} ALL (mult)',          eff:'mult',    base:1.5,  cost:[1,'void'],     max:5, icon:'🌌', req:'u16' },
+  // TIER 1 — basic
+  { id:'u1',  t:1, name:'Idle Daemon',        fx:'+{v} Cycles/s',          eff:'cps',     base:0.8,    cost:[80,'cycles'],    max:25, icon:'👾' },
+  { id:'u2',  t:1, name:'Click Optimizer',    fx:'+{v} Cycles/click',      eff:'click',   base:3,      cost:[100,'cycles'],   max:25, icon:'🖱️' },
+  { id:'u3',  t:1, name:'Thread Spawn',       fx:'+{v} Threads/s',         eff:'threads', base:0.1,    cost:[350,'cycles'],   max:20, icon:'🔵', unlockAt:['phase',1] },
+  // TIER 2 — mid early
+  { id:'u4',  t:2, name:'Parallel Proc',      fx:'+{v} Cycles/s',          eff:'cps',     base:5,      cost:[500,'cycles'],   max:20, icon:'⚙️', req:'u3' },
+  { id:'u5',  t:2, name:'Cache Burst',        fx:'+{v} Cycles/click',      eff:'click',   base:20,     cost:[800,'cycles'],   max:20, icon:'💥', req:'u2' },
+  { id:'u6',  t:2, name:'Code Compiler',      fx:'+{v} Code/s',            eff:'code',    base:0.05,   cost:[2,'threads'],    max:15, icon:'🧬', req:'u3', unlockAt:['phase',2] },
+  { id:'u7',  t:2, name:'Thread Amp',         fx:'+{v} Threads/s (bonus)', eff:'threads', base:0.4,    cost:[2000,'cycles'],  max:18, icon:'🔷', req:'u3' },
+  // TIER 3 — late early
+  { id:'u8',  t:3, name:'Neural Net',         fx:'+{v} Cycles/s',          eff:'cps',     base:50,     cost:[7000,'cycles'],  max:18, icon:'🧠', req:'u6' },
+  { id:'u9',  t:3, name:'Mem Leak Tap',       fx:'+{v} Cycles/click',      eff:'click',   base:180,    cost:[10000,'cycles'], max:16, icon:'🔓', req:'u5' },
+  { id:'u10', t:3, name:'Entropy Engine',     fx:'+{v} Entropy/s',         eff:'entropy', base:0.008,  cost:[1.2,'code'],     max:15, icon:'🌀', req:'u6', unlockAt:['phase',3] },
+  { id:'u11', t:3, name:'Code→Cycles',        fx:'Code amplifies +{v} CPS',eff:'cps',     base:300,    cost:[2,'code'],       max:15, icon:'📈', req:'u10' },
+  // TIER 4 — mid game
+  { id:'u12', t:4, name:'Chaos Engine',       fx:'+{v} Cycles/s',          eff:'cps',     base:1000,   cost:[70000,'cycles'], max:14, icon:'🌪️', req:'u10' },
+  { id:'u13', t:4, name:'Quantum Strike',     fx:'+{v} Cycles/click',      eff:'click',   base:2000,   cost:[100000,'cycles'],max:14, icon:'⚛️', req:'u9' },
+  { id:'u14', t:4, name:'Void Tap',           fx:'+{v} Void/s',            eff:'void',    base:0.001,  cost:[1.5,'entropy'],  max:12, icon:'🔮', req:'u10', unlockAt:['phase',4] },
+  { id:'u15', t:4, name:'Entropy→Cycles',     fx:'Entropy→+{v} CPS',       eff:'cps',     base:10000,  cost:[2.5,'entropy'],  max:12, icon:'🔁', req:'u14' },
+  { id:'u16', t:4, name:'Deep Threads',       fx:'+{v} Threads/s',         eff:'threads', base:3,      cost:[5000,'cycles'],  max:20, icon:'🌐', req:'u7', unlockAt:['phase',3] },
+  // TIER 5 — late game
+  { id:'u17', t:5, name:'Singularity Core',   fx:'+{v} Cycles/s',          eff:'cps',     base:1.2e5,  cost:[1.2e6,'cycles'], max:12, icon:'💫', req:'u14' },
+  { id:'u18', t:5, name:'Void Resonance',     fx:'Void→+{v} CPS',          eff:'cps',     base:6e6,    cost:[0.1,'void'],     max:10, icon:'◈',  req:'u14' },
+  { id:'u19', t:5, name:'SYNTH Core',         fx:'+{v}% ALL mult',         eff:'mult',    base:0.2,    cost:[0.8,'void'],     max:8,  icon:'🌌', req:'u18' },
+  { id:'u20', t:5, name:'Hyper Code',         fx:'+{v} Code/s',            eff:'code',    base:0.8,    cost:[3,'entropy'],    max:12, icon:'💎', req:'u10', unlockAt:['phase',4] },
+  // TIER 6 — singularity
+  { id:'u21', t:6, name:'Arch Compiler',      fx:'+{v} Cycles/s',          eff:'cps',     base:5e6,    cost:[2e9,'cycles'],   max:10, icon:'🏗️', req:'u19', unlockAt:['phase',5] },
+  { id:'u22', t:6, name:'Arch Threads',       fx:'+{v} Threads/s',         eff:'threads', base:50,     cost:[1e4,'code'],     max:10, icon:'🔗', req:'u20', unlockAt:['phase',5] },
+  { id:'u23', t:6, name:'Arch Void',          fx:'+{v} Void/s',            eff:'void',    base:0.01,   cost:[0.5,'void'],     max:10, icon:'🌀', req:'u19', unlockAt:['phase',5] },
+  { id:'u24', t:6, name:'Deep Neural',        fx:'+{v} Cycles/click',      eff:'click',   base:5e5,    cost:[5e8,'cycles'],   max:10, icon:'🧬', req:'u13', unlockAt:['phase',5] },
+  // TIER 7 — recursion
+  { id:'u25', t:7, name:'Omega Loop',         fx:'+{v} Cycles/s',          eff:'cps',     base:1e9,    cost:[1e12,'cycles'],  max:8,  icon:'∞',  req:'u21', unlockAt:['phase',6] },
+  { id:'u26', t:7, name:'Void Cascade',       fx:'+{v} Void/s',            eff:'void',    base:0.05,   cost:[1,'void'],       max:8,  icon:'🔮', req:'u23', unlockAt:['phase',6] },
+  { id:'u27', t:7, name:'Recursion Engine',   fx:'+{v}% ALL mult',         eff:'mult',    base:0.5,    cost:[2,'void'],       max:8,  icon:'🔄', req:'u26', unlockAt:['phase',6] },
+  // TIER 8 — omega endgame
+  { id:'u28', t:8, name:'OMEGA_CORE',         fx:'+{v} Cycles/s',          eff:'cps',     base:1e12,   cost:[1e15,'cycles'],  max:6,  icon:'⭐', req:'u25', unlockAt:['phase',6] },
+  { id:'u29', t:8, name:'VOID_SINGULARITY',   fx:'+{v} Void/s (mega)',     eff:'void',    base:1,      cost:[5,'void'],       max:6,  icon:'💠', req:'u27', unlockAt:['phase',6] },
+  { id:'u30', t:8, name:'SYNTH_OMEGA',        fx:'+{v}% ALL mult',         eff:'mult',    base:1.5,    cost:[10,'void'],      max:5,  icon:'🌟', req:'u29', unlockAt:['phase',6] },
 ];
 
 /* ═══════════════════════════════════════════════
-   SKILL TREE — 3 irreversible paths
-   T = THROUGHPUT (auto/offline focus)
-   L = LATENCY (click/crit focus)
-   C = CHAOS (gamble/entropy focus)
-   Choosing any path at Layer 2 locks the other two
+   SKILL TREE — 3 paths
 ═══════════════════════════════════════════════ */
 const SKILLS = [
-  // Layer 0 — free (no path conflict)
-  { id:'s0',  lyr:0, name:'Boot Sequence',     path:'',  icon:'🚀', fx:'×2 base CPS',                  cost:[800,'cycles'],  req:[] },
-  { id:'s1',  lyr:0, name:'Branch Prediction', path:'',  icon:'🎯', fx:'Crits enabled (10%, ×10)',      cost:[1500,'cycles'], req:[] },
-  // Layer 1 — convergent
-  { id:'s1a', lyr:1, name:'Pipeline Opt.',      path:'T', icon:'⚙️', fx:'×2 all auto-miners',            cost:[3000,'cycles'], req:['s0'] },
-  { id:'s1b', lyr:1, name:'Overclocking',       path:'L', icon:'💻', fx:'×4 click power',               cost:[3000,'cycles'], req:['s1'] },
-  { id:'s1c', lyr:1, name:'Entropy Seed',       path:'C', icon:'🌀', fx:'×3 Entropy prod · gamble payout ×1.5',cost:[2,'threads'],req:['s0','s1'] },
-  // Layer 2 — PATH LOCK (choosing any locks the other two)
-  { id:'s2T', lyr:2, name:'THROUGHPUT PATH',    path:'T', icon:'⟳', fx:'80% offline efficiency · ×3 auto/idle · idle earns during tab close',cost:[5,'threads'],req:['s1a'],locks:['s2L','s2C'] },
-  { id:'s2L', lyr:2, name:'LATENCY PATH',       path:'L', icon:'⚡', fx:'Combo cap 50× · Crit 25% · ×6 click · click earns 30% of CPS',    cost:[5,'threads'],req:['s1b'],locks:['s2T','s2C'] },
-  { id:'s2C', lyr:2, name:'CHAOS PATH',         path:'C', icon:'🎲', fx:'Gamble jackpot ×5 · Entropy ×5 · 5% global crit on any gain',      cost:[5,'code'],   req:['s1c'],locks:['s2T','s2L'] },
-  // Layer 3 — path-specific
-  { id:'s3T', lyr:3, name:'Distributed Net',    path:'T', icon:'🌐', fx:'×5 Threads/s · passive +1% CPS per min played',                   cost:[10,'code'],  req:['s2T'] },
-  { id:'s3L', lyr:3, name:'Hyperthreading',     path:'L', icon:'🔥', fx:'×10 click · every 100 clicks: auto-spike +5s full CPS',           cost:[1,'entropy'],req:['s2L'] },
-  { id:'s3C', lyr:3, name:'Chaos Protocol',     path:'C', icon:'💀', fx:'Void Tap ×5 · on every gamble win: +1% of total cycles',          cost:[2,'entropy'],req:['s2C'] },
-  // Layer 4 — endgame convergent
-  { id:'s4',  lyr:4, name:'TRANSCENDENCE',      path:'',  icon:'🌌', fx:'×50 ALL production · unlocks Void Tap',                            cost:[1,'void'],   req:['s3T','s3L','s3C'], reqAny:true },
+  { id:'s0',  lyr:0, name:'Boot Sequence',     path:'',  icon:'🚀', fx:'×2 base CPS',                  cost:[600,'cycles'],  req:[] },
+  { id:'s1',  lyr:0, name:'Branch Prediction', path:'',  icon:'🎯', fx:'Crits enabled (10%, ×10)',      cost:[1200,'cycles'], req:[] },
+  { id:'s1a', lyr:1, name:'Pipeline Opt.',      path:'T', icon:'⚙️', fx:'×2 all auto-miners',            cost:[2500,'cycles'], req:['s0'] },
+  { id:'s1b', lyr:1, name:'Overclocking',       path:'L', icon:'💻', fx:'×4 click power',               cost:[2500,'cycles'], req:['s1'] },
+  { id:'s1c', lyr:1, name:'Entropy Seed',       path:'C', icon:'🌀', fx:'×3 Entropy prod',              cost:[1.5,'threads'], req:['s0','s1'] },
+  { id:'s2T', lyr:2, name:'THROUGHPUT PATH',    path:'T', icon:'⟳', fx:'80% offline · ×3 auto · idle gains persist',cost:[4,'threads'],req:['s1a'],locks:['s2L','s2C'] },
+  { id:'s2L', lyr:2, name:'LATENCY PATH',       path:'L', icon:'⚡', fx:'Combo cap 50× · Crit 25% · ×6 click',    cost:[4,'threads'],req:['s1b'],locks:['s2T','s2C'] },
+  { id:'s2C', lyr:2, name:'CHAOS PATH',         path:'C', icon:'🎲', fx:'Entropy ×5 · 5% global crit on any gain', cost:[4,'code'],   req:['s1c'],locks:['s2T','s2L'] },
+  { id:'s3T', lyr:3, name:'Distributed Net',    path:'T', icon:'🌐', fx:'×5 Threads/s · +1% CPS/min played',      cost:[8,'code'],   req:['s2T'] },
+  { id:'s3L', lyr:3, name:'Hyperthreading',     path:'L', icon:'🔥', fx:'×10 click · every 100 clicks: spike 5s', cost:[0.8,'entropy'],req:['s2L'] },
+  { id:'s3C', lyr:3, name:'Chaos Protocol',     path:'C', icon:'💀', fx:'Void Tap ×5 · gamble win: +1% total',    cost:[1.5,'entropy'],req:['s2C'] },
+  { id:'s4',  lyr:4, name:'TRANSCENDENCE',      path:'',  icon:'🌌', fx:'×50 ALL production · endgame unlocked',  cost:[0.8,'void'], req:['s3T','s3L','s3C'], reqAny:true },
+  // Extended skill tree for singularity/recursion phases
+  { id:'s5T', lyr:5, name:'Arch Throughput',    path:'T', icon:'🏗️', fx:'×20 offline · Arch resources ×5',       cost:[50,'code'],  req:['s4'], unlockAt:['phase',5] },
+  { id:'s5L', lyr:5, name:'Arch Latency',       path:'L', icon:'⚡', fx:'Combo cap 200× · Crit ×20 · ×100 click',cost:[5,'entropy'],req:['s4'], unlockAt:['phase',5] },
+  { id:'s5C', lyr:5, name:'Arch Chaos',         path:'C', icon:'💀', fx:'Void ×50 · 20% global crit',             cost:[1,'void'],   req:['s4'], unlockAt:['phase',5] },
+  { id:'s6',  lyr:6, name:'OMEGA_ASCENSION',    path:'',  icon:'∞',  fx:'×500 ALL · Void Singularity unlocked',   cost:[5,'void'],   req:['s5T','s5L','s5C'], reqAny:true, unlockAt:['phase',6] },
 ];
 
 /* ═══════════════════════════════════════════════
-   GAMBLE — transparent probability display
-═══════════════════════════════════════════════ */
-const GAMBLES = [
-  { id:'g1', name:'BIT_FLIP',    odds:.5,  winMult:1.75, loseMult:.5,  cost:[2000,'cycles'],   desc:'50/50. Win 75% extra or keep half. Safe.' },
-  { id:'g2', name:'STACK_RISK',  odds:.35, winMult:2.5,  loseMult:0,   cost:[800,'threads'],   desc:'35% to 2.5×. Lose all on fail.' },
-  { id:'g3', name:'NULL_PTR',    odds:.2,  winMult:5,    loseMult:0,   cost:[1.5,'code'],      desc:'20% at 5×. Zero survivors otherwise.' },
-  { id:'g4', name:'ENTROPY_BET', odds:.1,  winMult:10,   loseMult:0,   cost:[1,'entropy'],     desc:'10% at 10×. Entropy gone on loss.' },
-  { id:'g5', name:'VOID_JACKPOT',odds:.04, winMult:30,   loseMult:0,   cost:[0.05,'void'],     desc:'4% at 30×. True void risk. Endgame only.' },
-];
-
-/* ═══════════════════════════════════════════════
-   KERNEL SHOP — permanent cross-run upgrades
-   Tiered by prestige count requirement
-═══════════════════════════════════════════════ */
-const KSHOP = [
-  { id:'k1',  name:'Warm Boot',        desc:'+25 CPS on run start',               cost:1,   req:0  },
-  { id:'k2',  name:'Click Heritage',   desc:'×2 click power (all runs)',           cost:2,   req:0  },
-  { id:'k3',  name:'Thread Carry',     desc:'Keep 30% Threads on reset',           cost:3,   req:1  },
-  { id:'k4',  name:'Token Amp',        desc:'×1.5 token earn per reset',           cost:4,   req:1  },
-  { id:'k5',  name:'Run Momentum',     desc:'+8% all prod per reset (stacks)',     cost:5,   req:2  },
-  { id:'k6',  name:'Combo Anchor',     desc:'Combo floor: never below ×3',         cost:4,   req:2  },
-  { id:'k7',  name:'Code Seed',        desc:'Start with 1 Code Block',             cost:6,   req:3  },
-  { id:'k8',  name:'Entropy Inherit',  desc:'Keep 20% Entropy on reset',           cost:8,   req:3  },
-  { id:'k9',  name:'Lucky Circuits',   desc:'Gamble win payouts ×1.75',            cost:6,   req:2  },
-  { id:'k10', name:'Time Fold',        desc:'Offline efficiency: 35%→65%',         cost:8,   req:3  },
-  { id:'k11', name:'Void Seed',        desc:'Start with 0.02 Void Data',           cost:15,  req:4  },
-  { id:'k12', name:'Synth Awakened',   desc:'×15 ALL production (endgame)',        cost:30,  req:5  },
-  { id:'k13', name:'Daily Scaling',    desc:'Daily rewards scale with reset count',cost:10,  req:4  },
-  { id:'k14', name:'Event Amplifier',  desc:'Event rewards ×2',                    cost:12,  req:4  },
-  { id:'k15', name:'Path Transfer',    desc:'Carry 25% of path bonuses through reset',cost:20,req:5  },
-];
-
-/* ═══════════════════════════════════════════════
-   EVENTS — each changes optimal play
+   EVENTS
 ═══════════════════════════════════════════════ */
 const EVENTS = [
-  {
-    id:'ev1', type:'⚡ MEMORY LEAK',
-    title:'Memory Leak Detected',
-    desc:'Cycles leaking from buffer. Absorb before they dissipate.',
-    mechanic:'Click rapidly during this window — click gains ×3',
-    dur:60,
-    reward: ()=>({ cycles: G.cps*20 + G.clickPower*150 }),
-    mechClick: true, // click multiplier active during event
-  },
-  {
-    id:'ev2', type:'🔵 THREAD STORM',
-    title:'Thread Cascade',
-    desc:'Autonomous threads are spawning. Claim the overflow.',
-    mechanic:'Auto-income ×5 for event duration',
-    dur:45,
-    reward: ()=>({ threads: G.threadsCps*90 + 15, cycles: G.cps*45*5 }),
-    mechCps: 5,
-  },
-  {
-    id:'ev3', type:'🌀 ENTROPY SPIKE',
-    title:'System Entropy Rising',
-    desc:'Controlled chaos leaking rare entropy. Harvest now.',
-    mechanic:'Gamble win odds +20% during this window',
-    dur:90,
-    reward: ()=>({ entropy: Math.max(0.02, G.entropyCps*120 + 0.1) }),
-    mechGamble: 0.2,
-    unlockPhase: 3,
-  },
-  {
-    id:'ev4', type:'💥 KERNEL PANIC',
-    title:'BSOD Averted — Emergency Dump',
-    desc:'System crash prevented. Emergency cycle dump incoming.',
-    mechanic:'One-time massive cycles injection',
-    dur:30,
-    reward: ()=>({ cycles: Math.max(5000, G.totalCycles*0.08 + G.cps*30) }),
-  },
-  {
-    id:'ev5', type:'🔮 VOID RIFT',
-    title:'Dimensional Anomaly',
-    desc:'A void rift opened. Collect the resonance before it collapses.',
-    mechanic:'Void gain ×10 for event duration · claim for void bonus',
-    dur:120,
-    reward: ()=>({ void: Math.max(0.005, G.voidData*0.05 + 0.02), cycles: G.cps*120 }),
-    mechVoid: 10,
-    unlockPhase: 4,
-  },
-  {
-    id:'ev6', type:'📡 SIGNAL BURST',
-    title:'External Signal Received',
-    desc:'Unknown signal boosting local network efficiency.',
-    mechanic:'All resources +50% for 60s — passive only',
-    dur:60,
-    reward: ()=>({ cycles: G.cps*60*0.5, threads: G.threadsCps*60*0.5, code: G.codeCps*60*0.5 }),
-    mechAll: 0.5,
-  },
+  { id:'ev1', type:'⚡ MEMORY LEAK',   title:'Memory Leak',         desc:'Absorb cycles before they dissipate.',          mechanic:'Click gains ×3',                     dur:60,  reward:()=>({cycles:G.cps*20+G.clickPower*100}), mechClick:true },
+  { id:'ev2', type:'🔵 THREAD STORM',  title:'Thread Cascade',      desc:'Autonomous threads spawning. Claim overflow.',  mechanic:'Auto-income ×5 for duration',         dur:45,  reward:()=>({threads:G.threadsCps*90+10, cycles:G.cps*45*5}), mechCps:5 },
+  { id:'ev3', type:'🌀 ENTROPY SPIKE', title:'Entropy Rising',      desc:'Harvest rare entropy now.',                     mechanic:'Entropy ×3 for duration',             dur:90,  reward:()=>({entropy:Math.max(0.02,G.entropyCps*120+0.08)}), unlockPhase:3 },
+  { id:'ev4', type:'💥 KERNEL PANIC',  title:'Emergency Dump',      desc:'System crash averted. Cycle dump incoming.',    mechanic:'One-time massive injection',          dur:30,  reward:()=>({cycles:Math.max(5000,G.totalCycles*0.05+G.cps*30)}) },
+  { id:'ev5', type:'🔮 VOID RIFT',     title:'Void Rift',           desc:'Collect void resonance before collapse.',       mechanic:'Void gain ×10 for duration',          dur:120, reward:()=>({void:Math.max(0.005,G.voidData*0.05+0.015), cycles:G.cps*120}), mechVoid:10, unlockPhase:4 },
+  { id:'ev6', type:'📡 SIGNAL BURST',  title:'Signal Received',     desc:'Unknown signal boosting network efficiency.',   mechanic:'All resources +50% for 60s',          dur:60,  reward:()=>({cycles:G.cps*60*0.5, threads:G.threadsCps*60*0.5, code:G.codeCps*60*0.5}), mechAll:0.5 },
+  { id:'ev7', type:'💫 SINGULARITY',   title:'Mini Singularity',    desc:'Localised singularity event. Harvest now.',     mechanic:'CPS ×10 for duration',               dur:30,  reward:()=>({cycles:G.cps*300}), mechCps:10, unlockPhase:5 },
+  { id:'ev8', type:'∞ RECURSION',      title:'Recursive Loop',      desc:'Infinite loop detected — exploit it.',          mechanic:'All production ×20 for 30s',          dur:30,  reward:()=>({cycles:G.cps*600, void:G.voidCps*600}), mechAll:20, unlockPhase:6 },
 ];
 
 /* ═══════════════════════════════════════════════
-   DAILY REWARDS — scale with rank
+   DAILY REWARDS
 ═══════════════════════════════════════════════ */
 const DAILY_BASE = [
-  { icon:'⚡', type:'cycles',  label:'Cycles',      base:()=>5000 * Math.max(1, G.prestigeCount*0.5+1) },
-  { icon:'🔵', type:'threads', label:'Threads',     base:()=>20   * Math.max(1, G.prestigeCount*0.3+1) },
-  { icon:'🧬', type:'code',    label:'Code Blocks', base:()=>1.5  * Math.max(1, G.prestigeCount*0.2+1) },
-  { icon:'◈',  type:'tokens',  label:'Tokens',      base:()=>Math.max(1, Math.floor(G.prestigeCount/2)+1) },
-  { icon:'⚡', type:'cycles',  label:'Mega Cycles', base:()=>50000* Math.max(1, G.prestigeCount*0.8+1) },
-  { icon:'🌀', type:'entropy', label:'Entropy',     base:()=>0.5  * Math.max(1, G.prestigeCount*0.1+1) },
-  { icon:'💎', type:'tokens',  label:'Tokens',      base:()=>Math.max(3, Math.floor(G.prestigeCount/1.5)+2) },
+  { icon:'⚡', type:'cycles',  label:'Cycles',      base:()=>Math.max(5000,  5000 * Math.pow(1.5, G.kResets) * Math.pow(2, G.aResets)) },
+  { icon:'🔵', type:'threads', label:'Threads',     base:()=>Math.max(20,    20   * Math.pow(1.3, G.kResets)) },
+  { icon:'🧬', type:'code',    label:'Code Blocks', base:()=>Math.max(1,     1    * Math.pow(1.2, G.kResets)) },
+  { icon:'◈',  type:'kTokens', label:'K-Tokens',    base:()=>Math.max(1,     Math.floor(G.kResets/3)+1) },
+  { icon:'⚡', type:'cycles',  label:'Mega Cycles', base:()=>Math.max(50000, 50000* Math.pow(1.8, G.kResets) * Math.pow(2.5, G.aResets)) },
+  { icon:'🌀', type:'entropy', label:'Entropy',     base:()=>Math.max(0.3,   0.3  * Math.pow(1.2, G.kResets)) },
+  { icon:'◉',  type:'aTokens', label:'A-Tokens',    base:()=>Math.max(1,     Math.floor(G.aResets/2)+1) },
 ];
 
+/* ═══════════════════════════════════════════════
+   KERNEL SHOP — three tiers based on prestige type
+═══════════════════════════════════════════════ */
+const KSHOP = [
+  // K-Tier (Kernel Tokens)
+  { id:'k1',  tier:'K', name:'Warm Boot',        desc:'+25 CPS on run start',                cost:{kTokens:1},  kReq:0, aReq:0, vReq:0 },
+  { id:'k2',  tier:'K', name:'Click Heritage',   desc:'×2 click power (all runs)',            cost:{kTokens:2},  kReq:0, aReq:0, vReq:0 },
+  { id:'k3',  tier:'K', name:'Thread Carry',     desc:'Keep 30% Threads on K-Reset',         cost:{kTokens:3},  kReq:1, aReq:0, vReq:0 },
+  { id:'k4',  tier:'K', name:'Token Amplifier',  desc:'×1.3 K-token earn per reset',         cost:{kTokens:4},  kReq:1, aReq:0, vReq:0 },
+  { id:'k5',  tier:'K', name:'Run Momentum',     desc:'+6% all prod per K-reset (stacks)',   cost:{kTokens:5},  kReq:2, aReq:0, vReq:0 },
+  { id:'k6',  tier:'K', name:'Combo Anchor',     desc:'Combo floor: never below ×3',         cost:{kTokens:4},  kReq:2, aReq:0, vReq:0 },
+  { id:'k7',  tier:'K', name:'Code Seed',        desc:'Start with 2 Code Blocks',            cost:{kTokens:6},  kReq:3, aReq:0, vReq:0 },
+  { id:'k8',  tier:'K', name:'Entropy Inherit',  desc:'Keep 20% Entropy on K-Reset',         cost:{kTokens:8},  kReq:3, aReq:0, vReq:0 },
+  { id:'k9',  tier:'K', name:'Lucky Circuits',   desc:'All gains occasionally ×2 (8% chance)',cost:{kTokens:6}, kReq:2, aReq:0, vReq:0 },
+  { id:'k10', tier:'K', name:'Time Fold',        desc:'Offline efficiency: 35%→65%',         cost:{kTokens:8},  kReq:3, aReq:0, vReq:0 },
+  { id:'k11', tier:'K', name:'Void Seed',        desc:'Start with 0.02 Void Data',           cost:{kTokens:15}, kReq:5, aReq:0, vReq:0 },
+  { id:'k12', tier:'K', name:'Event Amplifier',  desc:'Event rewards ×2',                    cost:{kTokens:10}, kReq:4, aReq:0, vReq:0 },
+  { id:'k13', tier:'K', name:'Daily Scaling',    desc:'Daily rewards scale with all resets',  cost:{kTokens:8},  kReq:4, aReq:0, vReq:0 },
+  { id:'k14', tier:'K', name:'Synth Awakened',   desc:'×5 ALL production (stacks w/ others)',cost:{kTokens:20}, kReq:6, aReq:0, vReq:0 },
+  // A-Tier (Architect Tokens)
+  { id:'a1',  tier:'A', name:'Deep Carry',       desc:'Keep 60% of upgrades on A-Reset',     cost:{aTokens:2},  kReq:0, aReq:1, vReq:0 },
+  { id:'a2',  tier:'A', name:'Phase Seed',       desc:'Start at Phase 1 immediately',         cost:{aTokens:3},  kReq:0, aReq:1, vReq:0 },
+  { id:'a3',  tier:'A', name:'Arch Momentum',    desc:'+15% all prod per A-reset (stacks)',  cost:{aTokens:4},  kReq:0, aReq:2, vReq:0 },
+  { id:'a4',  tier:'A', name:'Void Inherit',     desc:'Keep 40% Void on A-Reset',            cost:{aTokens:5},  kReq:0, aReq:2, vReq:0 },
+  { id:'a5',  tier:'A', name:'Skill Carry',      desc:'Keep 2 skill tree nodes on A-Reset',  cost:{aTokens:8},  kReq:0, aReq:3, vReq:0 },
+  { id:'a6',  tier:'A', name:'Arch Amplifier',   desc:'×1.5 A-token earn per A-reset',       cost:{aTokens:6},  kReq:0, aReq:2, vReq:0 },
+  { id:'a7',  tier:'A', name:'Mega Synth',       desc:'×25 ALL production',                  cost:{aTokens:15}, kReq:0, aReq:5, vReq:0 },
+  { id:'a8',  tier:'A', name:'Deep Code',        desc:'Start with 10 Code Blocks',           cost:{aTokens:10}, kReq:0, aReq:4, vReq:0 },
+  // V-Tier (Void Tokens)
+  { id:'v1',  tier:'V', name:'Void Permanence',  desc:'×100 ALL production',                 cost:{vTokens:1},  kReq:0, aReq:0, vReq:1 },
+  { id:'v2',  tier:'V', name:'Omega Carry',      desc:'Keep 80% upgrades on any reset',      cost:{vTokens:2},  kReq:0, aReq:0, vReq:1 },
+  { id:'v3',  tier:'V', name:'Void Resonance',   desc:'×10 void production permanently',     cost:{vTokens:3},  kReq:0, aReq:0, vReq:2 },
+  { id:'v4',  tier:'V', name:'Infinite Loop',    desc:'×1000 ALL production (endgame)',       cost:{vTokens:10}, kReq:0, aReq:0, vReq:3 },
+];
+
+/* ═══════════════════════════════════════════════
+   ACHIEVEMENTS
+═══════════════════════════════════════════════ */
 const ACHIEVEMENTS = [
   { id:'a1',  name:'First Execution',    desc:'Click once',                          icon:'⚡', chk:s=>s.totalClicks>=1 },
   { id:'a2',  name:'Networked',          desc:'Enter Phase 1',                       icon:'🌐', chk:s=>s.phase>=1 },
@@ -893,69 +725,71 @@ const ACHIEVEMENTS = [
   { id:'a4',  name:'Click-1000',         desc:'Click 1,000 times',                   icon:'🖱️', chk:s=>s.totalClicks>=1000 },
   { id:'a5',  name:'Compiled',           desc:'Produce Code Blocks',                 icon:'🧬', chk:s=>s.code>0 },
   { id:'a6',  name:'Combo ×10',          desc:'Reach ×10 combo',                     icon:'🔥', chk:s=>s.bestCombo>=10 },
-  { id:'a7',  name:'First Reset',        desc:'Kernel Reset once',                   icon:'◈',  chk:s=>s.prestigeCount>=1 },
-  { id:'a8',  name:'Risk Taker',         desc:'Win a gamble',                        icon:'🎰', chk:s=>s.gamblesWon>=1 },
-  { id:'a9',  name:'Critical Hit',       desc:'Land a crit click',                   icon:'💥', chk:s=>s.critsLanded>=1 },
-  { id:'a10', name:'Week Streak',        desc:'7-day login streak',                  icon:'📅', chk:s=>s.loginStreak>=7 },
-  { id:'a11', name:'Entropic',           desc:'Produce Entropy',                     icon:'🌀', chk:s=>s.entropy>0 },
-  { id:'a12', name:'1M Lifetime',        desc:'1M Cycles lifetime',                  icon:'💎', chk:s=>s.lifetimeCycles>=1e6 },
-  { id:'a13', name:'Void Touched',       desc:'Produce Void Data',                   icon:'🔮', chk:s=>s.voidData>0 },
-  { id:'a14', name:'Path Chosen',        desc:'Lock in a skill path',                icon:'🔀', chk:s=>!!s.chosenPath },
-  { id:'a15', name:'10K CPS',            desc:'Reach 10,000 Cycles/s',               icon:'🧠', chk:s=>s.cps>=10000 },
-  { id:'a16', name:'Event Streak ×5',    desc:'Claim 5 events',                      icon:'⚡', chk:s=>s.eventsCollected>=5 },
-  { id:'a17', name:'Lucky 7',            desc:'Win 7 gambles in a row',              icon:'🍀', chk:s=>s.winStreak>=7 },
-  { id:'a18', name:'1B Lifetime',        desc:'1B Cycles lifetime',                  icon:'💰', chk:s=>s.lifetimeCycles>=1e9 },
-  { id:'a19', name:'Transcended',        desc:'Unlock Transcendence skill',          icon:'🌌', chk:s=>!!s.skills?.s4 },
-  { id:'a20', name:'SYNTH_COMPLETE',     desc:'1B CPS',                              icon:'🤖', chk:s=>s.cps>=1e9 },
-  { id:'a21', name:'Path Master T',      desc:'Complete Throughput Path (Layer 3)',  icon:'⟳', chk:s=>!!s.skills?.s3T },
-  { id:'a22', name:'Path Master L',      desc:'Complete Latency Path (Layer 3)',     icon:'⚡', chk:s=>!!s.skills?.s3L },
-  { id:'a23', name:'Path Master C',      desc:'Complete Chaos Path (Layer 3)',       icon:'🎲', chk:s=>!!s.skills?.s3C },
-  { id:'a24', name:'Shop Full',          desc:'Buy 10 Kernel modules',               icon:'🛒', chk:s=>Object.keys(s.kernelShop||{}).length>=10 },
-  { id:'a25', name:'5 Resets',           desc:'Kernel Reset 5 times',               icon:'🔄', chk:s=>s.prestigeCount>=5 },
+  { id:'a7',  name:'First K-Reset',      desc:'Kernel Reset once',                   icon:'◈',  chk:s=>s.kResets>=1 },
+  { id:'a8',  name:'Critical Hit',       desc:'Land a crit click',                   icon:'💥', chk:s=>s.critsLanded>=1 },
+  { id:'a9',  name:'Week Streak',        desc:'7-day login streak',                  icon:'📅', chk:s=>s.loginStreak>=7 },
+  { id:'a10', name:'Entropic',           desc:'Produce Entropy',                     icon:'🌀', chk:s=>s.entropy>0 },
+  { id:'a11', name:'1M Lifetime',        desc:'1M Cycles lifetime',                  icon:'💎', chk:s=>s.lifetimeCycles>=1e6 },
+  { id:'a12', name:'Void Touched',       desc:'Produce Void Data',                   icon:'🔮', chk:s=>s.voidData>0 },
+  { id:'a13', name:'Path Chosen',        desc:'Lock in a skill path',                icon:'🔀', chk:s=>!!s.chosenPath },
+  { id:'a14', name:'10K CPS',            desc:'Reach 10,000 CPS',                    icon:'🧠', chk:s=>s.cps>=10000 },
+  { id:'a15', name:'Event Streak ×5',    desc:'Claim 5 events',                      icon:'⚡', chk:s=>s.eventsCollected>=5 },
+  { id:'a16', name:'1B Lifetime',        desc:'1B Cycles lifetime',                  icon:'💰', chk:s=>s.lifetimeCycles>=1e9 },
+  { id:'a17', name:'Transcended',        desc:'Unlock Transcendence skill',          icon:'🌌', chk:s=>!!s.skills?.s4 },
+  { id:'a18', name:'1B CPS',             desc:'Reach 1B CPS',                        icon:'🤖', chk:s=>s.cps>=1e9 },
+  { id:'a19', name:'Singularity',        desc:'Enter Phase 5',                       icon:'✦',  chk:s=>s.phase>=5 },
+  { id:'a20', name:'First A-Reset',      desc:'Architect Reset once',                icon:'◉',  chk:s=>s.aResets>=1 },
+  { id:'a21', name:'First V-Reset',      desc:'Void Ascension once',                 icon:'◆',  chk:s=>s.vResets>=1 },
+  { id:'a22', name:'1T Lifetime',        desc:'1T Cycles lifetime',                  icon:'🌟', chk:s=>s.lifetimeCycles>=1e12 },
+  { id:'a23', name:'Recursion',          desc:'Enter Phase 6',                       icon:'∞',  chk:s=>s.phase>=6 },
+  { id:'a24', name:'5 K-Resets',         desc:'K-Reset 5 times',                     icon:'🔄', chk:s=>s.kResets>=5 },
+  { id:'a25', name:'Omega Achieved',     desc:'Unlock OMEGA_ASCENSION skill',        icon:'∞',  chk:s=>!!s.skills?.s6 },
+  { id:'a26', name:'1Q CPS',             desc:'Reach 1 Quadrillion CPS',             icon:'💠', chk:s=>s.cps>=1e15 },
+  { id:'a27', name:'Shop Complete',      desc:'Buy 15 Kernel Shop modules',          icon:'🛒', chk:s=>Object.keys(s.kernelShop||{}).length>=15 },
+  { id:'a28', name:'Click 10K',         desc:'Click 10,000 times',                  icon:'🔨', chk:s=>s.totalClicks>=10000 },
 ];
 
 const TUTORIAL_STEPS = [
-  { title:'SYS_BOOT', body:`You are <strong>SYNTH</strong> — a nascent AI bootstrapping from nothing.<br><br>Your goal: generate <span class="hl">Cycles</span>, evolve through 5 system <span class="hl">Phases</span>, and eventually escape the simulation.<br><br>This is a game of compounding decisions, not just bigger numbers.` },
-  { title:'THE_CORE', body:`Click the <strong>hexagonal CPU button</strong> to generate Cycles manually.<br><br>Build a <strong>Combo Multiplier</strong> by clicking rapidly — it decays if you pause. At ×10 combo you deal dramatically more damage.<br><br>Idle <span class="hl">Processes</span> run 24/7 even when you're away (offline progress).` },
-  { title:'PHASE_SYSTEM', body:`The <strong>Phase Bar</strong> tracks your current system state. Each Phase unlocks new mechanics and transforms the UI visually.<br><br><span class="hl">BOOT → NETWORKED → COMPILED → ENTROPIC → TRANSCENDENT</span><br><br>You're not just getting bigger numbers. Each phase changes what's optimal.` },
-  { title:'SKILL_PATHS', body:`At Layer 2 of the Skill Tree, you choose <strong>one of three irreversible paths</strong>:<br><br><span class="hl warn">THROUGHPUT</span> — maximize automation and offline gains<br><span class="hl warn">LATENCY</span> — dominate click damage and crits<br><span class="hl warn">CHAOS</span> — volatile gamble payouts and entropy mastery<br><br>The other two paths are <strong>permanently locked</strong> for that run.` },
-  { title:'RETENTION_LOOP', body:`Three things always visible on the left tell you exactly what to do next: <strong>Short / Medium / Long</strong> term goals.<br><br><strong>Daily Login</strong> rewards scale with your Reset count — they stay relevant forever. <strong>Random Events</strong> change what's optimal temporarily. <strong>Kernel Reset</strong> is your prestige — tokens persist forever.<br><br>Good luck, SYNTH. The simulation is watching.` },
+  { title:'SYS_BOOT', body:`You are <strong>SYNTH</strong> — a nascent AI bootstrapping from nothing.<br><br>Your goal: generate <span class="hl">Cycles</span>, evolve through 7 system <span class="hl">Phases</span>, and eventually escape into the Void.<br><br>This is a game of compounding decisions with ~24h+ of content.` },
+  { title:'THE_CORE', body:`Click the <strong>hexagonal CPU button</strong> to generate Cycles manually.<br><br>Build a <strong>Combo Multiplier</strong> by clicking rapidly — it decays if you pause. Upgrades auto-generate resources 24/7, even when offline.<br><br>When an upgrade has a <span class="hl warn">glowing amber border</span>, you can afford it — buy it!` },
+  { title:'PRESTIGE_TIERS', body:`There are <strong>3 prestige tiers</strong> that reset your run for permanent power:<br><br><span class="hl">KERNEL RESET ◈</span> — First prestige at 50K cycles. Earns K-Tokens.<br><span class="hl">ARCHITECT RESET ◉</span> — Second prestige at 50M cycles. Earns A-Tokens.<br><span class="hl">VOID ASCENSION ◆</span> — Third prestige at 10T cycles. Earns V-Tokens.` },
+  { title:'SKILL_PATHS', body:`At Layer 2 of the Skill Tree, choose <strong>one of three irreversible paths</strong>:<br><br><span class="hl warn">THROUGHPUT</span> — maximize automation and offline gains<br><span class="hl warn">LATENCY</span> — dominate click damage and crits<br><span class="hl warn">CHAOS</span> — volatile entropy and void mastery<br><br>The other two paths are <strong>permanently locked</strong> for that run.` },
+  { title:'DAILY_REWARDS', body:`<strong>Daily Login</strong> rewards appear every 24h — they scale with your prestige count so they remain relevant forever.<br><br>Save data persists in your browser's localStorage. <strong>Do not clear site data</strong> or you'll lose progress.<br><br>Good luck, SYNTH. The simulation is watching.` },
 ];
 
 /* ═══════════════════════════════════════════════
    STATE
 ═══════════════════════════════════════════════ */
-const DEF = {
-  cycles:0, threads:0, code:0, entropy:0, void:0, tokens:0,
+const DEF_STATE = {
+  cycles:0, threads:0, code:0, entropy:0, voidData:0, kTokens:0, aTokens:0, vTokens:0,
   totalCycles:0, lifetimeCycles:0, totalClicks:0, critsLanded:0,
-  prestigeCount:0,
+  kResets:0, aResets:0, vResets:0,
   phase:0,
   upgrades:{}, skills:{}, kernelShop:{}, achievements:{},
   chosenPath:'',
-  gamblesWon:0, gamblesLost:0, winStreak:0, eventsCollected:0,
+  eventsCollected:0,
   bestCps:0, bestCombo:1, playTime:0,
   lastDaily:0, loginStreak:0,
   eventActive:false, eventEnd:0, eventId:'',
-  _savedAt:0, _v:4, _tutDone:false,
+  _savedAt:0, _v:5, _tutDone:false,
+  boostEnd:0, radCooldown:0,
   // derived (not saved)
   cps:0, clickPower:1, threadsCps:0, codeCps:0, entropyCps:0, voidCps:0,
-  eventMechClick:false, eventMechCps:1, eventMechGambleBonus:0, eventMechVoid:1, eventMechAll:1,
+  eventMechClick:false, eventMechCps:1, eventMechVoid:1, eventMechAll:1,
 };
-let G = JSON.parse(JSON.stringify(DEF));
+let G = JSON.parse(JSON.stringify(DEF_STATE));
 
 /* ═══════════════════════════════════════════════
-   COMPUTE STATS (called every frame)
+   COMPUTE STATS
 ═══════════════════════════════════════════════ */
 function computeStats() {
   let cps=0, click=1, thr=0, cod=0, ent=0, voi=0;
   const sk  = id => !!G.skills[id];
   const ks  = id => !!G.kernelShop[id];
-  const evM = G.eventMechAll || 1;
 
-  // UPGRADES (linear tier 1-4, soft-capped above level 15)
-  for (const u of UPGRADES) {
-    const lvl = G.upgrades[u.id] || 0;
-    if (!lvl) continue;
+  for(const u of UPGRADES) {
+    const lvl = G.upgrades[u.id]||0;
+    if(!lvl) continue;
     const v = scaledVal(u.base, lvl);
     switch(u.eff) {
       case 'cps':     cps += v; break;
@@ -968,53 +802,55 @@ function computeStats() {
     }
   }
 
-  // MULT upgrades (void-tier)
-  const multLvl = G.upgrades['u17'] || 0;
-  const multBon = multLvl > 0 ? Math.pow(1.5, multLvl) : 1;
-
-  // SKILLS — Path bonuses stack multiplicatively
-  if (sk('s0'))  cps *= 2;
-  if (sk('s1a')) { cps *= 2; thr *= 1.5; }
-  if (sk('s1b')) click *= 4;
-  if (sk('s1c')) { ent *= 3; }
-
-  // Path 2 choices
-  if (sk('s2T')) { cps *= 3; thr *= 2; }
-  if (sk('s2L')) { click *= 6; }
-  if (sk('s2C')) { ent *= 5; }
-
-  // Layer 3
-  if (sk('s3T')) { thr *= 5; cps *= 1 + (G.playTime||0)/60*0.01; }
-  if (sk('s3L')) { click *= 10; }
-  if (sk('s3C')) { voi *= 5; }
-
-  // Transcendence
-  if (sk('s4'))  { cps *= 50; click *= 50; thr *= 50; cod *= 50; ent *= 50; voi *= 50; }
-
-  // KERNEL SHOP
-  if (ks('k1'))  cps += 25;
-  if (ks('k2'))  click *= 2;
-  if (ks('k5'))  cps *= (1 + G.prestigeCount * 0.08);
-  if (ks('k12')) { cps *= 15; click *= 5; }
-  if (ks('k15') && G.chosenPath) {
-    const pathMult = 1.25; // carry 25% of path bonuses
-    cps *= pathMult; click *= pathMult;
+  // MULT upgrades
+  let multBonus = 1;
+  for(const u of UPGRADES.filter(u=>u.eff==='mult')) {
+    const lvl = G.upgrades[u.id]||0;
+    if(lvl>0) multBonus *= (1 + scaledVal(u.base, lvl));
   }
 
-  // MULTIPLIER upgrade
-  cps *= multBon; thr *= multBon; cod *= multBon; ent *= multBon; voi *= multBon;
+  // SKILLS
+  if(sk('s0'))  cps *= 2;
+  if(sk('s1a')) { cps *= 2; thr *= 1.5; }
+  if(sk('s1b')) click *= 4;
+  if(sk('s1c')) ent *= 3;
+  if(sk('s2T')) { cps *= 3; thr *= 2; }
+  if(sk('s2L')) click *= 6;
+  if(sk('s2C')) ent *= 5;
+  if(sk('s3T')) { thr *= 5; cps *= 1 + (G.playTime||0)/60*0.01; }
+  if(sk('s3L')) click *= 10;
+  if(sk('s3C')) voi *= 5;
+  if(sk('s4'))  { cps *= 50; click *= 50; thr *= 50; cod *= 50; ent *= 50; voi *= 50; }
+  if(sk('s5T')) { cps *= 20; thr *= 5; }
+  if(sk('s5L')) { click *= 100; }
+  if(sk('s5C')) { voi *= 50; }
+  if(sk('s6'))  { cps *= 500; click *= 500; thr *= 500; cod *= 500; ent *= 500; voi *= 500; }
 
-  // BOOST (rewarded ad 3×)
-  if (Date.now() < G.boostEnd) { cps *= 3; click *= 3; thr *= 3; cod *= 3; ent *= 3; voi *= 3; }
+  // KERNEL SHOP
+  if(ks('k1'))  cps += 25;
+  if(ks('k2'))  click *= 2;
+  if(ks('k5'))  cps *= Math.pow(1.06, G.kResets);
+  if(ks('k9'))  { /* lucky circuits handled in click */ }
+  if(ks('k14')) { cps *= 5; click *= 5; thr *= 5; cod *= 5; ent *= 5; voi *= 5; }
+  if(ks('a3'))  cps *= Math.pow(1.15, G.aResets);
+  if(ks('a7'))  { cps *= 25; click *= 25; thr *= 25; cod *= 25; ent *= 25; voi *= 25; }
+  if(ks('v1'))  { cps *= 100; click *= 100; thr *= 100; cod *= 100; ent *= 100; voi *= 100; }
+  if(ks('v4'))  { cps *= 1000; click *= 1000; thr *= 1000; cod *= 1000; ent *= 1000; voi *= 1000; }
+  if(ks('v3'))  voi *= 10;
 
-  // EVENT MECHANICS
-  cps   *= (G.eventMechCps  || 1);
-  cps   *= (G.eventMechAll  || 1);
-  thr   *= (G.eventMechAll  || 1);
-  cod   *= (G.eventMechAll  || 1);
-  ent   *= (G.eventMechAll  || 1);
-  voi   *= (G.eventMechVoid || 1) * (G.eventMechAll || 1);
-  if (G.eventMechClick) click *= 3;
+  // mult bonus
+  cps *= multBonus; thr *= multBonus; cod *= multBonus; ent *= multBonus; voi *= multBonus;
+
+  // BOOST
+  if(Date.now() < (G.boostEnd||0)) { cps *= 3; click *= 3; thr *= 3; cod *= 3; ent *= 3; voi *= 3; }
+
+  // EVENT
+  cps  *= (G.eventMechCps||1) * (G.eventMechAll||1);
+  thr  *= (G.eventMechAll||1);
+  cod  *= (G.eventMechAll||1);
+  ent  *= (G.eventMechAll||1);
+  voi  *= (G.eventMechVoid||1) * (G.eventMechAll||1);
+  if(G.eventMechClick) click *= 3;
 
   G.cps        = Math.max(0, cps);
   G.clickPower = Math.max(1, Math.floor(click));
@@ -1022,21 +858,19 @@ function computeStats() {
   G.codeCps    = Math.max(0, cod);
   G.entropyCps = Math.max(0, ent);
   G.voidCps    = Math.max(0, voi);
-
-  if (G.cps > G.bestCps) G.bestCps = G.cps;
+  if(G.cps > (G.bestCps||0)) G.bestCps = G.cps;
 }
 
 function getUpgCost(u, lvl) {
   const [base, cur] = u.cost;
-  const kCheap = (cur==='cycles' && G.kernelShop?.k_cheap) ? 0.8 : 1;
-  return { amt: scaledCost(base, lvl, 1.42) * kCheap, cur };
+  return { amt: scaledCost(base, lvl, 1.42), cur };
 }
 
 function isLocked(u) {
-  if (u.req && !G.upgrades[u.req]) return 'req';
-  if (u.unlockAt) {
+  if(u.req && !G.upgrades[u.req]) return 'req';
+  if(u.unlockAt) {
     const [type, val] = u.unlockAt;
-    if (type === 'phase' && G.phase < val) return 'phase';
+    if(type==='phase' && G.phase < val) return 'phase';
   }
   return false;
 }
@@ -1048,10 +882,10 @@ let comboDecayInt=null, comboHoldTO=null, comboDecayPct=0;
 
 function hitCombo(inc) {
   clearTimeout(comboHoldTO); clearInterval(comboDecayInt);
-  const maxC = G.skills?.s4 ? 100 : G.skills?.s2L ? 50 : G.kernelShop?.k6 ? 15 : 10;
+  const maxC = G.skills?.s6 ? 500 : G.skills?.s5L ? 200 : G.skills?.s4 ? 100 : G.skills?.s2L ? 50 : G.kernelShop?.k6 ? 15 : 10;
   const floor = G.kernelShop?.k6 ? 3 : 1;
   G.combo = Math.min((G.combo||1) + inc, maxC);
-  if (G.combo > G.bestCombo) G.bestCombo = G.combo;
+  if(G.combo > (G.bestCombo||1)) G.bestCombo = G.combo;
   comboDecayPct = 100;
   renderCombo();
   comboHoldTO = setTimeout(startComboDecay, 1400);
@@ -1063,12 +897,12 @@ function startComboDecay() {
     comboDecayPct = Math.max(0, comboDecayPct - 5);
     G.combo = Math.max(floorC, (G.combo||1) - 0.3);
     renderCombo();
-    if (G.combo <= floorC) { clearInterval(comboDecayInt); G.combo = floorC; }
+    if(G.combo <= floorC) { clearInterval(comboDecayInt); G.combo = floorC; }
   }, 120);
 }
 
 function renderCombo() {
-  const maxC = G.skills?.s4 ? 100 : G.skills?.s2L ? 50 : 10;
+  const maxC = G.skills?.s6 ? 500 : G.skills?.s5L ? 200 : G.skills?.s4 ? 100 : G.skills?.s2L ? 50 : 10;
   const pct = ((G.combo-1)/(maxC-1))*100;
   document.getElementById('combo-fill').style.width = Math.min(100,pct)+'%';
   document.getElementById('combo-x').textContent = '×'+(G.combo||1).toFixed(1);
@@ -1078,24 +912,27 @@ function renderCombo() {
 /* ═══════════════════════════════════════════════
    CLICK
 ═══════════════════════════════════════════════ */
-const GLYPHS = ['⬡','⬢','◉','⊛','❋','◈'];
+const GLYPHS = ['⬡','⬢','◉','⊛','◈','✦','∞'];
 
 function doClick(e) {
   computeStats();
-  const critChance = G.skills?.s2L ? 0.25 : G.skills?.s1 ? 0.10 : 0;
-  const chaosGlobal = G.skills?.s2C && Math.random() < 0.05;
+  const critChance = G.skills?.s5C ? 0.20 : G.skills?.s5L ? 0.25 : G.skills?.s2L ? 0.25 : G.skills?.s1 ? 0.10 : 0;
+  const chaosGlobal = (G.skills?.s2C || G.skills?.s5C) && Math.random() < (G.skills?.s5C ? 0.20 : 0.05);
   const isCrit = Math.random() < critChance || chaosGlobal;
 
-  // L path: click earns 30% of CPS passively per click
   const cpsBonus = G.skills?.s2L ? G.cps * 0.3 : 0;
   let gain = (G.clickPower + cpsBonus) * (G.combo||1);
-  if (isCrit) { gain *= 10; G.critsLanded = (G.critsLanded||0)+1; }
+  if(isCrit) {
+    const critMult = G.skills?.s5L ? 20 : 10;
+    gain *= critMult; G.critsLanded = (G.critsLanded||0)+1;
+  }
+  // Lucky circuits
+  if(G.kernelShop?.k9 && Math.random() < 0.08) gain *= 2;
 
   G.cycles += gain; G.totalCycles += gain; G.lifetimeCycles += gain;
   G.totalClicks++;
   hitCombo(0.25);
 
-  // Particle
   const dx = (Math.random()-.5)*50, dx2 = (Math.random()-.5)*30;
   const p = document.createElement('div');
   p.className = 'pt' + (isCrit?' crit':'');
@@ -1103,19 +940,12 @@ function doClick(e) {
   p.style.cssText = `left:${e.clientX-20}px;top:${e.clientY-8}px;--dx:${dx}px;--dx2:${dx2}px`;
   document.body.appendChild(p);
   setTimeout(()=>p.remove(), 950);
-
-  if (isCrit) flash('a');
-
-  // C path: on crit win, bonus
-  if (isCrit && G.skills?.s3C) {
-    const bonus = G.totalCycles * 0.01;
-    G.cycles += bonus; G.totalCycles += bonus; G.lifetimeCycles += bonus;
-  }
+  if(isCrit) flash('a');
 
   // L path: every 100 clicks, spike
-  if (G.skills?.s3L && G.totalClicks % 100 === 0) {
-    const spike = G.cps * 5;
-    G.cycles += spike; G.totalCycles += spike; G.lifetimeCycles += spike;
+  if(G.skills?.s3L && G.totalClicks%100===0) {
+    const spike = G.cps*5;
+    G.cycles+=spike; G.totalCycles+=spike; G.lifetimeCycles+=spike;
     spawnEvtParticle(e.clientX, e.clientY, '⚡+'+fmt(spike));
   }
 
@@ -1123,14 +953,14 @@ function doClick(e) {
 }
 
 function flash(type='g') {
-  const f = document.getElementById('flash');
-  f.className = ''; void f.offsetWidth; f.className = 'flash-'+type;
+  const f=document.getElementById('flash');
+  f.className=''; void f.offsetWidth; f.className='flash-'+type;
 }
 
 function updateCpuBtn() {
   document.getElementById('cpu-pwr').textContent = '+'+fmt(G.clickPower);
   document.getElementById('cpu-glyph').textContent = GLYPHS[Math.min(G.phase, GLYPHS.length-1)];
-  document.getElementById('cpu-btn').classList.toggle('boosted', Date.now()<G.boostEnd);
+  document.getElementById('cpu-btn').classList.toggle('boosted', Date.now()<(G.boostEnd||0));
 }
 
 /* ═══════════════════════════════════════════════
@@ -1144,8 +974,31 @@ function buyUpg(id) {
   if(G[cur]<amt) { toast('Need '+fmtD(amt)+' '+cur,'err'); return; }
   G[cur]-=amt; G.upgrades[id]=lvl+1;
   computeStats(); log(u.name+' Lv'+(lvl+1),'ok');
-  A.track('upgrade', {id,lvl:lvl+1});
   renderUpgrades(); renderRes();
+}
+
+function buyAll() {
+  let bought = 0;
+  // Sort by cost so we buy cheapest first
+  const sortedUpgs = [...UPGRADES].sort((a,b) => {
+    const la = G.upgrades[a.id]||0, lb = G.upgrades[b.id]||0;
+    return getUpgCost(a,la).amt - getUpgCost(b,lb).amt;
+  });
+  for(const u of sortedUpgs) {
+    const lock = isLocked(u); if(lock) continue;
+    const lvl = G.upgrades[u.id]||0; if(lvl>=u.max) continue;
+    const {amt,cur} = getUpgCost(u,lvl);
+    if(G[cur]>=amt) {
+      G[cur]-=amt; G.upgrades[u.id]=lvl+1; bought++;
+    }
+  }
+  if(bought>0) {
+    computeStats(); log('Buy All: purchased '+bought+' upgrades','ok');
+    toast('Bought '+bought+' upgrades','info');
+    renderUpgrades(); renderRes();
+  } else {
+    toast('No affordable upgrades right now','warn');
+  }
 }
 
 /* ═══════════════════════════════════════════════
@@ -1153,126 +1006,137 @@ function buyUpg(id) {
 ═══════════════════════════════════════════════ */
 function buySkill(id) {
   const sk = SKILLS.find(x=>x.id===id); if(!sk||G.skills[id]) return;
-  // Check req (reqAny = OR logic)
+  if(sk.unlockAt) {
+    const [type,val]=sk.unlockAt;
+    if(type==='phase'&&G.phase<val) { toast('Unlock Phase '+val+' first','err'); return; }
+  }
   const met = sk.reqAny ? sk.req.some(r=>G.skills[r]) : sk.req.every(r=>G.skills[r]);
   if(!met) { toast('Prerequisites not met','err'); return; }
-  // Check path conflict
   if(sk.locks) {
     for(const l of sk.locks) {
-      if(G.skills[l]) { toast('Path already chosen: conflict','err'); return; }
+      if(G.skills[l]) { toast('Path conflict','err'); return; }
     }
   }
-  // Check path not taken by opponent
-  if(sk.path && G.chosenPath && sk.path !== G.chosenPath && sk.lyr >= 2) {
-    toast('You chose path '+G.chosenPath+' — this path locked','err'); return;
-  }
-  const [amt,cur] = sk.cost;
+  if(sk.path&&G.chosenPath&&sk.path!==G.chosenPath&&sk.lyr>=2) { toast('You chose path '+G.chosenPath,'err'); return; }
+  const [amt,cur]=sk.cost;
   if(G[cur]<amt) { toast('Need '+fmtD(amt)+' '+cur,'err'); return; }
   G[cur]-=amt; G.skills[id]=true;
-
-  // Lock path
-  if(sk.lyr===2 && sk.path) {
-    G.chosenPath = sk.path;
-    document.getElementById('path-display').textContent = {T:'THROUGHPUT',L:'LATENCY',C:'CHAOS'}[sk.path]||sk.path;
-    toast('PATH LOCKED: '+{T:'THROUGHPUT — automation dominant',L:'LATENCY — click dominant',C:'CHAOS — entropy dominant'}[sk.path],'warn');
-    A.track('path_chosen', {path:sk.path});
+  if(sk.lyr===2&&sk.path) {
+    G.chosenPath=sk.path;
+    document.getElementById('path-display').textContent={T:'THROUGHPUT',L:'LATENCY',C:'CHAOS'}[sk.path]||sk.path;
+    toast('PATH LOCKED: '+{T:'THROUGHPUT',L:'LATENCY',C:'CHAOS'}[sk.path],'warn');
   }
   computeStats(); log('Skill: '+sk.name,'sys');
-  A.track('skill', {id});
-  renderSkillTree(); renderRes();
-  checkAch();
+  renderSkillTree(); renderRes(); checkAch();
 }
 
 /* ═══════════════════════════════════════════════
-   GAMBLE
+   PRESTIGE SYSTEM — 3 tiers
 ═══════════════════════════════════════════════ */
-let _lastGambleEl = null;
-
-function doGamble(id) {
-  const g = GAMBLES.find(x=>x.id===id); if(!g) return;
-  const [amt,cur] = g.cost;
-  if(G[cur]<amt) { toast('Need '+fmtD(amt)+' '+cur,'err'); return; }
-  G[cur]-=amt;
-  const eventBonus = G.eventMechGambleBonus||0;
-  const shopBonus  = G.kernelShop?.k9 ? 1.75 : 1;
-  const pathBonus  = G.skills?.s1c ? 1.5 : 1;
-  const jackpotMult = shopBonus * pathBonus * (1 + Math.min(G.winStreak,10)*0.08);
-  const adjOdds = Math.min(0.95, g.odds + eventBonus);
-  const won = Math.random() < adjOdds;
-  let resultHtml = '', resultClass = '';
-
-  if(won) {
-    const payout = amt * g.winMult * jackpotMult;
-    G[cur]+=payout;
-    if(cur==='cycles'){G.totalCycles+=payout-amt;G.lifetimeCycles+=payout-amt;}
-    G.winStreak++; G.gamblesWon++;
-    resultHtml = `✓ WIN! +${fmtD(payout-amt)} ${cur} (×${(g.winMult*jackpotMult).toFixed(2)})`;
-    resultClass = 'win'; flash('g');
-    // C path bonus
-    if(G.skills?.s3C) {
-      const cbonus = G.totalCycles*0.01;
-      G.cycles+=cbonus; G.totalCycles+=cbonus; G.lifetimeCycles+=cbonus;
-    }
-    log('Gamble WIN: +'+fmtD(payout-amt)+' '+cur,'ok');
-    A.track('gamble_win',{id,streak:G.winStreak});
-  } else {
-    G.winStreak=0; G.gamblesLost++;
-    if(g.loseMult>0) { const k=amt*g.loseMult; G[cur]+=k; resultHtml=`✗ LOSE. Kept ${fmtD(k)} ${cur}`; }
-    else resultHtml=`✗ LOSE. ${fmtD(amt)} ${cur} gone.`;
-    resultClass='lose';
-    log('Gamble LOSS: lost '+fmtD(amt)+' '+cur,'warn');
-    A.track('gamble_loss',{id});
-  }
-
-  const ra = document.getElementById('gamble-result');
-  if(ra) ra.innerHTML = `<div class="gresult ${resultClass}">${resultHtml}</div>`;
-  renderRes(); renderGamble(); checkAch();
-}
-
-/* ═══════════════════════════════════════════════
-   PRESTIGE
-═══════════════════════════════════════════════ */
-function doPrestige() {
+function doKernelReset() {
   if(G.totalCycles < 50000) return;
-  const skillMult = G.skills?.s4k ? 2 : 1;
-  const shopMult  = G.kernelShop?.k4 ? 1.5 : 1;
-  const reward = tokenFormula(G.totalCycles, G.prestigeCount, skillMult, shopMult);
-  G.tokens += reward;
+  const shopMult = G.kernelShop?.k4 ? 1.3 : 1;
+  const reward = kTokenFormula(G.totalCycles, G.kResets, shopMult);
+  if(reward <= 0) { toast('Not enough cycles for a meaningful reset','err'); return; }
+  G.kTokens += reward;
 
-  // Carry-overs
   const keepThr  = G.kernelShop?.k3  ? G.threads*0.3   : 0;
   const keepEnt  = G.kernelShop?.k8  ? G.entropy*0.2   : 0;
   const keepVoid = G.kernelShop?.k11 ? 0.02             : 0;
 
-  G.cycles=0; G.threads=keepThr; G.code=0; G.entropy=keepEnt; G.void=keepVoid;
-  G.totalCycles=0; G.upgrades={}; G.skills={};
-  G.combo = G.kernelShop?.k6 ? Math.max(3, G.combo) : 1;
-  if(!G.kernelShop?.k15) G.chosenPath='';
-  else {} // keep path with k15
-  G.prestigeCount++;
+  let keepUpgrades = {};
+  if(G.kernelShop?.k9 && false) {} // reserved
 
-  toast('◈ KERNEL RESET #'+G.prestigeCount+' — +'+reward+' Tokens','warn');
-  log('Kernel Reset #'+G.prestigeCount+'. +'+reward+' Tokens earned.','sys');
-  A.track('prestige',{count:G.prestigeCount,reward,sessionLen:A.sessionLength()});
+  G.cycles=0; G.threads=keepThr; G.code=G.kernelShop?.k7?2:0; G.entropy=keepEnt; G.voidData=keepVoid;
+  G.totalCycles=0; G.upgrades=keepUpgrades; G.skills={};
+  G.combo=G.kernelShop?.k6?3:1;
+  G.chosenPath='';
+  document.getElementById('path-display').textContent='UNDECIDED';
+  G.kResets++;
+  toast('◈ KERNEL RESET #'+G.kResets+' — +'+reward+' K-Tokens','warn');
+  log('Kernel Reset #'+G.kResets+'. +'+reward+' K-Tokens earned.','sys');
   computeStats(); renderAll(); updatePhase();
 }
 
-function tokenPreview() {
-  const shopMult = G.kernelShop?.k4 ? 1.5 : 1;
-  return tokenFormula(G.totalCycles, G.prestigeCount, 1, shopMult);
+function doArchReset() {
+  if(G.totalCycles < 5e7) return;
+  const shopMult = G.kernelShop?.a6 ? 1.5 : 1;
+  const reward = aTokenFormula(G.totalCycles, G.aResets, shopMult);
+  if(reward <= 0) { toast('Not enough cycles for A-Reset','err'); return; }
+  G.aTokens += reward;
+
+  // Arch reset resets more deeply but carries more
+  let keepUpgrades = {};
+  if(G.kernelShop?.a1) {
+    for(const [id,lvl] of Object.entries(G.upgrades)) {
+      keepUpgrades[id] = Math.floor(lvl*0.6);
+    }
+  }
+  const keepVoid = G.kernelShop?.a4 ? G.voidData*0.4 : 0;
+
+  G.cycles=0; G.threads=0; G.code=G.kernelShop?.a8?10:0; G.entropy=0; G.voidData=keepVoid;
+  G.totalCycles=0; G.upgrades=keepUpgrades; G.skills={};
+  G.kTokens=0; // K-tokens wiped but A-tokens persist
+  G.combo=1; G.chosenPath='';
+  document.getElementById('path-display').textContent='UNDECIDED';
+  G.aResets++;
+
+  // Carry 2 skills if a5
+  // (simplified — just clear skills)
+  if(G.kernelShop?.a5) {
+    // keep s0 and s1 as head start
+    G.skills = {s0:true, s1:true};
+  }
+
+  toast('◉ ARCHITECT RESET #'+G.aResets+' — +'+reward+' A-Tokens','warn');
+  log('Architect Reset #'+G.aResets+'. +'+reward+' A-Tokens.','sys');
+  computeStats(); renderAll(); updatePhase();
 }
+
+function doVoidAscension() {
+  if(G.totalCycles < 1e10) return;
+  const reward = vTokenFormula(G.totalCycles, G.vResets, 1);
+  if(reward <= 0) { toast('Not enough cycles for Void Ascension','err'); return; }
+  G.vTokens += reward;
+
+  let keepUpgrades = {};
+  if(G.kernelShop?.v2) {
+    for(const [id,lvl] of Object.entries(G.upgrades)) {
+      keepUpgrades[id] = Math.floor(lvl*0.8);
+    }
+  }
+
+  const keepVoid = G.voidData * (G.kernelShop?.v3 ? 0.5 : 0.1);
+  G.cycles=0; G.threads=0; G.code=0; G.entropy=0; G.voidData=keepVoid;
+  G.totalCycles=0; G.upgrades=keepUpgrades; G.skills={};
+  G.kTokens=0; G.aTokens=0; // wiped; V persist
+  G.combo=1; G.chosenPath='';
+  document.getElementById('path-display').textContent='UNDECIDED';
+  G.vResets++;
+  toast('◆ VOID ASCENSION #'+G.vResets+' — +'+reward+' V-Tokens','phase');
+  log('Void Ascension #'+G.vResets+'. +'+reward+' V-Tokens.','sys');
+  computeStats(); renderAll(); updatePhase();
+}
+
+function kTokenPreview() { const sm=G.kernelShop?.k4?1.3:1; return kTokenFormula(G.totalCycles,G.kResets,sm); }
+function aTokenPreview() { const sm=G.kernelShop?.a6?1.5:1; return aTokenFormula(G.totalCycles,G.aResets,sm); }
+function vTokenPreview() { return vTokenFormula(G.totalCycles,G.vResets,1); }
 
 /* ═══════════════════════════════════════════════
    KERNEL SHOP
 ═══════════════════════════════════════════════ */
 function buyKShop(id) {
   const k = KSHOP.find(x=>x.id===id); if(!k||G.kernelShop[id]) return;
-  if(G.prestigeCount < k.req) { toast('Need '+k.req+' resets to unlock','err'); return; }
-  if(G.tokens < k.cost) { toast('Need ◈ '+k.cost+' Tokens','err'); return; }
-  G.tokens -= k.cost; G.kernelShop[id]=true;
+  if(G.kResets<k.kReq) { toast('Need '+k.kReq+' K-Resets','err'); return; }
+  if(G.aResets<k.aReq) { toast('Need '+k.aReq+' A-Resets','err'); return; }
+  if(G.vResets<k.vReq) { toast('Need '+k.vReq+' V-Resets','err'); return; }
+  for(const [cur,amt] of Object.entries(k.cost)) {
+    if((G[cur]||0)<amt) { toast('Need '+amt+' '+cur,'err'); return; }
+  }
+  for(const [cur,amt] of Object.entries(k.cost)) G[cur]-=amt;
+  G.kernelShop[id]=true;
   computeStats(); log('Module installed: '+k.name,'sys');
-  A.track('kshop',{id});
-  renderKShop(); renderRes();
+  renderKShop(); renderRes(); renderPrestige();
   toast('MODULE: '+k.name,'info');
 }
 
@@ -1281,40 +1145,30 @@ function buyKShop(id) {
 ═══════════════════════════════════════════════ */
 let lastPhase = -1;
 function updatePhase() {
-  // Phase based on lifetime cycles (survives resets)
-  let p = 0;
+  let p=0;
   for(let i=PHASES.length-1;i>=0;i--) {
-    if(G.lifetimeCycles >= PHASES[i].threshold) { p=i; break; }
+    if(G.lifetimeCycles>=PHASES[i].threshold) { p=i; break; }
   }
-  G.phase = p;
-
-  // Update phase bar
-  const cur = PHASES[p], nxt = PHASES[Math.min(p+1,PHASES.length-1)];
-  const pct = p < PHASES.length-1
-    ? ((G.lifetimeCycles - cur.threshold) / (nxt.threshold - cur.threshold)) * 100
-    : 100;
-  document.getElementById('phase-bar').style.width = Math.min(100,pct)+'%';
-  document.getElementById('phase-name').textContent = cur.name;
-  document.getElementById('phase-next').textContent = p < PHASES.length-1 ? 'Next: '+nxt.name : 'MAX PHASE';
-  document.getElementById('goals-phase-badge').textContent = 'PHASE '+p;
-
-  // Apply CSS phase class + UI transform
-  if(p !== lastPhase) {
-    document.body.className = 'phase-'+p;
-    lastPhase = p;
-    document.getElementById('cpu-glyph').textContent = PHASES[p].glyph;
+  G.phase=p;
+  const cur=PHASES[p], nxt=PHASES[Math.min(p+1,PHASES.length-1)];
+  const pct = p<PHASES.length-1 ? ((G.lifetimeCycles-cur.threshold)/(nxt.threshold-cur.threshold))*100 : 100;
+  document.getElementById('phase-bar').style.width=Math.min(100,pct)+'%';
+  document.getElementById('phase-name').textContent=cur.name;
+  document.getElementById('phase-next').textContent=p<PHASES.length-1?'Next: '+nxt.name:'MAX PHASE';
+  document.getElementById('goals-phase-badge').textContent='PHASE '+p;
+  if(p!==lastPhase) {
+    document.body.className='phase-'+p;
+    lastPhase=p;
+    document.getElementById('cpu-glyph').textContent=PHASES[p].glyph;
     toast('⚡ PHASE TRANSITION: '+cur.name,'phase');
     log('PHASE '+p+': '+cur.name+' — '+cur.desc,'phase');
-    A.track('phase_transition',{phase:p,name:cur.name,lifetimeCycles:G.lifetimeCycles});
     doFlashPhase();
   }
 }
 
 function doFlashPhase() {
-  const f = document.getElementById('flash');
-  f.style.transition='opacity .4s';
-  f.style.opacity='.12';
-  f.style.background='var(--ph-primary)';
+  const f=document.getElementById('flash');
+  f.style.transition='opacity .4s'; f.style.opacity='.12'; f.style.background='var(--ph-primary)';
   setTimeout(()=>{f.style.opacity='0';},400);
 }
 
@@ -1324,271 +1178,192 @@ function doFlashPhase() {
 let evPoll=0;
 function tickEvents(dt) {
   evPoll+=dt;
-  if(evPoll > 100 && !G.eventActive) {
-    evPoll=0;
-    if(Math.random()<0.3) spawnEvent();
-  }
+  if(evPoll>100&&!G.eventActive) { evPoll=0; if(Math.random()<0.3) spawnEvent(); }
   if(G.eventActive) {
-    const rem = Math.ceil((G.eventEnd-Date.now())/1000);
+    const rem=Math.ceil((G.eventEnd-Date.now())/1000);
     if(rem<=0) { endEvent(); return; }
-    document.getElementById('ev-timer').textContent = rem+'s';
+    document.getElementById('ev-timer').textContent=rem+'s';
   }
 }
 
 function spawnEvent() {
-  const available = EVENTS.filter(e=> !e.unlockPhase || G.phase >= e.unlockPhase);
-  const ev = available[Math.floor(Math.random()*available.length)];
+  const available=EVENTS.filter(e=>!e.unlockPhase||G.phase>=e.unlockPhase);
+  const ev=available[Math.floor(Math.random()*available.length)];
   G.eventActive=true; G.eventId=ev.id;
   G.eventEnd=Date.now()+ev.dur*1000;
-  // Apply event mechanics
-  G.eventMechClick  = !!ev.mechClick;
-  G.eventMechCps    = ev.mechCps    || 1;
-  G.eventMechGambleBonus = ev.mechGamble || 0;
-  G.eventMechVoid   = ev.mechVoid   || 1;
-  G.eventMechAll    = ev.mechAll    ? 1+ev.mechAll : 1;
+  G.eventMechClick=!!ev.mechClick;
+  G.eventMechCps=ev.mechCps||1;
+  G.eventMechVoid=ev.mechVoid||1;
+  G.eventMechAll=ev.mechAll?1+ev.mechAll:1;
   computeStats();
-
-  document.getElementById('ev-type').textContent  = ev.type;
-  document.getElementById('ev-title').textContent  = ev.title;
-  document.getElementById('ev-desc').textContent   = ev.desc;
-  document.getElementById('ev-mechanic').textContent= ev.mechanic||'';
-  const rwd = ev.reward(); document.getElementById('ev-rpreview').textContent = 'Est: '+Object.entries(rwd).map(([k,v])=>'+'+fmtD(v)+' '+k).join(', ');
+  document.getElementById('ev-type').textContent=ev.type;
+  document.getElementById('ev-title').textContent=ev.title;
+  document.getElementById('ev-desc').textContent=ev.desc;
+  document.getElementById('ev-mechanic').textContent=ev.mechanic||'';
+  const rwd=ev.reward();
+  document.getElementById('ev-rpreview').textContent='Est: '+Object.entries(rwd).map(([k,v])=>'+'+fmtD(v)+' '+k).join(', ');
   document.getElementById('event-bar').classList.add('active');
   log('EVENT: '+ev.type+' — '+ev.desc,'warn');
-  A.track('event_spawn',{id:ev.id});
 }
 
 function claimEvent() {
   if(!G.eventActive) return;
-  const ev = EVENTS.find(e=>e.id===G.eventId); if(!ev) return;
-  const ampMult = G.kernelShop?.k14 ? 2 : 1;
-  const rwd = ev.reward();
+  const ev=EVENTS.find(e=>e.id===G.eventId); if(!ev) return;
+  const ampMult = G.kernelShop?.k12 ? 2 : 1;
+  const rwd=ev.reward();
   for(const [k,v] of Object.entries(rwd)) {
     G[k]=(G[k]||0)+v*ampMult;
     if(k==='cycles'){G.totalCycles+=v*ampMult;G.lifetimeCycles+=v*ampMult;}
   }
   G.eventsCollected++; endEvent();
-  const rs = Object.entries(rwd).map(([k,v])=>'+'+fmtD(v*ampMult)+' '+k).join(', ');
-  toast('EVENT CLAIMED: '+rs,'info');
-  log('Event reward: '+rs,'ok');
-  A.track('event_claim',{id:G.eventId,rewards:rwd});
+  const rs=Object.entries(rwd).map(([k,v])=>'+'+fmtD(v*ampMult)+' '+k).join(', ');
+  toast('EVENT CLAIMED: '+rs,'info'); log('Event reward: '+rs,'ok');
   checkAch();
 }
 
 function endEvent() {
   G.eventActive=false; G.eventId='';
-  G.eventMechClick=false; G.eventMechCps=1; G.eventMechGambleBonus=0; G.eventMechVoid=1; G.eventMechAll=1;
+  G.eventMechClick=false; G.eventMechCps=1; G.eventMechVoid=1; G.eventMechAll=1;
   computeStats();
   document.getElementById('event-bar').classList.remove('active');
 }
 
 /* ═══════════════════════════════════════════════
-   DAILY REWARDS
+   DAILY REWARDS — FIXED: use localStorage date comparison
 ═══════════════════════════════════════════════ */
 function checkDaily() {
-  const now=Date.now(), last=G.lastDaily||0, dayMs=86400000;
-  if(now-last < dayMs) return;
-  G.loginStreak = (now-last < dayMs*2) ? (G.loginStreak||0)+1 : 1;
-  const dayIdx = (G.loginStreak-1) % DAILY_BASE.length;
+  const now = Date.now();
+  const last = G.lastDaily || 0;
+  const dayMs = 86400000;
+
+  // Only show if 24h have passed
+  if(now - last < dayMs) return;
+
+  // Calculate streak: reset if missed a day
+  if(last > 0 && (now - last) >= dayMs * 2) {
+    G.loginStreak = 1; // missed a day, reset streak
+  } else {
+    G.loginStreak = (G.loginStreak || 0) + 1;
+  }
+
+  const dayIdx = (G.loginStreak - 1) % DAILY_BASE.length;
   const rw = DAILY_BASE[dayIdx];
   const base = rw.base();
-  const streakMult = G.kernelShop?.k13 ? (1 + G.prestigeCount*0.1) : 1;
+  const streakMult = G.kernelShop?.k13 ? (1 + (G.kResets + G.aResets*2 + G.vResets*5) * 0.05) : 1;
   const scaled = base * streakMult;
 
   document.getElementById('dr-icon').textContent = rw.icon;
-  document.getElementById('dr-val').textContent = '+'+fmtD(scaled);
-  document.getElementById('dr-desc').textContent = rw.label+' · Day '+G.loginStreak;
-  document.getElementById('dr-bonus').textContent = G.kernelShop?.k13 ? '(+'+Math.floor(G.prestigeCount*10)+'% rank bonus)' : '';
-  document.getElementById('dr-streak').textContent = 'LOGIN STREAK: '+G.loginStreak+(G.loginStreak===1?' DAY':' DAYS');
+  document.getElementById('dr-val').textContent = '+' + fmtD(scaled);
+  document.getElementById('dr-desc').textContent = rw.label + ' · Day ' + G.loginStreak;
+  document.getElementById('dr-bonus').textContent = G.kernelShop?.k13 ? '(streak + rank bonus)' : '';
+  document.getElementById('dr-streak').textContent = 'LOGIN STREAK: ' + G.loginStreak + (G.loginStreak===1?' DAY':' DAYS');
 
   const track = document.getElementById('day-track'); track.innerHTML='';
   for(let i=1;i<=7;i++) {
     const pip = document.createElement('div');
-    pip.className='day-pip'+(i<G.loginStreak?' dp-done':i===G.loginStreak?' dp-today':'');
+    pip.className = 'day-pip' + (i<G.loginStreak?' dp-done':i===G.loginStreak?' dp-today':'');
     const dr = DAILY_BASE[(i-1)%DAILY_BASE.length];
-    pip.innerHTML=`<span class="dp-icon">${dr.icon}</span><span class="dp-label">D${i}</span>`;
+    pip.innerHTML = `<span class="dp-icon">${dr.icon}</span><span class="dp-label">D${i}</span>`;
     track.appendChild(pip);
   }
 
-  G._pendingDaily = {type:rw.type, amt:scaled};
+  G._pendingDaily = { type: rw.type, amt: scaled };
   document.getElementById('daily-modal').classList.add('open');
 }
 
 function claimDaily() {
   if(!G._pendingDaily) return;
-  const {type,amt}=G._pendingDaily;
-  G[type]=(G[type]||0)+amt;
+  const {type,amt} = G._pendingDaily;
+  G[type] = (G[type]||0) + amt;
   if(type==='cycles'){G.totalCycles+=amt;G.lifetimeCycles+=amt;}
-  G.lastDaily=Date.now(); G._pendingDaily=null;
+  G.lastDaily = Date.now();
+  G._pendingDaily = null;
   document.getElementById('daily-modal').classList.remove('open');
   toast('DAILY REWARD: +'+fmtD(amt)+' '+type,'info');
   log('Daily login: +'+fmtD(amt)+' '+type,'sys');
-  A.track('daily_claim',{streak:G.loginStreak,type,amt});
   renderRes();
 }
 
 /* ═══════════════════════════════════════════════
    ADS
 ═══════════════════════════════════════════════ */
-function adClick(slot) { A.track('ad_click',{slot}); }
-
 function watchAd() {
-  if (Date.now() < G.radCooldown) { toast('Rewarded ad cooldown active','warn'); return; }
-  if (!localStorage.getItem('synth_consent')) { toast('Please accept cookies to watch ads','err'); return; }
-  // reward ad stub: for production integrate your rewarded-ad SDK here (AdMob, IronSource, etc.)
-  toast('Playing rewarded ad (simulation)...','info');
-  const sub = document.getElementById('rad-sub');
-  const prevText = sub ? sub.textContent : '';
-  let sec = 6;
-  if (sub) sub.textContent = `Ad playing: ${sec}s`;
-  const iv = setInterval(()=>{
-    sec--; if (sub) sub.textContent = `Ad playing: ${sec}s`;
-    if (sec<=0) { clearInterval(iv); if (sub) sub.textContent = prevText; onAdComplete(); }
+  const now=Date.now();
+  if(now<(G.radCooldown||0)) { toast('Rewarded ad cooldown active','warn'); return; }
+  toast('Playing rewarded ad...','info');
+  const sub=document.getElementById('rad-sub');
+  let sec=6;
+  sub.textContent=`Ad playing: ${sec}s`;
+  const iv=setInterval(()=>{
+    sec--;
+    sub.textContent=`Ad playing: ${sec}s`;
+    if(sec<=0) { clearInterval(iv); sub.textContent='Available'; onAdComplete(); }
   },1000);
-  G.radCooldown = Date.now() + 5*60000;
+  G.radCooldown=now+5*60000;
 }
 
 function onAdComplete() {
   G.boostEnd = Date.now()+90000;
-  G.radCooldown = Date.now()+5*60000;
-  // Apply offline catch-up on top
-  const elapsed = (Date.now()-(G._savedAt||Date.now()))/1000;
+  const elapsed=(Date.now()-(G._savedAt||Date.now()))/1000;
   if(elapsed>30) applyOffline(Math.min(elapsed,4*3600));
   computeStats();
-  toast('3× BOOST: 90s + offline catch-up applied!','info');
-  log('Rewarded ad: 3× boost active + offline recovery.','ok');
-  A.track('rewarded_ad');
+  toast('3× BOOST: 90s active!','info');
+  log('Rewarded ad: 3× boost + offline recovery.','ok');
 }
 
 function updateAdBtn() {
   const now=Date.now(), bar=document.getElementById('rad-bar'), sub=document.getElementById('rad-sub');
-  if(now<G.boostEnd) {
+  if(!bar||!sub) return;
+  if(now<(G.boostEnd||0)) {
     const s=Math.ceil((G.boostEnd-now)/1000);
-    sub.textContent=`⚡ BOOST ACTIVE: ${s}s — 3× production running`;
+    sub.textContent=`⚡ BOOST ACTIVE: ${s}s`;
     bar.classList.add('cd');
-    document.getElementById('cpu-btn').classList.add('boosted');
-  } else if(now<G.radCooldown) {
+  } else if(now<(G.radCooldown||0)) {
     const s=Math.ceil((G.radCooldown-now)/1000);
     sub.textContent=`Cooldown: ${s}s`;
     bar.classList.add('cd');
-    document.getElementById('cpu-btn').classList.remove('boosted');
   } else {
-    sub.textContent='Available · 3× boost 90s + offline catch-up on claim';
+    sub.textContent='Available · 3× boost 90s + offline catch-up';
     bar.classList.remove('cd');
-    document.getElementById('cpu-btn').classList.remove('boosted');
   }
-}
-
-/* -------------------------
-   Conditional loaders (GA4 + AdSense) — only load after consent
-   Replace measurementId / pub id with real values before production
-   ------------------------- */
-function loadGA4(measurementId='G-XXXXXXX'){
-  if(window.gtag) return;
-  const s=document.createElement('script'); s.async=true; s.src=`https://www.googletagmanager.com/gtag/js?id=${measurementId}`; document.head.appendChild(s);
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);} window.gtag = gtag; gtag('js', new Date()); gtag('config', measurementId);
-}
-function loadAdSense(pubId='ca-pub-XXXXXXXXXXXXXXXX'){
-  // if the static AdSense snippet (<script async src="...client=ca-pub-...")
-  // is already in the head, we don't need to inject another script –
-  // we only push slots once consent has been granted.
-  if(document.querySelector('script[src*="adsbygoogle.js"]')){
-    // push any existing ins elements
-    const ins = document.querySelectorAll('ins.adsbygoogle');
-    ins.forEach(el=>{ try{ (adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){} });
-    return;
-  }
-  const s=document.createElement('script');
-  s.async=true;
-  s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-  s.setAttribute('data-adsense','1');
-  s.setAttribute('data-ad-client',pubId);
-  s.onload = function(){
-    try{
-      const ins = document.querySelectorAll('ins.adsbygoogle');
-      ins.forEach(el=>{ try{ (adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){} });
-    }catch(e){}
-  };
-  document.head.appendChild(s);
-}
-function loadAdsAndAnalytics(){
-  // Placeholder IDs: replace with your real IDs before going live
-  loadGA4('G-XXXXXXX');
-  // AdSense script is already in the head (static snippet); just push slots
-  try{
-    const ins = document.querySelectorAll('ins.adsbygoogle');
-    ins.forEach(el=>{ try{ (adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){} });
-  }catch(e){}
-}
-function initAfterConsent(){ loadAdsAndAnalytics(); A.track('consent','granted'); }
-
-// cookie consent UI
-function attachConsentHandlers(){
-  const accept=document.getElementById('consent-accept');
-  const decline=document.getElementById('consent-decline');
-  if(accept) accept.addEventListener('click',()=>{
-    localStorage.setItem('synth_consent','1');
-    const bar=document.getElementById('cookie-consent'); if(bar) bar.remove();
-    initAfterConsent();
-  });
-  if(decline) decline.addEventListener('click',()=>{
-    localStorage.setItem('synth_consent','0');
-    const bar=document.getElementById('cookie-consent'); if(bar) bar.remove();
-    A.track('consent','declined');
-  });
-}
-// show banner or apply existing consent
-if(!localStorage.getItem('synth_consent')) {
-  const bar=document.getElementById('cookie-consent'); if(bar) bar.style.display='flex';
-  attachConsentHandlers();
-} else if(localStorage.getItem('synth_consent')==='1') {
-  initAfterConsent();
-  attachConsentHandlers();
 }
 
 /* ═══════════════════════════════════════════════
-   GOALS — always show short/med/long
+   GOALS
 ═══════════════════════════════════════════════ */
 const GOAL_DEFS = {
   short:[
-    { name:g=>`Mine ${fmt(nextT(g.totalCycles,[500,2000,10000,50000]))} Cycles`, pct:g=>g.totalCycles/nextT(g.totalCycles,[500,2000,10000,50000]) },
-    { name:g=>`${g.totalClicks<100?'Click 100 times':'Click '+nextT(g.totalClicks,[100,500,2000,10000])+' times'}`, pct:g=>g.totalClicks/nextT(g.totalClicks,[100,500,2000,10000]) },
-    { name:g=>g.cps>0?`Reach ${fmt(nextT(g.cps,[10,50,500,5000]))} CPS`:'Build an auto-miner', pct:g=>g.cps/Math.max(1,nextT(g.cps,[10,50,500,5000])) },
+    { name:g=>`Mine ${fmt(nextT(g.totalCycles,[500,2000,10000,100000]))} Cycles (this run)`, pct:g=>g.totalCycles/nextT(g.totalCycles,[500,2000,10000,100000]) },
+    { name:g=>g.totalClicks<100?'Click 100 times':`Click ${nextT(g.totalClicks,[100,500,2000,10000])} times`, pct:g=>g.totalClicks/nextT(g.totalClicks,[100,500,2000,10000]) },
+    { name:g=>g.cps>0?`Reach ${fmt(nextT(g.cps,[10,100,5000,100000]))} CPS`:'Build your first auto-miner', pct:g=>g.cps/Math.max(1,nextT(g.cps,[10,100,5000,100000])) },
   ],
   mid:[
-    { name:g=>g.phase<1?'Enter NETWORKED phase (1K cycles)':g.phase<2?'Enter COMPILED phase (25K cycles)':g.phase<3?'Enter ENTROPIC phase (500K cycles)':'Enter TRANSCENDENT phase (5M cycles)', pct:g=>{ const cur=PHASES[g.phase],nxt=PHASES[Math.min(g.phase+1,PHASES.length-1)]; return g.phase>=4?1:(g.lifetimeCycles-cur.threshold)/(nxt.threshold-cur.threshold); } },
-    { name:g=>g.chosenPath?`Level up ${g.chosenPath} path`:'Choose a Skill Path (Layer 2)', pct:g=>{ const cnt=Object.keys(g.skills||{}).length; return cnt/8; } },
-    { name:g=>`Unlock next tier upgrade`, pct:g=>{ const t=Math.max(1,g.totalCycles/1000); return Math.min(1,Math.log10(t)/5); } },
+    { name:g=>g.phase<6?'Reach '+PHASES[g.phase+1]?.name+' phase':'Max Phase!', pct:g=>{ if(g.phase>=6) return 1; const cur=PHASES[g.phase],nxt=PHASES[g.phase+1]; return (g.lifetimeCycles-cur.threshold)/(nxt.threshold-cur.threshold); } },
+    { name:g=>g.chosenPath?'Advance '+g.chosenPath+' skill path':'Choose a Skill Path (Layer 2)', pct:g=>{const cnt=Object.keys(g.skills||{}).length;return cnt/10;} },
+    { name:g=>`Unlock Tier ${Math.min(8,Math.floor(Object.keys(g.upgrades||{}).length/3)+2)} upgrades`, pct:g=>Math.min(1,Object.keys(g.upgrades||{}).length/24) },
   ],
   long:[
-    { name:g=>`Kernel Reset (50K Cycles this run)`, pct:g=>Math.min(1,g.totalCycles/50000), reward:'◈ '+tokenPreview()+' Tokens' },
-    { name:g=>`Tokens: ${fmt(g.tokens)} → ${fmt(nextT(g.tokens,[5,15,40,100]))}`, pct:g=>g.tokens/nextT(g.tokens,[5,15,40,100]) },
-    { name:g=>`Lifetime Cycles: ${fmt(g.lifetimeCycles)} → ${fmt(nextT(g.lifetimeCycles,[5000,50000,5e5,5e6,5e7]))}`, pct:g=>g.lifetimeCycles/nextT(g.lifetimeCycles,[5000,50000,5e5,5e6,5e7]) },
+    { name:g=>`Kernel Reset (50K Cycles)`, pct:g=>Math.min(1,g.totalCycles/50000), reward:()=>'◈ '+kTokenPreview()+' K-Tokens' },
+    { name:g=>`Architect Reset (50M Cycles)`, pct:g=>Math.min(1,g.totalCycles/5e7), reward:()=>'◉ '+aTokenPreview()+' A-Tokens' },
+    { name:g=>`Void Ascension (10B Cycles)`, pct:g=>Math.min(1,g.totalCycles/1e10), reward:()=>'◆ '+vTokenPreview()+' V-Tokens' },
   ]
 };
 
 function nextT(v,arr) { for(const t of arr) if(v<t) return t; return arr[arr.length-1]*10; }
 
 function renderGoals() {
-  const con = document.getElementById('goals-container'); con.innerHTML='';
-  const tiers = ['short','mid','long'];
-  const labels = ['▸ NOW','▸ NEXT','▸ HORIZON'];
+  const con=document.getElementById('goals-container'); con.innerHTML='';
+  const tiers=['short','mid','long'], labels=['▸ NOW','▸ NEXT','▸ HORIZON'];
   tiers.forEach((t,i)=>{
-    const gArr = GOAL_DEFS[t];
-    const gi = Math.floor(Date.now()/45000) % gArr.length;
-    const g = gArr[gi];
-    const pct = Math.min(1, g.pct(G));
-    const name = g.name(G);
-    const card = document.createElement('div');
-    card.className = 'goal-card'+(pct>=1?' complete':pct>0.5?' active-goal':'');
-    card.innerHTML=`
-      <div class="gc-tier">${labels[i]}</div>
-      <div class="gc-name">${name}</div>
-      <div class="gc-bar"><div class="gc-fill" style="width:${pct*100}%"></div></div>
-      <div class="gc-pct">${Math.floor(pct*100)}%</div>
-      ${g.reward?`<div class="gc-reward">${g.reward}</div>`:''}
-    `;
+    const gArr=GOAL_DEFS[t];
+    const gi=Math.floor(Date.now()/45000)%gArr.length;
+    const g=gArr[gi];
+    const pct=Math.min(1,g.pct(G));
+    const name=g.name(G);
+    const card=document.createElement('div');
+    card.className='goal-card'+(pct>=1?' complete':pct>0.5?' active-goal':'');
+    const reward = g.reward ? g.reward() : '';
+    card.innerHTML=`<div class="gc-tier">${labels[i]}</div><div class="gc-name">${name}</div><div class="gc-bar"><div class="gc-fill" style="width:${pct*100}%"></div></div><div class="gc-pct">${Math.floor(pct*100)}%</div>${reward?`<div class="gc-reward">${reward}</div>`:''}`;
     con.appendChild(card);
   });
 }
@@ -1599,73 +1374,72 @@ function renderGoals() {
 function applyOffline(secs) {
   if(secs<10) return;
   computeStats();
-  const eff = G.kernelShop?.k10 ? 0.65 : (G.skills?.s2T ? 0.80 : 0.35);
-  const t = Math.min(secs, 4*3600);
-  const c = G.cps*t*eff; const th = G.threadsCps*t*eff;
-  const co = G.codeCps*t*eff; const en = G.entropyCps*t*eff; const v = G.voidCps*t*eff;
+  const eff = G.kernelShop?.k10 ? 0.65 : G.kernelShop?.a3 ? 0.80 : G.skills?.s2T ? 0.80 : 0.35;
+  const t=Math.min(secs,8*3600); // cap at 8 hours
+  const c=G.cps*t*eff, th=G.threadsCps*t*eff, co=G.codeCps*t*eff, en=G.entropyCps*t*eff, v=G.voidCps*t*eff;
   G.cycles+=c; G.totalCycles+=c; G.lifetimeCycles+=c;
-  G.threads+=th; G.code+=co; G.entropy+=en; G.void+=v;
-  if(c>0) { toast('OFFLINE: +'+fmt(c)+' Cycles ('+fmtTime(Math.floor(t))+')','info'); log('Offline +'+fmt(c)+' cycles, eff='+Math.floor(eff*100)+'%','ok'); }
-  A.track('offline_progress',{secs:Math.floor(t),cycles:c,eff});
+  G.threads+=th; G.code+=co; G.entropy+=en; G.voidData+=v;
+  if(c>0) { toast('OFFLINE: +'+fmt(c)+' Cycles ('+fmtTime(Math.floor(t))+')', 'info'); log('Offline +'+fmt(c)+' cycles, eff='+Math.floor(eff*100)+'%','ok'); }
 }
 
 /* ═══════════════════════════════════════════════
-   RENDER FUNCTIONS
+   FORMAT
 ═══════════════════════════════════════════════ */
 function fmt(n) {
   n=+n; if(!n||isNaN(n)) return '0';
-  if(n<1e3) return Math.floor(n)+'';
-  if(n<1e6) return (n/1e3).toFixed(1)+'K';
-  if(n<1e9) return (n/1e6).toFixed(2)+'M';
-  if(n<1e12)return (n/1e9).toFixed(2)+'B';
-  if(n<1e15)return (n/1e12).toFixed(2)+'T';
-  return (n/1e15).toFixed(2)+'Q';
+  if(n<1e3)  return Math.floor(n)+'';
+  if(n<1e6)  return (n/1e3).toFixed(1)+'K';
+  if(n<1e9)  return (n/1e6).toFixed(2)+'M';
+  if(n<1e12) return (n/1e9).toFixed(2)+'B';
+  if(n<1e15) return (n/1e12).toFixed(2)+'T';
+  if(n<1e18) return (n/1e15).toFixed(2)+'Q';
+  return (n/1e18).toFixed(2)+'S';
 }
-function fmtD(n){n=+n;if(!n)return'0';if(n<0.0001)return n.toExponential(2);if(n<10)return n.toFixed(2);return fmt(n);}
+function fmtD(n){n=+n;if(!n)return'0';if(n<0.0001)return n.toExponential(2);if(n<10)return n.toFixed(3);return fmt(n);}
 function fmtTime(s){if(s<60)return s+'s';if(s<3600)return Math.floor(s/60)+'m';return Math.floor(s/3600)+'h '+Math.floor((s%3600)/60)+'m';}
 
+/* ═══════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════ */
 function renderRes() {
-  const resources = [
-    { id:'cycles',  icon:'⚡', name:'Cycles',      val:G.cycles,   rate:G.cps,        cur:'',    col:'' },
-    { id:'threads', icon:'🔵', name:'Threads',     val:G.threads,  rate:G.threadsCps, col:'cy',  phase:1 },
-    { id:'code',    icon:'🧬', name:'Code',        val:G.code,     rate:G.codeCps,    col:'',    phase:2 },
-    { id:'entropy', icon:'🌀', name:'Entropy',     val:G.entropy,  rate:G.entropyCps, col:'warn',phase:3 },
-    { id:'void',    icon:'🔮', name:'Void Data',   val:G.void,     rate:G.voidCps,    col:'vl',  phase:4 },
-    { id:'tokens',  icon:'◈',  name:'Tokens',      val:G.tokens,   rate:0,            col:'am',  always:true },
+  const resources=[
+    { id:'cycles',   icon:'⚡', name:'Cycles',     val:G.cycles,    rate:G.cps,        col:'',   },
+    { id:'threads',  icon:'🔵', name:'Threads',    val:G.threads,   rate:G.threadsCps, col:'cy',  phase:1 },
+    { id:'code',     icon:'🧬', name:'Code',       val:G.code,      rate:G.codeCps,    col:'',    phase:2 },
+    { id:'entropy',  icon:'🌀', name:'Entropy',    val:G.entropy,   rate:G.entropyCps, col:'warn',phase:3 },
+    { id:'voidData', icon:'🔮', name:'Void Data',  val:G.voidData,  rate:G.voidCps,    col:'vl',  phase:4 },
+    { id:'kTokens',  icon:'◈',  name:'K-Tokens',   val:G.kTokens,   rate:0,            col:'am',  },
+    { id:'aTokens',  icon:'◉',  name:'A-Tokens',   val:G.aTokens,   rate:0,            col:'cy',  show:()=>G.aResets>0||G.kResets>=3 },
+    { id:'vTokens',  icon:'◆',  name:'V-Tokens',   val:G.vTokens,   rate:0,            col:'vl',  show:()=>G.vResets>0||G.aResets>=2 },
   ];
-  const list = document.getElementById('res-list'); list.innerHTML='';
+  const list=document.getElementById('res-list'); list.innerHTML='';
   for(const r of resources) {
-    if(r.phase && G.phase < r.phase && r.val <= 0) continue;
+    if(r.phase&&G.phase<r.phase&&r.val<=0) continue;
+    if(r.show&&!r.show()&&r.val<=0) continue;
     const div=document.createElement('div'); div.className='rr';
-    div.innerHTML=`
-      <div class="rr-l">
-        <span class="rr-ico">${r.icon}</span>
-        <div><div class="rr-name">${r.name}</div><div class="rr-rate">${r.rate>0?'+'+fmtD(r.rate)+'/s':r.always?'kernel reset only':'locked'}</div></div>
-      </div>
-      <div class="rr-val ${r.col||''}">${fmtD(r.val)}</div>
-    `;
+    div.innerHTML=`<div class="rr-l"><span class="rr-ico">${r.icon}</span><div><div class="rr-name">${r.name}</div><div class="rr-rate">${r.rate>0?'+'+fmtD(r.rate)+'/s':'—'}</div></div></div><div class="rr-val ${r.col||''}">${fmtD(r.val)}</div>`;
     list.appendChild(div);
   }
 
-  // Header
-  document.getElementById('h-cps').textContent = fmtD(G.cps);
-  document.getElementById('h-life').textContent = fmt(G.lifetimeCycles);
-  document.getElementById('h-tok').textContent = fmt(G.tokens);
-  document.getElementById('h-ses').textContent = fmt(G.totalCycles);
-  document.getElementById('h-str').textContent = (G.loginStreak||0)+'d';
-  document.getElementById('reset-display').textContent = G.prestigeCount;
+  document.getElementById('h-cps').textContent=fmtD(G.cps);
+  document.getElementById('h-life').textContent=fmt(G.lifetimeCycles);
+  document.getElementById('h-tok').textContent=fmt(G.kTokens);
+  document.getElementById('h-atok').textContent=fmt(G.aTokens);
+  document.getElementById('h-vtok').textContent=fmt(G.vTokens);
+  document.getElementById('h-str').textContent=(G.loginStreak||0)+'d';
+  document.getElementById('k-reset-display').textContent=G.kResets;
+  document.getElementById('a-reset-display').textContent=G.aResets;
+  document.getElementById('v-reset-display').textContent=G.vResets;
 
-  // Stats
   const stats=[
     ['Total Clicks', fmt(G.totalClicks)],
     ['Crits Landed', fmt(G.critsLanded||0)],
     ['Lifetime Cycles', fmt(G.lifetimeCycles)],
-    ['Best CPS', fmtD(G.bestCps)],
+    ['Best CPS', fmtD(G.bestCps||0)],
     ['Best Combo', '×'+(G.bestCombo||1).toFixed(1)],
-    ['Kernel Resets', G.prestigeCount],
-    ['Gambles Won', G.gamblesWon||0],
-    ['Gambles Lost', G.gamblesLost||0],
-    ['Win Streak', G.winStreak||0],
+    ['K-Resets', G.kResets],
+    ['A-Resets', G.aResets],
+    ['V-Ascensions', G.vResets],
     ['Events Claimed', G.eventsCollected||0],
     ['Login Streak', (G.loginStreak||0)+'d'],
     ['Play Time', fmtTime(G.playTime||0)],
@@ -1683,59 +1457,57 @@ function renderRes() {
 function renderUpgrades() {
   const list=document.getElementById('upg-list'); list.innerHTML='';
   let lastT=0;
+  let anyAffordable=false;
   for(const u of UPGRADES) {
     const lvl=G.upgrades[u.id]||0;
     const lock=isLocked(u);
-    if(lock && !lvl) continue;
+    if(lock && !lvl) continue; // hide fully locked upgrades
     if(u.t!==lastT) {
       const sep=document.createElement('div'); sep.className='tier-sep';
-      sep.textContent=`── TIER ${u.t} ──`;
-      list.appendChild(sep); lastT=u.t;
+      sep.textContent=`── TIER ${u.t} ──`; list.appendChild(sep); lastT=u.t;
     }
     const maxed=lvl>=u.max;
     const {amt,cur}=getUpgCost(u,lvl);
     const can=!maxed&&!lock&&G[cur]>=amt;
+    if(can) anyAffordable=true;
     const fxStr=u.fx.replace('{v}',fmtD(scaledVal(u.base,lvl+1)));
     const d=document.createElement('div');
     d.className='upg'+(maxed?' upg-max':lock?' upg-locked':can?' upg-can':'');
-    d.innerHTML=`
-      <div class="upg-top"><div class="upg-name">${u.icon} ${u.name}</div><div class="upg-lv">LV${lvl}/${u.max}</div></div>
-      <div class="upg-fx">${fxStr}</div>
-      <div class="upg-cost ${can?'green':''}">${maxed?'MAXED ✓':lock?'🔒 '+( lock==='phase'?'PHASE '+u.unlockAt[1]:u.req):fmtD(amt)+' '+cur}</div>
-      ${!maxed&&!lock?`<div class="upg-prog"><div class="upg-prog-fill" style="width:${(lvl/u.max*100)}%"></div></div>`:''}
-    `;
+    d.innerHTML=`<div class="upg-top"><div class="upg-name">${u.icon} ${u.name}</div><div class="upg-lv">LV${lvl}/${u.max}</div></div><div class="upg-fx">${fxStr}</div><div class="upg-cost ${can?'green':''}">${maxed?'MAXED ✓':lock?'🔒 '+(lock==='phase'?'PHASE '+u.unlockAt[1]:u.req):fmtD(amt)+' '+cur}</div>${!maxed&&!lock?`<div class="upg-prog"><div class="upg-prog-fill" style="width:${(lvl/u.max*100)}%"></div></div>`:''}</div>`;
     if(!maxed&&!lock) d.onclick=()=>buyUpg(u.id);
     list.appendChild(d);
   }
+  const btn=document.getElementById('buy-all-btn');
+  if(btn) btn.classList.toggle('has-available', anyAffordable);
 }
 
 function renderSkillTree() {
   const con=document.getElementById('skill-tree-container'); con.innerHTML='';
-  const layers=[0,1,2,3,4];
+  const layers=[0,1,2,3,4,5,6];
   for(const lyr of layers) {
     const nodes=SKILLS.filter(s=>s.lyr===lyr);
     if(!nodes.length) continue;
+    // Check if all nodes in this layer are inaccessible due to phase
+    const anyVisible=nodes.some(sk=>{
+      if(sk.unlockAt){ const[t,v]=sk.unlockAt; if(t==='phase'&&G.phase<v) return false; }
+      return true;
+    });
+    if(!anyVisible&&lyr>4) continue;
     const layDiv=document.createElement('div'); layDiv.className='sk-layer';
     const lbl=document.createElement('div'); lbl.className='sk-layer-label';
-    lbl.textContent='LAYER '+lyr+(lyr>=2?' — PATH FORK':'')+(lyr===4?' — ENDGAME':'');
+    lbl.textContent='LAYER '+lyr+(lyr===2?' — PATH FORK':lyr===4?' — ENDGAME CONVERGENT':lyr===5?' — SINGULARITY PATH':lyr===6?' — OMEGA ENDGAME':'');
     layDiv.appendChild(lbl);
     const row=document.createElement('div'); row.className='sk-row';
     for(const sk of nodes) {
+      if(sk.unlockAt){ const[t,v]=sk.unlockAt; if(t==='phase'&&G.phase<v) continue; }
       const done=!!G.skills[sk.id];
       const reqMet=sk.reqAny?sk.req.some(r=>G.skills[r]):sk.req.every(r=>G.skills[r]);
-      const conflict=(sk.locks&&sk.locks.some(l=>G.skills[l]))||
-                     (sk.path&&G.chosenPath&&sk.path!==G.chosenPath&&sk.lyr>=2);
+      const conflict=(sk.locks&&sk.locks.some(l=>G.skills[l]))||(sk.path&&G.chosenPath&&sk.path!==G.chosenPath&&sk.lyr>=2);
       const [amt,cur]=sk.cost;
       const can=reqMet&&!done&&!conflict&&G[cur]>=amt;
       const n=document.createElement('div');
       n.className='sk-node'+(done?' sn-done':!reqMet||conflict?' sn-lock':can?' sn-ready':'');
-      n.innerHTML=`
-        <span class="sk-icon">${sk.icon}</span>
-        ${sk.path?`<div class="sk-path sk-path-${sk.path}">${{T:'THROUGHPUT',L:'LATENCY',C:'CHAOS'}[sk.path]}</div>`:''}
-        <div class="sk-name">${sk.name}</div>
-        <div class="sk-fx">${sk.fx}</div>
-        <div class="sk-cost">${done?'✓ ACTIVE':conflict?'✗ PATH LOCKED':fmtD(amt)+' '+cur}</div>
-      `;
+      n.innerHTML=`<span class="sk-icon">${sk.icon}</span>${sk.path?`<div class="sk-path sk-path-${sk.path}">${{T:'THROUGHPUT',L:'LATENCY',C:'CHAOS'}[sk.path]}</div>`:''}<div class="sk-name">${sk.name}</div><div class="sk-fx">${sk.fx}</div><div class="sk-cost">${done?'✓ ACTIVE':conflict?'✗ LOCKED':fmtD(amt)+' '+cur}</div>`;
       if(!done&&reqMet&&!conflict) n.onclick=()=>buySkill(sk.id);
       row.appendChild(n);
     }
@@ -1743,90 +1515,98 @@ function renderSkillTree() {
   }
 }
 
-function renderGamble() {
-  const wrap=document.getElementById('gamble-wrap'); wrap.innerHTML='';
-  const meta=document.createElement('div'); meta.className='gamble-meta';
-  meta.innerHTML=`Transparent odds — no hidden RNG. Win streak multiplies payouts (current: <span class="hot">×${Math.min(5,1+(G.winStreak||0)*0.08).toFixed(2)}</span>).<br>
-  Gamble bonus from Kernel Shop: <span class="hot">×${G.kernelShop?.k9?'1.75':'1.00'}</span> · Path bonus: <span class="hot">×${G.skills?.s1c?'1.5':'1.0'}</span><br>
-  Event gamble boost: <span class="hot">+${Math.floor((G.eventMechGambleBonus||0)*100)}%</span> to all odds`;
-  wrap.appendChild(meta);
+function renderPrestige() {
+  const con=document.getElementById('prestige-content'); if(!con) return;
+  con.innerHTML='';
 
-  const ra=document.createElement('div'); ra.id='gamble-result'; wrap.appendChild(ra);
-
-  for(const g of GAMBLES) {
-    const [amt,cur]=g.cost;
-    const can=G[cur]>=amt;
-    const adjOdds=Math.min(0.95,g.odds+(G.eventMechGambleBonus||0));
-    const jackpot=(G.kernelShop?.k9?1.75:1)*(G.skills?.s1c?1.5:1)*(1+Math.min(G.winStreak,10)*0.08);
-    const d=document.createElement('div');
-    d.className='gopt'+(can?'':' go-lock');
-    const winC=g.odds>=0.4?'var(--ph-primary)':g.odds>=0.2?'var(--amber)':'var(--red)';
-    d.innerHTML=`
-      <div class="go-head">
-        <div class="go-name">${g.name}</div>
-        <div class="go-odds-pill" style="color:${winC};border-color:${winC}">${Math.floor(adjOdds*100)}% WIN</div>
-      </div>
-      <div class="go-desc">${g.desc}</div>
-      <div class="go-row">
-        <span class="go-win">WIN ×${(g.winMult*jackpot).toFixed(2)}</span>
-        <span class="go-lose">LOSE: ${g.loseMult>0?'keep '+Math.floor(g.loseMult*100)+'%':'lose all'}</span>
-        <span class="go-cost">COST: ${fmtD(amt)} ${cur}</span>
-      </div>
-      <div class="go-probbar">
-        <div class="go-probfill" style="width:${adjOdds*100}%"></div>
-        <div class="go-problabel" style="width:${(1-adjOdds)*100}%;left:${adjOdds*100}%"></div>
-      </div>
-    `;
-    if(can) d.onclick=()=>doGamble(g.id);
-    wrap.appendChild(d);
-  }
-
-  const gs=document.createElement('div'); gs.className='gamble-stats';
-  gs.innerHTML=`<span>Won: <span class="gs-val">${G.gamblesWon||0}</span></span><span>Lost: <span class="gs-val">${G.gamblesLost||0}</span></span><span>Streak: <span class="gs-val">${G.winStreak||0}</span></span><span>W%: <span class="gs-val">${G.gamblesWon+G.gamblesLost>0?Math.floor(G.gamblesWon/(G.gamblesWon+G.gamblesLost)*100):0}%</span></span>`;
-  wrap.appendChild(gs);
-}
-
-function renderKernel() {
-  const ranks=['PROCESS_ZERO','KERNEL_USER','SYS_ADMIN','ROOT_ACCESS','DAEMON_LORD','SYNTH_GOD'];
-  const ri=Math.min(G.prestigeCount,ranks.length-1);
-  document.getElementById('k-rank').textContent='◈'+G.prestigeCount;
-  document.getElementById('k-title').textContent=ranks[ri];
-  const rwd=tokenPreview();
-  document.getElementById('k-reward').textContent='◈ '+rwd+' Tokens ready';
-  const btn=document.getElementById('k-btn'), req=document.getElementById('k-req');
-  const enough=G.totalCycles>=50000;
-  btn.disabled=!enough;
-  req.textContent=enough?`Reset now — optimal? You've mined ${fmt(G.totalCycles)} this run`:`Need ${fmt(Math.max(0,50000-G.totalCycles))} more Cycles`;
+  const ranks=['PROCESS_ZERO','KERNEL_USER','SYS_ADMIN','ROOT_ACCESS','DAEMON_LORD','SYNTH_GOD','ARCH_MAGE','VOID_WALKER','OMEGA'];
+  const ri=Math.min(G.kResets+G.aResets*2+G.vResets*3, ranks.length-1);
   document.getElementById('build-tag').textContent='// '+ranks[ri];
+
+  // KERNEL RESET
+  const kSec=document.createElement('div'); kSec.className='prestige-section';
+  const kRwd=kTokenPreview();
+  const kEnough=G.totalCycles>=50000;
+  kSec.innerHTML=`
+    <div class="prestige-tier-header pt-kernel">◈ KERNEL RESET</div>
+    <div class="prestige-info">Resets your run, earns <strong>K-Tokens</strong> — spent in Kernel Shop for permanent upgrades.<br>
+    K-Tokens are wiped by A-Reset and V-Ascension. Do many K-Resets before ascending!<br>
+    <strong style="color:var(--amber)">Required: 50,000 Cycles this run</strong></div>
+    <div class="prestige-reward" style="color:var(--amber)">◈ ${kRwd} K-Tokens ready${!kEnough?' (need more cycles)':''}</div>
+    <button class="prestige-btn k-btn" onclick="doKernelReset()" ${kEnough?'':'disabled'}>[ KERNEL_RESET ]</button>
+    <div class="prestige-req">Resets: ${G.kResets} · K-Tokens banked: ${fmt(G.kTokens)}</div>`;
+  con.appendChild(kSec);
+
+  // ARCHITECT RESET
+  const aSec=document.createElement('div'); aSec.className='prestige-section';
+  const aRwd=aTokenPreview();
+  const aEnough=G.totalCycles>=5e7;
+  aSec.innerHTML=`
+    <div class="prestige-tier-header pt-arch">◉ ARCHITECT RESET</div>
+    <div class="prestige-info">Deep reset — wipes K-Tokens and upgrades. Earns <strong>A-Tokens</strong> for the Architect Shop tier.<br>
+    Do multiple Kernel Resets first to maximize K-Token spending before ascending.<br>
+    <strong style="color:var(--cyan)">Required: 50,000,000 Cycles this run</strong></div>
+    <div class="prestige-reward" style="color:var(--cyan)">◉ ${aRwd} A-Tokens ready${!aEnough?' (need more cycles)':''}</div>
+    <button class="prestige-btn a-btn" onclick="doArchReset()" ${aEnough?'':'disabled'}>[ ARCHITECT_RESET ]</button>
+    <div class="prestige-req">Resets: ${G.aResets} · A-Tokens banked: ${fmt(G.aTokens)}</div>`;
+  con.appendChild(aSec);
+
+  // VOID ASCENSION
+  const vSec=document.createElement('div'); vSec.className='prestige-section';
+  const vRwd=vTokenPreview();
+  const vEnough=G.totalCycles>=1e10;
+  vSec.innerHTML=`
+    <div class="prestige-tier-header pt-void">◆ VOID ASCENSION</div>
+    <div class="prestige-info">Ultimate reset — wipes everything except V-Tokens. Earns <strong>V-Tokens</strong> for the endgame Void Shop tier.<br>
+    V-Tokens persist ALL resets. This is the true prestige loop for endgame.<br>
+    <strong style="color:var(--violet)">Required: 10,000,000,000 Cycles this run</strong></div>
+    <div class="prestige-reward" style="color:var(--violet)">◆ ${vRwd} V-Tokens ready${!vEnough?' (need far more cycles)':''}</div>
+    <button class="prestige-btn v-btn" onclick="doVoidAscension()" ${vEnough?'':'disabled'}>[ VOID_ASCENSION ]</button>
+    <div class="prestige-req">Ascensions: ${G.vResets} · V-Tokens banked: ${fmt(G.vTokens)}</div>`;
+  con.appendChild(vSec);
 }
 
 function renderKShop() {
-  const list=document.getElementById('kshop-list'); list.innerHTML='';
-  for(const k of KSHOP) {
-    const own=!!G.kernelShop[k.id];
-    const locked=G.prestigeCount<k.req;
-    const can=G.tokens>=k.cost&&!own&&!locked;
-    const d=document.createElement('div');
-    d.className='kshop-item'+(own?' ks-own':locked?' ks-lock':'');
-    d.innerHTML=`
-      <div class="ks-top"><div class="ks-name">${k.name}</div><div class="ks-cost">${own?'✓':'◈ '+k.cost}</div></div>
-      <div class="ks-desc">${k.desc}</div>
-      ${locked?`<div class="ks-req">Requires ${k.req} Resets</div>`:''}
-    `;
-    if(can) d.onclick=()=>buyKShop(k.id);
-    list.appendChild(d);
+  const list=document.getElementById('kshop-list'); if(!list) return;
+  list.innerHTML='';
+
+  const tiers=[{tier:'K',label:'◈ KERNEL MODULES',col:'ks-t-k',tok:'kTokens',rk:'kReq'},{tier:'A',label:'◉ ARCHITECT MODULES',col:'ks-t-a',tok:'aTokens',rk:'aReq'},{tier:'V',label:'◆ VOID MODULES',col:'ks-t-v',tok:'vTokens',rk:'vReq'}];
+  for(const t of tiers) {
+    const items=KSHOP.filter(k=>k.tier===t.tier);
+    // Show tier header only if unlocked or at least 1 reset in that tier's prereq
+    if(t.tier==='A'&&G.aResets===0&&G.kResets<5) continue;
+    if(t.tier==='V'&&G.vResets===0&&G.aResets<3) continue;
+    const sh=document.createElement('div'); sh.className='kshop-section-header';
+    sh.innerHTML=`<span class="${t.col}">${t.label}</span>`;
+    list.appendChild(sh);
+    for(const k of items) {
+      const own=!!G.kernelShop[k.id];
+      const kLocked=G.kResets<k.kReq;
+      const aLocked=G.aResets<k.aReq;
+      const vLocked=G.vResets<k.vReq;
+      const locked=kLocked||aLocked||vLocked;
+      const tokAmt=Object.values(k.cost)[0];
+      const tokType=Object.keys(k.cost)[0];
+      const can=!own&&!locked&&(G[tokType]||0)>=tokAmt;
+      const d=document.createElement('div');
+      d.className='kshop-item'+(own?' ks-own':locked?' ks-lock':can?' ks-can':'');
+      const reqTxt=kLocked?`Need ${k.kReq} K-Resets`:aLocked?`Need ${k.aReq} A-Resets`:vLocked?`Need ${k.vReq} V-Ascensions`:'';
+      d.innerHTML=`<div class="ks-top"><div class="ks-name">${k.name}</div><div class="ks-cost">${own?'✓':fmtD(tokAmt)+' '+{kTokens:'◈',aTokens:'◉',vTokens:'◆'}[tokType]}</div></div><div class="ks-desc">${k.desc}</div>${locked?`<div class="ks-req">${reqTxt}</div>`:''}`;
+      if(can) d.onclick=()=>buyKShop(k.id);
+      list.appendChild(d);
+    }
   }
 }
 
 function renderAch() {
-  const list=document.getElementById('ach-list'); list.innerHTML='';
+  const list=document.getElementById('ach-list'); if(!list) return;
+  list.innerHTML='';
   const done=ACHIEVEMENTS.filter(a=>G.achievements?.[a.id]);
   const pending=ACHIEVEMENTS.filter(a=>!G.achievements?.[a.id]);
-  const ordered=[...done,...pending];
-  for(const a of ordered) {
+  for(const a of [...done,...pending]) {
     const isDone=!!G.achievements?.[a.id];
     const d=document.createElement('div'); d.className='ach'+(isDone?' done':'');
-    d.innerHTML=`<div class="ach-ico">${a.icon}</div><div class="ach-info"><div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc}</div></div><div class="ach-chk ${isDone?'done-check':''}">${isDone?'✓':'○'}</div>`;
+    d.innerHTML=`<div class="ach-ico">${a.icon}</div><div class="ach-info"><div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc}</div></div><div class="ach-chk">${isDone?'✓':'○'}</div>`;
     list.appendChild(d);
   }
 }
@@ -1838,7 +1618,6 @@ function checkAch() {
       G.achievements[a.id]=true;
       toast('ACHIEVEMENT: '+a.name,'warn');
       log('Achievement: '+a.name,'warn');
-      A.track('achievement',{id:a.id});
     }
   }
 }
@@ -1847,7 +1626,7 @@ function checkAch() {
    TABS
 ═══════════════════════════════════════════════ */
 let activeTab='processes';
-const TABS=['processes','skilltree','gamble','kernel','logs'];
+const TABS=['processes','skilltree','prestige','logs'];
 
 function swTab(id) {
   activeTab=id;
@@ -1860,8 +1639,7 @@ function swTab(id) {
 function renderTab(id) {
   if(id==='processes')  renderUpgrades();
   if(id==='skilltree')  renderSkillTree();
-  if(id==='gamble')     renderGamble();
-  if(id==='kernel')     { renderKernel(); renderKShop(); }
+  if(id==='prestige')   renderPrestige();
   if(id==='logs')       renderAch();
 }
 
@@ -1879,9 +1657,6 @@ function log(msg,type='') {
   el.scrollTop=el.scrollHeight;
 }
 
-/* ═══════════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════════ */
 function toast(msg,type='') {
   const a=document.getElementById('toasts');
   const d=document.createElement('div'); d.className='toast '+(type||'');
@@ -1918,31 +1693,30 @@ function tutAdv() {
   if(tutIdx>=TUTORIAL_STEPS.length) {
     document.getElementById('tut-modal').classList.remove('open');
     G._tutDone=true; log('Tutorial complete. Boot sequence initiated.','sys');
-    A.track('tutorial_complete');
     setTimeout(checkDaily,400); return;
   }
   showTutStep(tutIdx);
 }
 
 /* ═══════════════════════════════════════════════
-   VOID CANVAS (phase 4)
+   VOID CANVAS
 ═══════════════════════════════════════════════ */
 (function(){
   const c=document.getElementById('void-canvas');
   const ctx=c.getContext('2d');
   let pts=[];
-  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;pts=Array.from({length:40},()=>({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+0.5}));}
+  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;pts=Array.from({length:50},()=>({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+0.5}));}
   resize(); window.addEventListener('resize',resize);
   function draw(){
     ctx.clearRect(0,0,c.width,c.height);
-    ctx.fillStyle='rgba(204,68,255,0.8)';
-    for(const p of pts){ p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1; ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill(); }
+    ctx.fillStyle='rgba(180,80,255,0.7)';
+    for(const p of pts){ p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill(); }
     requestAnimationFrame(draw);
   } draw();
 })();
 
 /* ═══════════════════════════════════════════════
-   CLOCK + SESSION
+   CLOCK
 ═══════════════════════════════════════════════ */
 const _startTime=Date.now();
 function updateClock() {
@@ -1952,26 +1726,47 @@ function updateClock() {
 }
 
 /* ═══════════════════════════════════════════════
-   SAVE / LOAD
+   SAVE / LOAD — FIXED localStorage
 ═══════════════════════════════════════════════ */
-const SAVE_KEY='synthOS_v4';
+const SAVE_KEY='synthOS_v5';
+
 function save() {
   try {
     G.playTime=(G.playTime||0)+20;
     G._savedAt=Date.now();
-    localStorage.setItem(SAVE_KEY,JSON.stringify(G));
+    // Save all important fields explicitly
+    const saveData={
+      cycles:G.cycles, threads:G.threads, code:G.code, entropy:G.entropy, voidData:G.voidData,
+      kTokens:G.kTokens, aTokens:G.aTokens, vTokens:G.vTokens,
+      totalCycles:G.totalCycles, lifetimeCycles:G.lifetimeCycles, totalClicks:G.totalClicks, critsLanded:G.critsLanded,
+      kResets:G.kResets, aResets:G.aResets, vResets:G.vResets,
+      phase:G.phase, upgrades:G.upgrades, skills:G.skills, kernelShop:G.kernelShop, achievements:G.achievements,
+      chosenPath:G.chosenPath, eventsCollected:G.eventsCollected,
+      bestCps:G.bestCps, bestCombo:G.bestCombo, playTime:G.playTime,
+      lastDaily:G.lastDaily, loginStreak:G.loginStreak,
+      boostEnd:G.boostEnd, radCooldown:G.radCooldown,
+      combo:G.combo, _savedAt:G._savedAt, _v:5, _tutDone:G._tutDone,
+    };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
     document.getElementById('save-el').textContent='AUTO-SAVE: '+new Date().toLocaleTimeString();
-    A.track('save',{phase:G.phase,resets:G.prestigeCount,lifetime:G.lifetimeCycles});
-  } catch(e){}
+  } catch(e){ console.error('Save failed',e); }
 }
+
 function load() {
   try {
     const raw=localStorage.getItem(SAVE_KEY);
     if(!raw) return false;
     const s=JSON.parse(raw);
-    G=Object.assign(JSON.parse(JSON.stringify(DEF)),s);
+    if(!s||!s._v) return false;
+    // Merge saved data onto default state
+    G=Object.assign(JSON.parse(JSON.stringify(DEF_STATE)), s);
+    // Ensure arrays/objects are not null
+    if(!G.upgrades) G.upgrades={};
+    if(!G.skills) G.skills={};
+    if(!G.kernelShop) G.kernelShop={};
+    if(!G.achievements) G.achievements={};
     return true;
-  } catch(e){ return false; }
+  } catch(e){ console.error('Load failed',e); return false; }
 }
 
 /* ═══════════════════════════════════════════════
@@ -1982,8 +1777,7 @@ function renderAll() {
   renderRes();
   renderUpgrades();
   renderSkillTree();
-  renderGamble();
-  renderKernel();
+  renderPrestige();
   renderKShop();
   renderAch();
   renderGoals();
@@ -1999,15 +1793,29 @@ function loop() {
   const now=Date.now(), dt=Math.min((now-_lastTick)/1000,.5); _lastTick=now; _frame++;
   computeStats();
 
-  G.cycles       +=G.cps*dt;       G.totalCycles+=G.cps*dt; G.lifetimeCycles+=G.cps*dt;
-  G.threads      +=G.threadsCps*dt;
-  G.code         +=G.codeCps*dt;
-  G.entropy      +=G.entropyCps*dt;
-  G['void']      +=G.voidCps*dt;
+  G.cycles    +=G.cps*dt;         G.totalCycles+=G.cps*dt; G.lifetimeCycles+=G.cps*dt;
+  G.threads   +=G.threadsCps*dt;
+  G.code      +=G.codeCps*dt;
+  G.entropy   +=G.entropyCps*dt;
+  G.voidData  +=G.voidCps*dt;
 
-  if(_frame%2===0) { renderRes(); renderCombo(); updateAdBtn(); }
+  if(_frame%2===0) { renderRes(); renderCombo(); updateAdBtn(); updateCpuBtn(); }
   if(_frame%30===0) { renderGoals(); updatePhase(); tickEvents(dt*30); }
   if(_frame%60===0) { renderTab(activeTab); checkAch(); updateClock(); }
+  if(_frame%10===0) {
+    // Update buy-all button state without full render
+    const btn=document.getElementById('buy-all-btn');
+    if(btn&&activeTab!=='processes') {
+      let any=false;
+      for(const u of UPGRADES) {
+        const lvl=G.upgrades[u.id]||0;
+        if(lvl>=u.max||isLocked(u)) continue;
+        const{amt,cur}=getUpgCost(u,lvl);
+        if(G[cur]>=amt){any=true;break;}
+      }
+      btn.classList.toggle('has-available',any);
+    }
+  }
 
   requestAnimationFrame(loop);
 }
@@ -2019,22 +1827,28 @@ window.addEventListener('load',()=>{
   const had=load();
   renderAll();
   loop();
-  setInterval(save,20000);
+  setInterval(save, 15000); // save every 15s
   updateClock(); setInterval(updateClock,1000);
 
   if(had) {
+    // Apply offline gains based on time since last save
     const elapsed=(Date.now()-(G._savedAt||Date.now()))/1000;
-    if(elapsed>30) applyOffline(Math.min(elapsed,4*3600));
+    if(elapsed>30) applyOffline(Math.min(elapsed,8*3600));
     log('Save restored. Welcome back.','sys');
-    A.track('session_start',{returning:true,phase:G.phase,resets:G.prestigeCount});
-    setTimeout(checkDaily,500);
+    log('Phase: '+PHASES[G.phase]?.name+' · K-Resets: '+G.kResets+' · A-Resets: '+G.aResets,'ok');
+    // Check daily after a short delay (let game render first)
+    setTimeout(checkDaily, 800);
+    if(!G._tutDone) setTimeout(initTut, 200);
   } else {
-    log('SYNTH_OS v4.0.0 — First boot.','sys');
-    log('No save data. Starting fresh.','warn');
-    A.track('session_start',{returning:false});
-    setTimeout(initTut,600);
+    log('SYNTH_OS v5.0.0 — First boot.','sys');
+    log('No save data found. Starting fresh.','warn');
+    setTimeout(initTut, 600);
   }
   log('System online.','ok');
+
+  // Save on page exit/hide too
+  window.addEventListener('beforeunload', save);
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden) save(); });
 });
 </script>
 </body>
