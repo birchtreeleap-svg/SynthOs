@@ -653,22 +653,24 @@ function scaledVal(base, lvl, softCapAt=10) {
 // BALANCED token formula — much less generous
 // First prestige at 50K cycles should yield ~5-15 tokens, not 300K
 function kTokenFormula(totalCyclesThisRun, kResets, shopMult=1) {
-  if(totalCyclesThisRun < 100000) return 0;
-  const base = Math.pow((totalCyclesThisRun - 80000) / 20000, 0.5);  // even more conservative
-  const resetBonus = 1 + kResets * 0.04;
-  return Math.max(1, Math.floor(base * resetBonus * shopMult));
+  // require larger runs and yield far fewer tokens to make resets meaningful
+  if(totalCyclesThisRun < 250000) return 0;
+  const base = Math.pow((totalCyclesThisRun - 200000) / 50000, 0.4);  // slower growth
+  const resetBonus = 1 + kResets * 0.03;
+  // quarter output to nerf token gain
+  return Math.max(1, Math.floor(base * resetBonus * shopMult * 0.25));
 }
 function aTokenFormula(totalCyclesThisRun, aResets, shopMult=1) {
-  if(totalCyclesThisRun < 5e8) return 0;
-  const base = Math.pow((totalCyclesThisRun - 4e8) / 1e8, 0.5);
-  const resetBonus = 1 + aResets * 0.04;
-  return Math.max(1, Math.floor(base * resetBonus * shopMult));
+  if(totalCyclesThisRun < 2e9) return 0; // higher bar
+  const base = Math.pow((totalCyclesThisRun - 1.8e9) / 2e8, 0.4);
+  const resetBonus = 1 + aResets * 0.03;
+  return Math.max(1, Math.floor(base * resetBonus * shopMult * 0.25));
 }
 function vTokenFormula(totalCyclesThisRun, vResets, shopMult=1) {
-  if(totalCyclesThisRun < 1e12) return 0;
-  const base = Math.pow((totalCyclesThisRun - 9e11) / 1e11, 0.45);
-  const resetBonus = 1 + vResets * 0.04;
-  return Math.max(1, Math.floor(base * resetBonus * shopMult));
+  if(totalCyclesThisRun < 5e12) return 0;
+  const base = Math.pow((totalCyclesThisRun - 4.5e12) / 5e11, 0.35);
+  const resetBonus = 1 + vResets * 0.02;
+  return Math.max(1, Math.floor(base * resetBonus * shopMult * 0.2)); // only 20% of naive reward
 }
 
 /* ═══════════════════════════════════════════════
@@ -958,7 +960,9 @@ function computeStats() {
   if(G.eventMechClick) click *= 3;
 
   G.cps        = Math.max(0, cps);
-  G.clickPower = Math.max(1, Math.floor(click));
+  // nerf click power so CPS automation remains relevant; clicks now give 10% of
+  // the calculated 'click' value rather than 100%.
+  G.clickPower = Math.max(1, Math.floor(click * 0.10));
   G.threadsCps = Math.max(0, thr);
   G.codeCps    = Math.max(0, cod);
   G.entropyCps = Math.max(0, ent);
