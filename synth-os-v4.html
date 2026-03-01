@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SYNTH_OS v5 — AI Bootstrapper</title>
+<meta name="description" content="SYNTH_OS — an idle incremental clicker game where you evolve an AI through phases, collect resources, and transcend the simulation.">
+<link rel="canonical" href="https://synthos.netlify.app/">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Fira+Code:wght@300;400;600&display=swap" rel="stylesheet">
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1823102759484258" crossorigin="anonymous"></script>
 <style>
 /* ═══════════════════════════════════════════════
    PHASE SYSTEM
@@ -389,6 +393,27 @@ body.phase-4 #void-canvas,body.phase-5 #void-canvas,body.phase-6 #void-canvas{di
 .rad-left .rad-title{font-family:'VT323',monospace;font-size:15px;color:var(--amber);letter-spacing:1px}
 .rad-left .rad-sub{font-size:8px;color:var(--ph-muted);margin-top:1px}
 .rad-icon{font-size:22px}
+
+/* ═══════════════════════════════════════════════
+   AD SLOTS — styled to match game aesthetic
+═══════════════════════════════════════════════ */
+.ad-wrap{position:relative;overflow:hidden;background:var(--ph-bg);border:1px dashed rgba(255,176,0,.15);margin-bottom:5px}
+.ad-label{position:absolute;top:2px;right:5px;font-size:7px;color:rgba(255,176,0,.25);letter-spacing:2px;pointer-events:none;z-index:2;text-transform:uppercase}
+.ad-banner{width:100%;min-height:90px;display:flex;align-items:center;justify-content:center}
+.ad-banner ins.adsbygoogle{display:block;width:100%}
+.ad-side-wrap{display:flex;flex-direction:column;gap:5px;margin-bottom:5px}
+.ad-side ins.adsbygoogle{display:block}
+/* Cookie consent */
+#cookie-bar{position:fixed;bottom:0;left:0;right:0;z-index:20000;background:rgba(1,8,4,.97);border-top:1px solid var(--ph-border2);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:10px;color:var(--ph-text)}
+#cookie-bar.hidden{display:none}
+.cc-text{flex:1;line-height:1.6;opacity:.85}
+.cc-text a{color:var(--amber);text-decoration:none}
+.cc-btns{display:flex;gap:8px;flex-shrink:0}
+.cc-btn{padding:6px 14px;font-family:'VT323',monospace;font-size:15px;letter-spacing:1px;cursor:pointer;border:1px solid;transition:.15s}
+.cc-btn.accept{color:var(--ph-primary);border-color:var(--ph-primary);background:rgba(0,255,65,.06)}
+.cc-btn.accept:hover{background:rgba(0,255,65,.14);box-shadow:var(--ph-glow)}
+.cc-btn.decline{color:var(--ph-muted);border-color:var(--ph-border2);background:transparent}
+.cc-btn.decline:hover{color:var(--ph-text);border-color:var(--ph-muted)}
 </style>
 </head>
 <body class="phase-0">
@@ -480,10 +505,21 @@ body.phase-4 #void-canvas,body.phase-5 #void-canvas,body.phase-6 #void-canvas{di
   <button class="ev-claim-btn" onclick="claimEvent()">[ CLAIM ]</button>
 </div>
 
+<!-- BANNER AD — 728×90 leaderboard -->
+<div class="ad-wrap ad-banner" id="ad-banner-wrap" style="min-height:90px">
+  <span class="ad-label">advertisement</span>
+  <ins class="adsbygoogle"
+       style="display:block;width:100%;min-height:90px"
+       data-ad-client="ca-pub-1823102759484258"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</div>
+
+<!-- REWARDED AD BAR -->
 <div id="rad-bar" onclick="watchAd()">
   <div class="rad-left">
     <div class="rad-title">📺 WATCH AD — 3× BOOST 90s + OFFLINE RECOVERY</div>
-    <div class="rad-sub" id="rad-sub">Available · Doubles offline gains if you've been away</div>
+    <div class="rad-sub" id="rad-sub">Available · Watch a short ad for 3× production boost</div>
   </div>
   <div class="rad-icon">▶</div>
 </div>
@@ -553,17 +589,48 @@ body.phase-4 #void-canvas,body.phase-5 #void-canvas,body.phase-6 #void-canvas{di
   </div>
 </div>
 
-<!-- RIGHT COL -->
+<!-- RIGHT COL — Kernel Shop + Ads -->
 <div class="col-r">
+  <!-- SIDE AD 1 — 160×600 wide skyscraper -->
+  <div class="ad-wrap" style="min-height:280px;margin-bottom:5px">
+    <span class="ad-label">advertisement</span>
+    <ins class="adsbygoogle"
+         style="display:block;min-height:280px"
+         data-ad-client="ca-pub-1823102759484258"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
+  <!-- SIDE AD 2 — 300×250 rectangle -->
+  <div class="ad-wrap" style="min-height:250px;margin-bottom:5px">
+    <span class="ad-label">advertisement</span>
+    <ins class="adsbygoogle"
+         style="display:block;min-height:250px"
+         data-ad-client="ca-pub-1823102759484258"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
   <div class="panel">
     <div class="ph">◉ KERNEL SHOP</div>
-    <div class="sb" id="kshop-list" style="max-height:600px"></div>
+    <div class="sb" id="kshop-list" style="max-height:500px"></div>
   </div>
 </div>
 
 </div>
 </div>
 <div id="toasts"></div>
+
+<!-- COOKIE CONSENT BAR -->
+<div id="cookie-bar">
+  <div class="cc-text">
+    SYNTH_OS uses advertising (Google AdSense) and analytics to support free development.
+    Ads fund ongoing updates and new content. By clicking Accept you allow personalised ads and analytics.
+    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+  </div>
+  <div class="cc-btns">
+    <button class="cc-btn decline" onclick="consentDecline()">Decline</button>
+    <button class="cc-btn accept" onclick="consentAccept()">[ ACCEPT ]</button>
+  </div>
+</div>
 
 <script>
 'use strict';
@@ -1378,46 +1445,209 @@ function claimDaily() {
 }
 
 /* ═══════════════════════════════════════════════
-   ADS
+   ADS & CONSENT SYSTEM
 ═══════════════════════════════════════════════ */
+const AD_CLIENT = 'ca-pub-1823102759484258';
+const CONSENT_KEY = 'synth_consent_v1';
+let _adsInitialised = false;
+let _rewardedAdUnit = null; // holds the AdSense rewarded ad object when available
+
+// ── Consent ──────────────────────────────────────────────────────────────
+function consentAccept() {
+  localStorage.setItem(CONSENT_KEY, '1');
+  document.getElementById('cookie-bar').classList.add('hidden');
+  initAds();
+}
+function consentDecline() {
+  localStorage.setItem(CONSENT_KEY, '0');
+  document.getElementById('cookie-bar').classList.add('hidden');
+  // Remove display ads gracefully when declined
+  document.querySelectorAll('.ad-wrap').forEach(el => {
+    el.style.display = 'none';
+  });
+}
+
+// ── Push all display ad slots ─────────────────────────────────────────────
+function initAds() {
+  if(_adsInitialised) return;
+  _adsInitialised = true;
+  // Init Ad Placement API (needed for rewarded ads too)
+  initAdPlacement();
+  // Push each ins.adsbygoogle display slot
+  try {
+    const slots = document.querySelectorAll('ins.adsbygoogle');
+    slots.forEach(slot => {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch(e) {}
+    });
+  } catch(e) {}
+}
+
+// ── Rewarded Ad — H5 Ad Placement API + simulateAd fallback ─────────────
+// AdSense rewarded ads for HTML5 games use the Ad Placement API (adConfig/adBreak).
+// Script: https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js
+// We call window.adBreak({ type:'reward', ... }) which is injected by the same
+// AdSense script when the publisher's account supports it.
+// Reference: https://developers.google.com/ad-placement/docs/rewarded-ads
+
+let _adConfigDone = false;
+
+function initAdPlacement() {
+  // Configure the Ad Placement API once
+  if(_adConfigDone) return;
+  _adConfigDone = true;
+  try {
+    window.adsbygoogle = window.adsbygoogle || [];
+    window.adsbygoogle.push({
+      google_ad_client: AD_CLIENT,
+      enable_page_level_ads: true,
+    });
+    // adConfig tells AdSense this is a game and enables rewarded ad breaks
+    if(typeof window.adConfig === 'function') {
+      window.adConfig({
+        preloadAdBreaks: 'on',
+        onReady: () => { /* ads ready */ }
+      });
+    }
+  } catch(e) {}
+}
+
+function preloadRewardedAd() {
+  if(localStorage.getItem(CONSENT_KEY) !== '1') return;
+  initAdPlacement();
+  // Pre-warm a rewarded ad break so it shows instantly when user clicks
+  try {
+    if(typeof window.adBreak === 'function') {
+      window.adBreak({ type: 'preload' });
+    }
+  } catch(e) {}
+}
+
 function watchAd() {
-  const now=Date.now();
-  if(now<(G.radCooldown||0)) { toast('Rewarded ad cooldown active','warn'); return; }
-  toast('Playing rewarded ad...','info');
-  const sub=document.getElementById('rad-sub');
-  let sec=6;
-  sub.textContent=`Ad playing: ${sec}s`;
-  const iv=setInterval(()=>{
+  const now = Date.now();
+  const bar = document.getElementById('rad-bar');
+  const sub = document.getElementById('rad-sub');
+
+  if(now < (G.radCooldown||0)) {
+    const s = Math.ceil(((G.radCooldown||0)-now)/1000);
+    const m = Math.floor(s/60), ss = s%60;
+    toast(`Rewarded ad on cooldown — ${m}:${ss.toString().padStart(2,'0')} remaining`,'warn');
+    return;
+  }
+  if(now < (G.boostEnd||0)) {
+    toast('3× Boost already active! Wait for it to expire.','warn');
+    return;
+  }
+
+  const consent = localStorage.getItem(CONSENT_KEY);
+
+  // ── Try AdSense H5 Ad Placement API (adBreak) ────────────────────────
+  if(consent === '1' && typeof window.adBreak === 'function') {
+    try {
+      window.adBreak({
+        type:         'reward',
+        name:         'boost_reward',
+        beforeReward: showRewardPrompt => { showRewardPrompt(); },
+        adDismissed:  () => { onAdDismissed(); },
+        adViewed:     () => { onAdComplete(); },
+        adBreakDone:  info => {
+          if(info.breakStatus === 'notReady' || info.breakStatus === 'error' ||
+             info.breakStatus === 'noAdPreloaded' || info.breakStatus === 'frequencyCapped') {
+            // No ad available — fallback to simulated
+            simulateAd(sub);
+          }
+          // 'viewed' and 'dismissed' are handled by adViewed/adDismissed above
+        }
+      });
+      G.radCooldown = now + 5 * 60 * 1000;
+      bar.classList.add('cd');
+      if(sub) sub.textContent = 'Loading ad...';
+      return;
+    } catch(e) {
+      // fall through to simulation
+    }
+  }
+
+  // ── Fallback: simulated countdown ad ─────────────────────────────────
+  // Used when: no consent, adBreak not available, or no ad fill
+  simulateAd(sub);
+  G.radCooldown = now + 5 * 60 * 1000;
+  bar.classList.add('cd');
+}
+
+function onAdDismissed() {
+  // User skipped/dismissed — still give a small boost as courtesy
+  G.boostEnd = Date.now() + 30 * 1000; // 30s on dismiss
+  computeStats(); updateCpuBtn(); flash('a');
+  toast('Ad skipped — 30s boost granted as thanks!', 'info');
+  log('Rewarded ad dismissed. 30s courtesy boost.', 'sys');
+}
+
+function simulateAd(sub) {
+  // Show a 10-second countdown simulating an ad watch
+  let sec = 10;
+  const bar = document.getElementById('rad-bar');
+  if(sub) sub.textContent = `[ AD ] ${sec}s remaining...`;
+  bar.classList.add('cd');
+  toast('Ad playing — wait 10s for your reward...', 'info');
+  const iv = setInterval(() => {
     sec--;
-    sub.textContent=`Ad playing: ${sec}s`;
-    if(sec<=0) { clearInterval(iv); sub.textContent='Available'; onAdComplete(); }
-  },1000);
-  G.radCooldown=now+5*60000;
+    if(sub) sub.textContent = sec > 0 ? `[ AD ] ${sec}s remaining...` : 'Collecting reward...';
+    if(sec <= 0) {
+      clearInterval(iv);
+      onAdComplete();
+    }
+  }, 1000);
 }
 
 function onAdComplete() {
-  G.boostEnd = Date.now()+90000;
-  const elapsed=(Date.now()-(G._savedAt||Date.now()))/1000;
-  if(elapsed>30) applyOffline(Math.min(elapsed,4*3600));
+  // Grant 3× production boost for 90 seconds
+  G.boostEnd = Date.now() + 90 * 1000;
+
+  // Apply any offline progress the player may have missed
+  const elapsed = (Date.now() - (G._savedAt || Date.now())) / 1000;
+  if(elapsed > 30) applyOffline(Math.min(elapsed, 4 * 3600));
+
   computeStats();
-  toast('3× BOOST: 90s active!','info');
-  log('Rewarded ad: 3× boost + offline recovery.','ok');
+  updateCpuBtn();
+  flash('a');
+  save(); // persist boost time immediately
+
+  // Update the ad bar to show boost active state
+  updateAdBtn();
+
+  toast('⚡ 3× BOOST ACTIVE — 90 seconds of triple production!', 'warn');
+  log('Rewarded ad complete. 3× boost for 90s granted.', 'ok');
+
+  // Pre-load next ad so it is ready when cooldown expires
+  setTimeout(preloadRewardedAd, 5000);
 }
 
 function updateAdBtn() {
-  const now=Date.now(), bar=document.getElementById('rad-bar'), sub=document.getElementById('rad-sub');
-  if(!bar||!sub) return;
-  if(now<(G.boostEnd||0)) {
-    const s=Math.ceil((G.boostEnd-now)/1000);
-    sub.textContent=`⚡ BOOST ACTIVE: ${s}s`;
+  const now = Date.now();
+  const bar = document.getElementById('rad-bar');
+  const sub = document.getElementById('rad-sub');
+  if(!bar || !sub) return;
+
+  if(now < (G.boostEnd||0)) {
+    const s = Math.ceil(((G.boostEnd||0) - now) / 1000);
+    sub.textContent = `⚡ BOOST ACTIVE: ${s}s remaining — 3× all production`;
     bar.classList.add('cd');
-  } else if(now<(G.radCooldown||0)) {
-    const s=Math.ceil((G.radCooldown-now)/1000);
-    sub.textContent=`Cooldown: ${s}s`;
+    bar.style.borderColor = 'var(--amber)';
+    bar.style.boxShadow = '0 0 12px rgba(255,176,0,.25)';
+  } else if(now < (G.radCooldown||0)) {
+    const s = Math.ceil(((G.radCooldown||0) - now) / 1000);
+    const m = Math.floor(s/60), ss = s%60;
+    sub.textContent = `Cooldown: ${m}:${ss.toString().padStart(2,'0')} — next ad available soon`;
     bar.classList.add('cd');
+    bar.style.borderColor = '';
+    bar.style.boxShadow = '';
   } else {
-    sub.textContent='Available · 3× boost 90s + offline catch-up';
+    sub.textContent = 'Available · Watch a short ad for 3× production boost (90s)';
     bar.classList.remove('cd');
+    bar.style.borderColor = '';
+    bar.style.boxShadow = '';
   }
 }
 
@@ -1938,6 +2168,20 @@ window.addEventListener('load',()=>{
     setTimeout(initTut, 600);
   }
   log('System online.','ok');
+
+  // ── Ads & Consent ─────────────────────────────────────────────────
+  const savedConsent = localStorage.getItem(CONSENT_KEY);
+  if(savedConsent === '1') {
+    // Already accepted — init ads, hide consent bar
+    document.getElementById('cookie-bar').classList.add('hidden');
+    setTimeout(initAds, 600);          // short delay for AdSense script to load
+    setTimeout(preloadRewardedAd, 3000); // pre-warm rewarded ad
+  } else if(savedConsent === '0') {
+    // Already declined — hide bar + all ad slots
+    document.getElementById('cookie-bar').classList.add('hidden');
+    document.querySelectorAll('.ad-wrap').forEach(el => { el.style.display='none'; });
+  }
+  // else: consent bar visible by default — user must choose
 
   // Save on page exit/hide too
   window.addEventListener('beforeunload', save);
