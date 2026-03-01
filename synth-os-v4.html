@@ -1212,7 +1212,10 @@ function closeSettings() {
 }
 function restartGame() {
   if(confirm('This will erase all progress and reload the page. Continue?')) {
+    // prevent the beforeunload save handler from re-saving progress
+    try { window.removeEventListener('beforeunload', save); } catch(e) {}
     localStorage.removeItem(SAVE_KEY);
+    // also optionally clear any other game-specific storage
     location.reload();
   }
 }
