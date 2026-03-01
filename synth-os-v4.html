@@ -485,6 +485,7 @@ body.phase-4 #void-canvas,body.phase-5 #void-canvas,body.phase-6 #void-canvas{di
     <div class="hds"><div class="hds-k">STREAK</div><div class="hds-v" id="h-str">0d</div></div>
   </div>
   <div id="hdr-right">
+    <button id="settings-btn" onclick="openSettings()" title="Settings" style="font-size:16px;background:transparent;border:none;color:var(--ph-muted);cursor:pointer;vertical-align:middle;">⚙️</button>
     <div id="clock-el">00:00:00</div>
     <div style="font-size:8px;color:var(--ph-muted)" id="save-el">AUTO-SAVE: —</div>
     <div style="font-size:8px;color:var(--ph-muted)" id="session-time-el">SESSION: 0m</div>
@@ -618,6 +619,20 @@ body.phase-4 #void-canvas,body.phase-5 #void-canvas,body.phase-6 #void-canvas{di
 </div>
 </div>
 <div id="toasts"></div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal-box">
+    <div class="confirm-title" style="color:var(--ph-primary);">⚙️ SETTINGS</div>
+    <div class="confirm-body" style="font-size:11px;">
+      <button onclick="restartGame()" class="confirm-btn confirm-k" style="margin-bottom:10px;width:100%;">[ RESTART GAME ]</button>
+      <div style="font-size:9px;color:var(--ph-text);opacity:.8;">Other options coming soon (audio, display, etc.)</div>
+    </div>
+    <div class="confirm-btns">
+      <button class="confirm-btn cancel" onclick="closeSettings()">[ CLOSE ]</button>
+    </div>
+  </div>
+</div>
 
 <!-- COOKIE CONSENT BAR -->
 <div id="cookie-bar">
@@ -960,9 +975,10 @@ function computeStats() {
   if(G.eventMechClick) click *= 3;
 
   G.cps        = Math.max(0, cps);
-  // nerf click power so CPS automation remains relevant; clicks now give 10% of
-  // the calculated 'click' value rather than 100%.
-  G.clickPower = Math.max(1, Math.floor(click * 0.10));
+  // buff cycle/s output: generators feel more powerful relative to clicks
+  G.cps *= 3;
+  // heavy nerf to clicking; only 1% of calculated click value
+  G.clickPower = Math.max(1, Math.floor(click * 0.01));
   G.threadsCps = Math.max(0, thr);
   G.codeCps    = Math.max(0, cod);
   G.entropyCps = Math.max(0, ent);
@@ -1186,6 +1202,19 @@ function askConfirm(type) {
 function closeConfirm() {
   _pendingPrestigeType = null;
   document.getElementById('confirm-modal').classList.remove('open');
+}
+
+function openSettings() {
+  document.getElementById('settings-modal').classList.add('open');
+}
+function closeSettings() {
+  document.getElementById('settings-modal').classList.remove('open');
+}
+function restartGame() {
+  if(confirm('This will erase all progress and reload the page. Continue?')) {
+    localStorage.removeItem(SAVE_KEY);
+    location.reload();
+  }
 }
 
 function confirmPrestige() {
