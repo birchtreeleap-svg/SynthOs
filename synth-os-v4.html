@@ -887,9 +887,10 @@ let G = JSON.parse(JSON.stringify(DEF_STATE));
 ═══════════════════════════════════════════════ */
 function computeStats() {
   let cps=0, click=1, thr=0, cod=0, ent=0, voi=0;
-  const sk  = id => !!G.skills[id];
-  const ks  = id => !!G.kernelShop[id];
+  const sk  = id => !!(G.skills && G.skills[id]);
+  const ks  = id => !!(G.kernelShop && G.kernelShop[id]);
 
+  if(!G.upgrades) G.upgrades = {};
   for(const u of UPGRADES) {
     const lvl = G.upgrades[u.id]||0;
     if(!lvl) continue;
@@ -1074,8 +1075,9 @@ function buyUpg(id) {
   const lock = isLocked(u); if(lock) { toast(lock==='phase'?'Unlock Phase '+u.unlockAt[1]+' first':'Requires '+u.req,'err'); return; }
   const lvl = G.upgrades[id]||0; if(lvl>=u.max) return;
   const {amt,cur} = getUpgCost(u,lvl);
-  if(G[cur]<amt) { toast('Need '+fmtD(amt)+' '+cur,'err'); return; }
-  G[cur]-=amt; G.upgrades[id]=lvl+1;
+  const gcur = cur==='void'?'voidData':cur;
+  if(G[gcur]<amt) { toast('Need '+fmtD(amt)+' Void Data','err'); return; }
+  G[gcur]-=amt; G.upgrades[id]=lvl+1;
   computeStats(); log(u.name+' Lv'+(lvl+1),'ok');
   renderUpgrades(); renderRes();
 }
@@ -1091,8 +1093,9 @@ function buyAll() {
     const lock = isLocked(u); if(lock) continue;
     const lvl = G.upgrades[u.id]||0; if(lvl>=u.max) continue;
     const {amt,cur} = getUpgCost(u,lvl);
-    if(G[cur]>=amt) {
-      G[cur]-=amt; G.upgrades[u.id]=lvl+1; bought++;
+    const gc2 = cur==='void'?'voidData':cur;
+    if(G[gc2]>=amt) {
+      G[gc2]-=amt; G.upgrades[u.id]=lvl+1; bought++;
     }
   }
   if(bought>0) {
@@ -1122,8 +1125,9 @@ function buySkill(id) {
   }
   if(sk.path&&G.chosenPath&&sk.path!==G.chosenPath&&sk.lyr>=2) { toast('You chose path '+G.chosenPath,'err'); return; }
   const [amt,cur]=sk.cost;
-  if(G[cur]<amt) { toast('Need '+fmtD(amt)+' '+cur,'err'); return; }
-  G[cur]-=amt; G.skills[id]=true;
+  const scur=cur==='void'?'voidData':cur;
+  if(G[scur]<amt) { toast('Need '+fmtD(amt)+' '+(cur==='void'?'Void Data':cur),'err'); return; }
+  G[scur]-=amt; G.skills[id]=true;
   if(sk.lyr===2&&sk.path) {
     G.chosenPath=sk.path;
     document.getElementById('path-display').textContent={T:'THROUGHPUT',L:'LATENCY',C:'CHAOS'}[sk.path]||sk.path;
@@ -1372,7 +1376,8 @@ function claimEvent() {
   const ampMult = G.kernelShop?.k12 ? 2 : 1;
   const rwd=ev.reward();
   for(const [k,v] of Object.entries(rwd)) {
-    G[k]=(G[k]||0)+v*ampMult;
+    const gKey = k==='void' ? 'voidData' : k;  // 'void' in rewards maps to G.voidData
+    G[gKey]=(G[gKey]||0)+v*ampMult;
     if(k==='cycles'){G.totalCycles+=v*ampMult;G.lifetimeCycles+=v*ampMult;}
   }
   G.eventsCollected++; endEvent();
@@ -1791,12 +1796,13 @@ function renderUpgrades() {
     }
     const maxed=lvl>=u.max;
     const {amt,cur}=getUpgCost(u,lvl);
-    const can=!maxed&&!lock&&G[cur]>=amt;
+    const rcur=cur==='void'?'voidData':cur;
+    const can=!maxed&&!lock&&G[rcur]>=amt;
     if(can) anyAffordable=true;
     const fxStr=u.fx.replace('{v}',fmtD(scaledVal(u.base,lvl+1)));
     const d=document.createElement('div');
     d.className='upg'+(maxed?' upg-max':lock?' upg-locked':can?' upg-can':'');
-    d.innerHTML=`<div class="upg-top"><div class="upg-name">${u.icon} ${u.name}</div><div class="upg-lv">LV${lvl}/${u.max}</div></div><div class="upg-fx">${fxStr}</div><div class="upg-cost ${can?'green':''}">${maxed?'MAXED ✓':lock?'🔒 '+(lock==='phase'?'PHASE '+u.unlockAt[1]:u.req):fmtD(amt)+' '+cur}</div>${!maxed&&!lock?`<div class="upg-prog"><div class="upg-prog-fill" style="width:${(lvl/u.max*100)}%"></div></div>`:''}</div>`;
+    d.innerHTML=`<div class="upg-top"><div class="upg-name">${u.icon} ${u.name}</div><div class="upg-lv">LV${lvl}/${u.max}</div></div><div class="upg-fx">${fxStr}</div><div class="upg-cost ${can?'green':''}">${maxed?'MAXED ✓':lock?'🔒 '+(lock==='phase'?'PHASE '+u.unlockAt[1]:u.req):fmtD(amt)+' '+(cur==='void'?'Void Data':cur)}</div>${!maxed&&!lock?`<div class="upg-prog"><div class="upg-prog-fill" style="width:${(lvl/u.max*100)}%"></div></div>`:''}</div>`;
     if(!maxed&&!lock) d.onclick=()=>buyUpg(u.id);
     list.appendChild(d);
   }
@@ -1827,10 +1833,11 @@ function renderSkillTree() {
       const reqMet=sk.reqAny?sk.req.some(r=>G.skills[r]):sk.req.every(r=>G.skills[r]);
       const conflict=(sk.locks&&sk.locks.some(l=>G.skills[l]))||(sk.path&&G.chosenPath&&sk.path!==G.chosenPath&&sk.lyr>=2);
       const [amt,cur]=sk.cost;
-      const can=reqMet&&!done&&!conflict&&G[cur]>=amt;
+      const skrcur=cur==='void'?'voidData':cur;
+      const can=reqMet&&!done&&!conflict&&G[skrcur]>=amt;
       const n=document.createElement('div');
       n.className='sk-node'+(done?' sn-done':!reqMet||conflict?' sn-lock':can?' sn-ready':'');
-      n.innerHTML=`<span class="sk-icon">${sk.icon}</span>${sk.path?`<div class="sk-path sk-path-${sk.path}">${{T:'THROUGHPUT',L:'LATENCY',C:'CHAOS'}[sk.path]}</div>`:''}<div class="sk-name">${sk.name}</div><div class="sk-fx">${sk.fx}</div><div class="sk-cost">${done?'✓ ACTIVE':conflict?'✗ LOCKED':fmtD(amt)+' '+cur}</div>`;
+      n.innerHTML=`<span class="sk-icon">${sk.icon}</span>${sk.path?`<div class="sk-path sk-path-${sk.path}">${{T:'THROUGHPUT',L:'LATENCY',C:'CHAOS'}[sk.path]}</div>`:''}<div class="sk-name">${sk.name}</div><div class="sk-fx">${sk.fx}</div><div class="sk-cost">${done?'✓ ACTIVE':conflict?'✗ LOCKED':fmtD(amt)+' '+(cur==='void'?'Void Data':cur)}</div>`;
       if(!done&&reqMet&&!conflict) n.onclick=()=>buySkill(sk.id);
       row.appendChild(n);
     }
@@ -2123,7 +2130,7 @@ function loop() {
   G.voidData  +=G.voidCps*dt;
 
   if(_frame%2===0) { renderRes(); renderCombo(); updateAdBtn(); updateCpuBtn(); }
-  if(_frame%30===0) { renderGoals(); updatePhase(); tickEvents(dt*30); }
+  if(_frame%30===0) { renderGoals(); updatePhase(); tickEvents(30); }
   if(_frame%60===0) { renderTab(activeTab); checkAch(); updateClock(); }
   if(_frame%10===0) {
     // Update buy-all button state without full render
@@ -2134,7 +2141,7 @@ function loop() {
         const lvl=G.upgrades[u.id]||0;
         if(lvl>=u.max||isLocked(u)) continue;
         const{amt,cur}=getUpgCost(u,lvl);
-        if(G[cur]>=amt){any=true;break;}
+        if(G[cur==='void'?'voidData':cur]>=amt){any=true;break;}
       }
       btn.classList.toggle('has-available',any);
     }
