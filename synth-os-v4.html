@@ -642,7 +642,8 @@ function scaledCost(base, lvl, rate=1.42) {
   return base * Math.pow(rate, lvl);
 }
 function scaledVal(base, lvl, softCapAt=10) {
-  // Soft cap at level 10: returns diminish faster above it
+  // Returns CUMULATIVE value for a given level (used for total calculations)
+  // Soft cap at level 10: scales slower above it
   if(lvl<=softCapAt) return base*lvl;
   const hard=base*softCapAt;
   const extra=base*(lvl-softCapAt)*0.35; // was 0.55 — steeper diminish
@@ -1723,7 +1724,7 @@ function fmt(n) {
   if(n<1e18) return (n/1e15).toFixed(2)+'Q';
   return (n/1e18).toFixed(2)+'S';
 }
-function fmtD(n){n=+n;if(!n)return'0';if(n<0.0001)return n.toExponential(2);if(n<10)return n.toFixed(3);return fmt(n);}
+function fmtD(n){n=+n;if(n===0)return'0';if(n<0.0001)return n.toExponential(2);if(n<1)return n.toFixed(3);if(n<10)return n.toFixed(2);return fmt(n);}
 function fmtTime(s){if(s<60)return s+'s';if(s<3600)return Math.floor(s/60)+'m';return Math.floor(s/3600)+'h '+Math.floor((s%3600)/60)+'m';}
 
 /* ═══════════════════════════════════════════════
@@ -1750,6 +1751,8 @@ function renderRes() {
   }
 
   document.getElementById('h-cps').textContent=fmtD(G.cps);
+  const cb = document.getElementById('cps-big'); 
+  if(cb) cb.textContent = fmtD(G.cps);
   document.getElementById('h-life').textContent=fmt(G.lifetimeCycles);
   document.getElementById('h-tok').textContent=fmt(G.kTokens);
   document.getElementById('h-atok').textContent=fmt(G.aTokens);
@@ -1799,7 +1802,11 @@ function renderUpgrades() {
     const rcur=cur==='void'?'voidData':cur;
     const can=!maxed&&!lock&&G[rcur]>=amt;
     if(can) anyAffordable=true;
-    const fxStr=u.fx.replace('{v}',fmtD(scaledVal(u.base,lvl+1)));
+    // Show INCREMENTAL gain: next level value minus current level value
+    const currentVal = lvl > 0 ? scaledVal(u.base, lvl) : 0;
+    const nextVal = scaledVal(u.base, lvl + 1);
+    const incrementalGain = nextVal - currentVal;
+    const fxStr=u.fx.replace('{v}',fmtD(incrementalGain));
     const d=document.createElement('div');
     d.className='upg'+(maxed?' upg-max':lock?' upg-locked':can?' upg-can':'');
     d.innerHTML=`<div class="upg-top"><div class="upg-name">${u.icon} ${u.name}</div><div class="upg-lv">LV${lvl}/${u.max}</div></div><div class="upg-fx">${fxStr}</div><div class="upg-cost ${can?'green':''}">${maxed?'MAXED ✓':lock?'🔒 '+(lock==='phase'?'PHASE '+u.unlockAt[1]:u.req):fmtD(amt)+' '+(cur==='void'?'Void Data':cur)}</div>${!maxed&&!lock?`<div class="upg-prog"><div class="upg-prog-fill" style="width:${(lvl/u.max*100)}%"></div></div>`:''}</div>`;
