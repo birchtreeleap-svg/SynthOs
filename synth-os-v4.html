@@ -1185,10 +1185,11 @@ function closeConfirm() {
 }
 
 function confirmPrestige() {
+  const type = _pendingPrestigeType;
   closeConfirm();
-  if(_pendingPrestigeType === 'K') doKernelReset();
-  else if(_pendingPrestigeType === 'A') doArchReset();
-  else if(_pendingPrestigeType === 'V') doVoidAscension();
+  if(type === 'K') doKernelReset();
+  else if(type === 'A') doArchReset();
+  else if(type === 'V') doVoidAscension();
 }
 
 /* ═══════════════════════════════════════════════
